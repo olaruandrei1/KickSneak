@@ -87,7 +87,7 @@ END $$;
 GRANT SELECT ON
     products, product_photos, brands, categories,
     colors, materials, fits, genders, sizes, size_types,
-    auctions, bids
+    auctions, bids, stock_items, used_items, used_item_photos, sellers
 TO ks_guest;
 
 -- ----------------------------------------------
