@@ -1,4 +1,7 @@
 <Solution>
+  <Folder Name="/Solution Items/">
+    <File Path="Dockerfile" />
+  </Folder>
   <Folder Name="/src/">
     <Project Path="KickSneak.BackgroundServices/KickSneak.BackgroundServices.csproj" Id="6c02c1b3-7286-4f23-acab-b4ee4dd48dec" />
     <Project Path="src/KickSneak.Application/KickSneak.Application.csproj" />

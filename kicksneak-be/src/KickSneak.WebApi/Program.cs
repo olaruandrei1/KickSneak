@@ -2,6 +2,7 @@ using Dapper;
 using KickSneak.Application;
 using KickSneak.Application.Hubs;
 using KickSneak.BackgroundServices;
+using KickSneak.Domain.ConfigurableObjects;
 using KickSneak.Infrastructure;
 using KickSneak.Persistence;
 using KickSneak.Persistence.Context;
@@ -48,16 +49,21 @@ var app = builder.Build();
 
 using (var scope = app.Services.CreateScope())
 {
-    var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
-    await db.Database.MigrateAsync();
+    var connStrings = scope.ServiceProvider.GetRequiredService<ConnectionStrings>();
 
-    var adminConnString = Environment.GetEnvironmentVariable("DB_ADMIN_CONNECTION")
-        ?? builder.Configuration.GetConnectionString("AdminConnection")!;
+    var adminOptions = new DbContextOptionsBuilder<AppDbContext>()
+        .UseNpgsql(connStrings.AdminConnection)
+        .Options;
 
-    await using var adminConn = new NpgsqlConnection(adminConnString);
+    await using var adminDb = new AppDbContext(adminOptions);
+    await adminDb.Database.MigrateAsync();
+
+    await using var adminConn = new NpgsqlConnection(connStrings.AdminConnection);
+
     await adminConn.OpenAsync();
 
     var rbacSql = GetEmbeddedResource("KickSneak.Persistence.SqlResources.RBAC.sql");
+
     await adminConn.ExecuteAsync(rbacSql, commandTimeout: 60);
 }
 
