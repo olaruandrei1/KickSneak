@@ -1,0 +1,49 @@
+{
+  "title": "Recently Viewed",
+  "items": [
+    {
+      "id": "rv-001",
+      "name": "Jordan 1 Retro High Bred Toe",
+      "brand": "Air Jordan",
+      "price": 298,
+      "image": "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400&q=80",
+      "category": "Sneakers",
+      "sold": 5421,
+      "isNew": false,
+      "isFavorite": false
+    },
+    {
+      "id": "rv-002",
+      "name": "Nike Dunk High Retro White Black",
+      "brand": "Nike",
+      "price": 115,
+      "image": "https://images.unsplash.com/photo-1597045566677-8cf032ed6634?w=400&q=80",
+      "category": "Sneakers",
+      "sold": 3210,
+      "isNew": false,
+      "isFavorite": true
+    },
+    {
+      "id": "rv-003",
+      "name": "New Balance 574 Grey Day",
+      "brand": "New Balance",
+      "price": 95,
+      "image": "https://images.unsplash.com/photo-1539185441755-769473a23570?w=400&q=80",
+      "category": "Sneakers",
+      "sold": 2109,
+      "isNew": false,
+      "isFavorite": false
+    },
+    {
+      "id": "rv-004",
+      "name": "Supreme x Nike SB Dunk Low Stars",
+      "brand": "Supreme",
+      "price": 780,
+      "image": "https://images.unsplash.com/photo-1514989940723-e8e51635b782?w=400&q=80",
+      "category": "Sneakers",
+      "sold": 987,
+      "isNew": false,
+      "isFavorite": false
+    }
+  ]
+}

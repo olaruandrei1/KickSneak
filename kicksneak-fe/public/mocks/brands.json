@@ -1,0 +1,24 @@
+{
+  "featured": [
+    { "id": "nike", "name": "Nike", "slug": "Nike", "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a6/Logo_NIKE.svg/200px-Logo_NIKE.svg.png", "productCount": 1240, "category": "Sneakers" },
+    { "id": "adidas", "name": "adidas", "slug": "adidas", "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/20/Adidas_Logo.svg/200px-Adidas_Logo.svg.png", "productCount": 980, "category": "Sneakers" },
+    { "id": "air-jordan", "name": "Air Jordan", "slug": "Air+Jordan", "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/14/Jordan_brand_logo.svg/200px-Jordan_brand_logo.svg.png", "productCount": 756, "category": "Sneakers" },
+    { "id": "new-balance", "name": "New Balance", "slug": "New+Balance", "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/ea/New_Balance_logo.svg/200px-New_Balance_logo.svg.png", "productCount": 432, "category": "Sneakers" },
+    { "id": "yeezy", "name": "Yeezy", "slug": "Yeezy", "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/20/Adidas_Logo.svg/200px-Adidas_Logo.svg.png", "productCount": 312, "category": "Sneakers" },
+    { "id": "asics", "name": "ASICS", "slug": "ASICS", "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b1/Asics_Logo.svg/200px-Asics_Logo.svg.png", "productCount": 289, "category": "Sneakers" },
+    { "id": "puma", "name": "Puma", "slug": "Puma", "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/88/Puma_logo.svg/200px-Puma_logo.svg.png", "productCount": 198, "category": "Sneakers" },
+    { "id": "converse", "name": "Converse", "slug": "Converse", "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/30/Converse_logo.svg/200px-Converse_logo.svg.png", "productCount": 167, "category": "Sneakers" }
+  ],
+  "luxury": [
+    { "id": "balenciaga", "name": "Balenciaga", "slug": "Balenciaga", "logo": "https://picsum.photos/seed/balenciaga/200/80", "productCount": 145, "category": "Luxury" },
+    { "id": "gucci", "name": "Gucci", "slug": "Gucci", "logo": "https://picsum.photos/seed/gucci/200/80", "productCount": 132, "category": "Luxury" },
+    { "id": "off-white", "name": "OFF-WHITE", "slug": "OFF-WHITE", "logo": "https://picsum.photos/seed/offwhite/200/80", "productCount": 98, "category": "Luxury" },
+    { "id": "dior", "name": "Dior", "slug": "Dior", "logo": "https://picsum.photos/seed/dior/200/80", "productCount": 87, "category": "Luxury" }
+  ],
+  "apparel": [
+    { "id": "supreme", "name": "Supreme", "slug": "Supreme", "logo": "https://picsum.photos/seed/supreme/200/80", "productCount": 234, "category": "Apparel" },
+    { "id": "bape", "name": "BAPE", "slug": "BAPE", "logo": "https://picsum.photos/seed/bape/200/80", "productCount": 178, "category": "Apparel" },
+    { "id": "fog", "name": "FOG Essentials", "slug": "FOG+Essentials", "logo": "https://picsum.photos/seed/fog/200/80", "productCount": 156, "category": "Apparel" },
+    { "id": "travis-scott", "name": "Travis Scott", "slug": "Travis+Scott", "logo": "https://picsum.photos/seed/travis/200/80", "productCount": 89, "category": "Apparel" }
+  ]
+}

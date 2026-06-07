@@ -1,0 +1,116 @@
+.sidebar {
+    width: 100%;
+    max-width: 280px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding: 20px;
+    background: var(--color-bg);
+    border: 1px solid var(--color-border);
+    border-radius: 14px;
+    height: fit-content;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--color-border);
+    margin-bottom: 8px;
+}
+
+.title {
+    font-family: var(--font-display);
+    font-size: 1.1rem;
+    font-weight: 700;
+    margin: 0;
+    color: var(--color-text);
+}
+
+.resetBtn {
+    background: none;
+    border: none;
+    color: var(--color-secondary);
+    font-size: 0.8rem;
+    font-weight: 600;
+    cursor: pointer;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    font-family: var(--font-body);
+}
+
+.resetBtn:hover {
+    text-decoration: underline;
+}
+
+.section {
+    border-bottom: 1px solid var(--color-border);
+}
+
+.section:last-child {
+    border-bottom: none;
+}
+
+.sectionHeader {
+    width: 100%;
+    background: none;
+    border: none;
+    padding: 14px 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--color-text);
+    font-family: var(--font-body);
+}
+
+.chevron {
+    font-size: 1.2rem;
+    color: var(--color-text-muted);
+    font-weight: 300;
+}
+
+.radioGroup,
+.checkboxGroup {
+    display: flex;
+    flex-direction: column;
+    padding-bottom: 12px;
+}
+
+.radioGroup :global(.MuiFormControlLabel-label),
+.checkboxGroup :global(.MuiFormControlLabel-label) {
+    font-size: 0.85rem;
+    color: var(--color-text);
+    font-family: var(--font-body);
+}
+
+.radioGroup :global(.MuiRadio-root),
+.checkboxGroup :global(.MuiCheckbox-root) {
+    color: var(--color-text-muted);
+}
+
+.radioGroup :global(.MuiRadio-root.Mui-checked),
+.checkboxGroup :global(.MuiCheckbox-root.Mui-checked) {
+    color: var(--color-secondary);
+}
+
+.priceWrap {
+    padding: 8px 4px 14px;
+}
+
+.priceWrap :global(.MuiSlider-root) {
+    color: var(--color-secondary);
+}
+
+.priceLabels {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.8rem;
+    color: var(--color-text-muted);
+    margin-top: 4px;
+    font-variant-numeric: tabular-nums;
+    font-family: var(--font-body);
+}

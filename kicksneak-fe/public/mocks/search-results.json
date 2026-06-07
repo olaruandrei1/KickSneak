@@ -1,0 +1,56 @@
+[
+  {
+    "id": "sr-001",
+    "name": "Jordan 1 Retro High OG",
+    "brand": "Air Jordan",
+    "price": 341,
+    "image": "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=300&q=80",
+    "category": "Sneakers",
+    "sold": 6778
+  },
+  {
+    "id": "sr-002",
+    "name": "adidas Samba OG White",
+    "brand": "adidas",
+    "price": 120,
+    "image": "https://images.unsplash.com/photo-1608231387042-66d1773070a5?w=300&q=80",
+    "category": "Sneakers",
+    "sold": 4201
+  },
+  {
+    "id": "sr-003",
+    "name": "Nike Air Max 97 Silver Bullet",
+    "brand": "Nike",
+    "price": 225,
+    "image": "https://images.unsplash.com/photo-1514989940723-e8e51635b782?w=300&q=80",
+    "category": "Sneakers",
+    "sold": 3150
+  },
+  {
+    "id": "sr-004",
+    "name": "New Balance 9060 Sea Salt",
+    "brand": "New Balance",
+    "price": 150,
+    "image": "https://images.unsplash.com/photo-1539185441755-769473a23570?w=300&q=80",
+    "category": "Sneakers",
+    "sold": 2890
+  },
+  {
+    "id": "sr-005",
+    "name": "Yeezy 350 V2 Zebra",
+    "brand": "Yeezy",
+    "price": 280,
+    "image": "https://images.unsplash.com/photo-1600185365926-3a2ce3cdb9eb?w=300&q=80",
+    "category": "Sneakers",
+    "sold": 5512
+  },
+  {
+    "id": "sr-006",
+    "name": "Nike SB Dunk Low Pro",
+    "brand": "Nike",
+    "price": 195,
+    "image": "https://images.unsplash.com/photo-1597045566677-8cf032ed6634?w=300&q=80",
+    "category": "Sneakers",
+    "sold": 1987
+  }
+]

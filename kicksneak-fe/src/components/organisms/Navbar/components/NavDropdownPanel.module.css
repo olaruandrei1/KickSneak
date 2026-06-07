@@ -1,0 +1,50 @@
+.panel {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  width: 300px;
+  background: var(--color-bg);
+  border: 1px solid var(--color-border);
+  border-radius: 14px;
+  box-shadow: 0 16px 48px var(--color-shadow);
+  z-index: 500;
+  overflow: hidden;
+  transform-origin: top right;
+  animation: expandDown 0.26s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.header {
+  padding: 12px 14px 8px;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.title {
+  font-family: var(--font-display);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+}
+
+.body {
+  max-height: 360px;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-border) transparent;
+}
+
+@keyframes expandDown {
+  0% {
+    transform: scaleY(0.04);
+    opacity: 0;
+  }
+
+  60% {
+    opacity: 1;
+  }
+
+  100% {
+    transform: scaleY(1);
+  }
+}

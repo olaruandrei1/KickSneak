@@ -1,0 +1,10 @@
+{
+    "id": "autobid_001",
+    "auctionId": "auc_001",
+    "userId": "user_current",
+    "maxAmount": 600,
+    "currentBidPlaced": 487,
+    "isActive": true,
+    "createdAt": "2026-05-03T16:30:00Z",
+    "updatedAt": "2026-05-03T16:30:00Z"
+}

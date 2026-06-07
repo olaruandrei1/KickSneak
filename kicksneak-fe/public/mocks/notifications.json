@@ -1,0 +1,59 @@
+{
+    "unreadCount": 3,
+    "items": [
+        {
+            "id": "n-001",
+            "type": "price_drop",
+            "title": "Price Drop Alert",
+            "message": "Jordan 1 Retro High OG dropped to $290",
+            "href": "/product/p-001",
+            "read": false,
+            "createdAt": "2026-04-25T10:30:00Z"
+        },
+        {
+            "id": "n-002",
+            "type": "order",
+            "title": "Order Shipped",
+            "message": "Your Jordan 4 Military Blue is on its way",
+            "href": "/orders/ord-001",
+            "read": false,
+            "createdAt": "2026-04-25T09:00:00Z"
+        },
+        {
+            "id": "n-003",
+            "type": "offer",
+            "title": "Offer Accepted",
+            "message": "Your offer of $240 on adidas Samba was accepted",
+            "href": "/orders/ord-002",
+            "read": false,
+            "createdAt": "2026-04-24T18:00:00Z"
+        },
+        {
+            "id": "n-004",
+            "type": "recommendation",
+            "title": "New Drop for You",
+            "message": "New Balance 9060 just dropped — based on your history",
+            "href": "/product/p-015",
+            "read": true,
+            "createdAt": "2026-04-24T12:00:00Z"
+        },
+        {
+            "id": "n-005",
+            "type": "price_drop",
+            "title": "Price Drop Alert",
+            "message": "Nike SB Dunk Low Panda dropped to $185",
+            "href": "/product/p-018",
+            "read": true,
+            "createdAt": "2026-04-23T15:00:00Z"
+        },
+        {
+            "id": "n-006",
+            "type": "system",
+            "title": "Welcome to KickSneak",
+            "message": "Start browsing and add items to your favorites",
+            "href": "/",
+            "read": true,
+            "createdAt": "2026-04-20T10:00:00Z"
+        }
+    ]
+}

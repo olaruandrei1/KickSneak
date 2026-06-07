@@ -1,0 +1,48 @@
+{
+    "items": [
+        {
+            "id": "sl-001",
+            "name": "Nike SB Dunk Low Panda",
+            "brand": "Nike",
+            "size": "EU 42",
+            "price": 195,
+            "status": "active",
+            "views": 234,
+            "image": "https://images.unsplash.com/photo-1597045566677-8cf032ed6634?w=200&q=80",
+            "listedAt": "2026-04-01"
+        },
+        {
+            "id": "sl-002",
+            "name": "adidas Samba OG",
+            "brand": "adidas",
+            "price": 130,
+            "size": "EU 43",
+            "status": "sold",
+            "views": 456,
+            "image": "https://images.unsplash.com/photo-1608231387042-66d1773070a5?w=200&q=80",
+            "listedAt": "2026-03-15"
+        },
+        {
+            "id": "sl-003",
+            "name": "Jordan 4 Retro Military Blue",
+            "brand": "Air Jordan",
+            "price": 395,
+            "size": "EU 44",
+            "status": "pending_verification",
+            "views": 89,
+            "image": "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=200&q=80",
+            "listedAt": "2026-04-20"
+        },
+        {
+            "id": "sl-004",
+            "name": "New Balance 9060",
+            "brand": "New Balance",
+            "price": 155,
+            "size": "EU 42.5",
+            "status": "active",
+            "views": 178,
+            "image": "https://images.unsplash.com/photo-1539185441755-769473a23570?w=200&q=80",
+            "listedAt": "2026-04-10"
+        }
+    ]
+}

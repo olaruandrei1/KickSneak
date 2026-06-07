@@ -1,0 +1,27 @@
+{
+    "items": [
+        {
+            "auctionId": "auc-001",
+            "productName": "Nike SB Dunk Low Panda",
+            "productImage": "https://picsum.photos/seed/dunk/200",
+            "myBidAmount": 220,
+            "currentPrice": 245,
+            "isWinning": false,
+            "status": "active",
+            "endsAt": "2026-06-10T18:00:00Z",
+            "bidPlacedAt": "2026-06-06T14:30:00Z"
+        },
+        {
+            "auctionId": "auc-003",
+            "productName": "Jordan 4 Retro Military Blue",
+            "productImage": "https://picsum.photos/seed/j4/200",
+            "myBidAmount": 410,
+            "currentPrice": 410,
+            "isWinning": true,
+            "status": "active",
+            "endsAt": "2026-06-09T12:00:00Z",
+            "bidPlacedAt": "2026-06-07T09:15:00Z"
+        }
+    ],
+    "totalCount": 2
+}

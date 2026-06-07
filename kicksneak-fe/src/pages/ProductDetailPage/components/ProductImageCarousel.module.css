@@ -1,0 +1,141 @@
+.wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    width: 100%;
+}
+
+.main {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    border-radius: 20px;
+    overflow: hidden;
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    cursor: zoom-in;
+    transition: border-color 0.2s ease;
+}
+
+.main:hover {
+    border-color: var(--color-secondary);
+}
+
+.zoomed {
+    cursor: zoom-out;
+}
+
+.zoomed .mainImg {
+    transform: scale(1.6);
+}
+
+.mainImg {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    padding: 24px;
+    transition: transform 0.3s ease;
+    user-select: none;
+}
+
+.arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    border: 1px solid var(--color-border);
+    background: var(--color-bg);
+    color: var(--color-text);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+    z-index: 2;
+}
+
+.arrow svg {
+    width: 16px;
+    height: 16px;
+}
+
+.main:hover .arrow {
+    opacity: 1;
+}
+
+.arrowLeft {
+    left: 12px;
+}
+
+.arrowRight {
+    right: 12px;
+}
+
+.arrow:hover {
+    background: var(--color-secondary);
+    color: var(--color-bg);
+    border-color: var(--color-secondary);
+}
+
+.dots {
+    position: absolute;
+    bottom: 12px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 6px;
+}
+
+.dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--color-border);
+    border: none;
+    cursor: pointer;
+    transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.dotActive {
+    background: var(--color-accent);
+    transform: scale(1.4);
+}
+
+.thumbs {
+    display: flex;
+    gap: 8px;
+    overflow-x: auto;
+    scrollbar-width: none;
+    padding: 2px;
+}
+
+.thumbs::-webkit-scrollbar {
+    display: none;
+}
+
+.thumb {
+    width: 64px;
+    height: 64px;
+    flex-shrink: 0;
+    border-radius: 10px;
+    overflow: hidden;
+    border: 2px solid transparent;
+    background: var(--color-surface);
+    cursor: pointer;
+    padding: 0;
+    transition: border-color 0.18s ease;
+}
+
+.thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    padding: 4px;
+}
+
+.thumbActive {
+    border-color: var(--color-accent);
+}

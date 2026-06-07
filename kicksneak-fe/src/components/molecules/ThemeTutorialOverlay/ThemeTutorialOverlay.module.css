@@ -1,0 +1,49 @@
+.backdrop {
+    position: fixed;
+    inset: 0;
+    z-index: 999;
+    background: var(--color-overlay);
+    backdrop-filter: blur(2px);
+    cursor: pointer;
+}
+
+.spotlight {
+    position: fixed;
+    bottom: 4px;
+    right: 4px;
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    background: transparent;
+    box-shadow: 0 0 0 9999px var(--color-overlay);
+    pointer-events: none;
+}
+
+.tooltip {
+    position: fixed;
+    bottom: 92px;
+    right: 16px;
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    backdrop-filter: blur(16px);
+    border-radius: 12px;
+    padding: 12px 16px;
+    text-align: right;
+    max-width: 200px;
+    font-family: var(--font-body);
+    font-size: 0.85rem;
+    color: var(--color-text);
+    box-shadow: 0 4px 24px var(--color-shadow);
+    pointer-events: none;
+}
+
+.tooltip strong {
+    color: var(--color-accent);
+}
+
+.hint {
+    display: block;
+    margin-top: 6px;
+    font-size: 0.72rem;
+    color: var(--color-text-muted);
+}

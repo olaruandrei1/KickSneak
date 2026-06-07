@@ -1,0 +1,21 @@
+{
+    "items": [
+        {
+            "auctionId": "auc-010",
+            "productName": "adidas Yeezy Boost 350 V2",
+            "productImage": "https://picsum.photos/seed/yeezy/200",
+            "finalPrice": 380,
+            "wonAt": "2026-05-28T20:00:00Z",
+            "checkoutCompleted": true
+        },
+        {
+            "auctionId": "auc-012",
+            "productName": "New Balance 2002R",
+            "productImage": "https://picsum.photos/seed/nb2002/200",
+            "finalPrice": 195,
+            "wonAt": "2026-06-01T15:00:00Z",
+            "checkoutCompleted": false
+        }
+    ],
+    "totalCount": 2
+}

@@ -1,0 +1,48 @@
+{
+  "uid": "mock-uid-001",
+  "email": "andrei@kicksneak.com",
+  "displayName": "Andrei Popescu",
+  "photoURL": "https://i.pravatar.cc/150?img=12",
+  "isSeller": false,
+  "joinedAt": "2024-01-15",
+  "totalSpent": 2847.50,
+  "totalOrders": 14,
+  "addresses": [
+    {
+      "id": "addr-001",
+      "label": "Home",
+      "firstName": "Andrei",
+      "lastName": "Popescu",
+      "street": "Str. Mihai Eminescu 12",
+      "city": "Popești-Leordeni",
+      "county": "Ilfov",
+      "zip": "077160",
+      "country": "Romania",
+      "phone": "+40721234567",
+      "alternateEmail": "andrei.popescu@gmail.com",
+      "isDefault": true
+    },
+    {
+      "id": "addr-002",
+      "label": "Office",
+      "firstName": "Andrei",
+      "lastName": "Popescu",
+      "street": "Bd. Unirii 45, Bloc 10",
+      "city": "București",
+      "county": "Sector 3",
+      "zip": "030828",
+      "country": "Romania",
+      "phone": "+40722345678",
+      "isDefault": false
+    }
+  ],
+  "sizePreferences": {
+    "footwearEU": "43",
+    "footwearUS": "9.5",
+    "footwearUK": "8.5",
+    "tops": "L",
+    "bottoms": "32",
+    "preferredSystem": "EU"
+  },
+  "seller": null
+}

@@ -1,0 +1,93 @@
+{
+  "title": "Hot Trendsetters",
+  "items": [
+    {
+      "id": "trend-001",
+      "name": "adidas Samba OG Core Black",
+      "brand": "adidas",
+      "price": 130,
+      "image": "https://images.unsplash.com/photo-1608231387042-66d1773070a5?w=400&q=80",
+      "category": "Sneakers",
+      "sold": 9821,
+      "isNew": false,
+      "isFavorite": true
+    },
+    {
+      "id": "trend-002",
+      "name": "Jordan 4 Retro Military Blue",
+      "brand": "Air Jordan",
+      "price": 395,
+      "image": "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400&q=80",
+      "category": "Sneakers",
+      "sold": 7654,
+      "isNew": false,
+      "isFavorite": false
+    },
+    {
+      "id": "trend-003",
+      "name": "Nike SB Dunk Low Panda",
+      "brand": "Nike",
+      "price": 210,
+      "image": "https://images.unsplash.com/photo-1597045566677-8cf032ed6634?w=400&q=80",
+      "category": "Sneakers",
+      "sold": 6543,
+      "isNew": false,
+      "isFavorite": false
+    },
+    {
+      "id": "trend-004",
+      "name": "New Balance 9060 Mushroom",
+      "brand": "New Balance",
+      "price": 155,
+      "image": "https://images.unsplash.com/photo-1539185441755-769473a23570?w=400&q=80",
+      "category": "Sneakers",
+      "sold": 5432,
+      "isNew": false,
+      "isFavorite": false
+    },
+    {
+      "id": "trend-005",
+      "name": "Yeezy 350 V2 Onyx",
+      "brand": "Yeezy",
+      "price": 260,
+      "image": "https://images.unsplash.com/photo-1600185365926-3a2ce3cdb9eb?w=400&q=80",
+      "category": "Sneakers",
+      "sold": 4901,
+      "isNew": false,
+      "isFavorite": true
+    },
+    {
+      "id": "trend-006",
+      "name": "Balenciaga Track 2 Black",
+      "brand": "Balenciaga",
+      "price": 895,
+      "image": "https://images.unsplash.com/photo-1556906781-9a412961a28c?w=400&q=80",
+      "category": "Sneakers",
+      "sold": 1230,
+      "isNew": false,
+      "isFavorite": false
+    },
+    {
+      "id": "trend-007",
+      "name": "Nike Air Force 1 Low White",
+      "brand": "Nike",
+      "price": 100,
+      "image": "https://images.unsplash.com/photo-1514989940723-e8e51635b782?w=400&q=80",
+      "category": "Sneakers",
+      "sold": 12450,
+      "isNew": false,
+      "isFavorite": false
+    },
+    {
+      "id": "trend-008",
+      "name": "ASICS Gel-1130 Cream White",
+      "brand": "ASICS",
+      "price": 120,
+      "image": "https://images.unsplash.com/photo-1606107557195-0e29a4b5b4aa?w=400&q=80",
+      "category": "Sneakers",
+      "sold": 3210,
+      "isNew": false,
+      "isFavorite": false
+    }
+  ]
+}

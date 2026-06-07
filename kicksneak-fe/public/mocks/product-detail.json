@@ -1,0 +1,461 @@
+{
+    "id": "p-005",
+    "name": "Jordan 5 Retro",
+    "subtitle": "Wolf Grey (2026)",
+    "brand": "Air Jordan",
+    "price": 277,
+    "lastSale": 426,
+    "retailPrice": 220,
+    "category": "Sneakers",
+    "sold": 5432,
+    "isNew": false,
+    "xpressShip": true,
+    "xpressDate": "Apr 30",
+    "images": [
+        "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=800&q=85",
+        "https://images.unsplash.com/photo-1606107557195-0e29a4b5b4aa?w=800&q=85",
+        "https://images.unsplash.com/photo-1608231387042-66d1773070a5?w=800&q=85",
+        "https://images.unsplash.com/photo-1539185441755-769473a23570?w=800&q=85",
+        "https://images.unsplash.com/photo-1556906781-9a412961a28c?w=800&q=85"
+    ],
+    "breadcrumbs": [
+        {
+            "label": "Home",
+            "href": "/"
+        },
+        {
+            "label": "Sneakers",
+            "href": "/sneakers"
+        },
+        {
+            "label": "Lifestyle",
+            "href": "/sneakers/lifestyle"
+        },
+        {
+            "label": "Jordan",
+            "href": "/brand/air-jordan"
+        }
+    ],
+    "colorways": [
+        {
+            "id": "p-005",
+            "name": "Wolf Grey (2026)",
+            "image": "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=200&q=80",
+            "price": 277
+        },
+        {
+            "id": "p-003",
+            "name": "White Metallic (2026)",
+            "image": "https://images.unsplash.com/photo-1606107557195-0e29a4b5b4aa?w=200&q=80",
+            "price": 284
+        },
+        {
+            "id": "p-006",
+            "name": "Fire Red Black Tongue",
+            "image": "https://images.unsplash.com/photo-1608231387042-66d1773070a5?w=200&q=80",
+            "price": 302
+        },
+        {
+            "id": "p-007",
+            "name": "Midnight Navy (2026)",
+            "image": "https://images.unsplash.com/photo-1539185441755-769473a23570?w=200&q=80",
+            "price": 315
+        },
+        {
+            "id": "p-008",
+            "name": "Tokyo T23 (2025)",
+            "image": "https://images.unsplash.com/photo-1600185365926-3a2ce3cdb9eb?w=200&q=80",
+            "price": 390
+        },
+        {
+            "id": "p-009",
+            "name": "Grape (2025)",
+            "image": "https://images.unsplash.com/photo-1514989940723-e8e51635b782?w=200&q=80",
+            "price": 180
+        },
+        {
+            "id": "p-010",
+            "name": "Off-White Sail",
+            "image": "https://images.unsplash.com/photo-1597045566677-8cf032ed6634?w=200&q=80",
+            "price": 850
+        }
+    ],
+    "sizes": [
+        {
+            "system": "EU",
+            "label": "EU 40",
+            "price": 333,
+            "xpressShip": true
+        },
+        {
+            "system": "EU",
+            "label": "EU 40.5",
+            "price": 332,
+            "xpressShip": false
+        },
+        {
+            "system": "EU",
+            "label": "EU 41",
+            "price": 302,
+            "xpressShip": true
+        },
+        {
+            "system": "EU",
+            "label": "EU 42",
+            "price": 258,
+            "xpressShip": true
+        },
+        {
+            "system": "EU",
+            "label": "EU 42.5",
+            "price": 277,
+            "xpressShip": false
+        },
+        {
+            "system": "EU",
+            "label": "EU 43",
+            "price": 277,
+            "xpressShip": true
+        },
+        {
+            "system": "EU",
+            "label": "EU 44",
+            "price": 259,
+            "xpressShip": false
+        },
+        {
+            "system": "EU",
+            "label": "EU 44.5",
+            "price": 268,
+            "xpressShip": true
+        },
+        {
+            "system": "EU",
+            "label": "EU 45",
+            "price": 259,
+            "xpressShip": false
+        },
+        {
+            "system": "EU",
+            "label": "EU 45.5",
+            "price": 304,
+            "xpressShip": true
+        },
+        {
+            "system": "EU",
+            "label": "EU 46",
+            "price": 280,
+            "xpressShip": false
+        },
+        {
+            "system": "EU",
+            "label": "EU 47",
+            "price": 230,
+            "xpressShip": true
+        },
+        {
+            "system": "EU",
+            "label": "EU 47.5",
+            "price": 255,
+            "xpressShip": false
+        },
+        {
+            "system": "EU",
+            "label": "EU 48",
+            "price": null,
+            "xpressShip": false
+        },
+        {
+            "system": "EU",
+            "label": "EU 48.5",
+            "price": 271,
+            "xpressShip": true
+        },
+        {
+            "system": "US M",
+            "label": "US M 6",
+            "price": 333,
+            "xpressShip": true
+        },
+        {
+            "system": "US M",
+            "label": "US M 6.5",
+            "price": 302,
+            "xpressShip": false
+        },
+        {
+            "system": "US M",
+            "label": "US M 7",
+            "price": 258,
+            "xpressShip": true
+        },
+        {
+            "system": "US M",
+            "label": "US M 7.5",
+            "price": 277,
+            "xpressShip": true
+        },
+        {
+            "system": "US M",
+            "label": "US M 8",
+            "price": 277,
+            "xpressShip": false
+        },
+        {
+            "system": "US M",
+            "label": "US M 8.5",
+            "price": 259,
+            "xpressShip": true
+        },
+        {
+            "system": "US M",
+            "label": "US M 9",
+            "price": 268,
+            "xpressShip": false
+        },
+        {
+            "system": "US M",
+            "label": "US M 9.5",
+            "price": 259,
+            "xpressShip": true
+        },
+        {
+            "system": "US M",
+            "label": "US M 10",
+            "price": 304,
+            "xpressShip": false
+        },
+        {
+            "system": "US M",
+            "label": "US M 10.5",
+            "price": 280,
+            "xpressShip": true
+        },
+        {
+            "system": "US M",
+            "label": "US M 11",
+            "price": 230,
+            "xpressShip": false
+        },
+        {
+            "system": "US M",
+            "label": "US M 12",
+            "price": null,
+            "xpressShip": false
+        },
+        {
+            "system": "UK",
+            "label": "UK 5.5",
+            "price": 333,
+            "xpressShip": true
+        },
+        {
+            "system": "UK",
+            "label": "UK 6",
+            "price": 302,
+            "xpressShip": false
+        },
+        {
+            "system": "UK",
+            "label": "UK 6.5",
+            "price": 258,
+            "xpressShip": true
+        },
+        {
+            "system": "UK",
+            "label": "UK 7",
+            "price": 277,
+            "xpressShip": true
+        },
+        {
+            "system": "UK",
+            "label": "UK 8",
+            "price": 259,
+            "xpressShip": false
+        },
+        {
+            "system": "UK",
+            "label": "UK 9",
+            "price": 268,
+            "xpressShip": true
+        },
+        {
+            "system": "UK",
+            "label": "UK 10",
+            "price": 280,
+            "xpressShip": false
+        },
+        {
+            "system": "UK",
+            "label": "UK 11",
+            "price": 230,
+            "xpressShip": true
+        }
+    ],
+    "priceHistory": [
+        {
+            "date": "2025-05",
+            "price": 310
+        },
+        {
+            "date": "2025-06",
+            "price": 290
+        },
+        {
+            "date": "2025-07",
+            "price": 340
+        },
+        {
+            "date": "2025-08",
+            "price": 280
+        },
+        {
+            "date": "2025-09",
+            "price": 260
+        },
+        {
+            "date": "2025-10",
+            "price": 295
+        },
+        {
+            "date": "2025-11",
+            "price": 320
+        },
+        {
+            "date": "2025-12",
+            "price": 380
+        },
+        {
+            "date": "2026-01",
+            "price": 350
+        },
+        {
+            "date": "2026-02",
+            "price": 300
+        },
+        {
+            "date": "2026-03",
+            "price": 410
+        },
+        {
+            "date": "2026-04",
+            "price": 277
+        }
+    ],
+    "relatedProducts": [
+        {
+            "id": "rp-001",
+            "name": "Jordan 5 Retro White Metallic (2026)",
+            "brand": "Air Jordan",
+            "price": 279,
+            "image": "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400&q=80",
+            "category": "Sneakers"
+        },
+        {
+            "id": "rp-002",
+            "name": "Jordan 5 Retro Wolf Grey (2026) GS",
+            "brand": "Air Jordan",
+            "price": 179,
+            "image": "https://images.unsplash.com/photo-1606107557195-0e29a4b5b4aa?w=400&q=80",
+            "category": "Sneakers"
+        },
+        {
+            "id": "rp-003",
+            "name": "Jordan 5 Retro White Metallic (2026) TD",
+            "brand": "Air Jordan",
+            "price": 135,
+            "image": "https://images.unsplash.com/photo-1608231387042-66d1773070a5?w=400&q=80",
+            "category": "Sneakers"
+        },
+        {
+            "id": "rp-004",
+            "name": "Jordan 5 Retro White Metallic (2026) GS",
+            "brand": "Air Jordan",
+            "price": 243,
+            "image": "https://images.unsplash.com/photo-1539185441755-769473a23570?w=400&q=80",
+            "category": "Sneakers"
+        },
+        {
+            "id": "rp-005",
+            "name": "Jordan 5 Retro Wolf Grey (2026) PS",
+            "brand": "Air Jordan",
+            "price": 137,
+            "image": "https://images.unsplash.com/photo-1600185365926-3a2ce3cdb9eb?w=400&q=80",
+            "category": "Sneakers"
+        }
+    ],
+    "recentlyViewed": [
+        {
+            "id": "rv-001",
+            "name": "Jordan 5 Retro Wolf Grey (2026)",
+            "brand": "Air Jordan",
+            "price": 230,
+            "image": "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400&q=80",
+            "category": "Sneakers"
+        },
+        {
+            "id": "rv-002",
+            "name": "Jordan 4 Retro Lakers",
+            "brand": "Air Jordan",
+            "price": 150,
+            "image": "https://images.unsplash.com/photo-1606107557195-0e29a4b5b4aa?w=400&q=80",
+            "category": "Sneakers"
+        },
+        {
+            "id": "rv-003",
+            "name": "Jordan 11 Retro Midnight Navy (PS)",
+            "brand": "Air Jordan",
+            "price": 118,
+            "image": "https://images.unsplash.com/photo-1608231387042-66d1773070a5?w=400&q=80",
+            "category": "Sneakers"
+        },
+        {
+            "id": "rv-004",
+            "name": "Jordan 11 Retro Low Bred (2025)",
+            "brand": "Air Jordan",
+            "price": 159,
+            "image": "https://images.unsplash.com/photo-1539185441755-769473a23570?w=400&q=80",
+            "category": "Sneakers"
+        },
+        {
+            "id": "rv-005",
+            "name": "Jordan 11 Retro Gamma Blue (2025)",
+            "brand": "Air Jordan",
+            "price": 247,
+            "image": "https://images.unsplash.com/photo-1600185365926-3a2ce3cdb9eb?w=400&q=80",
+            "category": "Sneakers"
+        }
+    ],
+    "details": {
+        "style": "DD0587-002",
+        "colorway": "Light Graphite/White/Wolf Grey",
+        "retailPrice": 220,
+        "releaseDate": "02/28/2026",
+        "accessories": "Two Lace Locks",
+        "description": "The Air Jordan 5 Retro Wolf Grey (2026) marks the return of a fan-favorite colorway that originally debuted in 2011. Dressed in light graphite, white, and wolf grey, the sneaker delivers a clean, understated look that has aged effortlessly over time.\n\nWhen the Wolf Grey colorway first released, it offered a softer, more versatile alternative to the bolder Jordan 5 designs of the era. That simplicity became its strength, allowing the silhouette to shine without relying on loud contrasts.\n\nThe 2026 retro stays true to that original vision, preserving the look that made it so popular while also including the iconic Nike Air logo on the heel."
+    },
+    "policies": {
+        "returnPolicy": {
+            "title": "Return Policy",
+            "badge": "14 Day Return",
+            "content": "Eligible for return within 14 days. No Fee Resale — Don't love it? Resell your purchase without any fees within 90 days of delivery."
+        },
+        "buyerPromise": {
+            "title": "Buyer Promise",
+            "content": "We stand behind every product sold on KickSneak. If we make a mistake, we'll make it right."
+        },
+        "ourProcess": {
+            "title": "Our Process",
+            "condition": "New",
+            "content": "This item is verified by KickSneak or Xpress ships directly from a KickSneak Verified Seller. Items verified by KickSneak are shipped from Sellers to our Verification Centers, where our global team of experts uses a rigorous, multi-step verification process."
+        }
+    },
+    "historicalData": {
+        "priceRange12m": "$201 - $525",
+        "priceRange3m": "$201 - $525",
+        "volatility": "3%",
+        "numberOfSales": 2534,
+        "pricePremium": "20%",
+        "avgSalePrice": 291
+    }
+}

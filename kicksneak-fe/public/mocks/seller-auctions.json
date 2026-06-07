@@ -1,0 +1,53 @@
+{
+    "active": [
+        {
+            "id": "auc_seller_001",
+            "productName": "Jordan 4 Retro",
+            "productImage": "/mocks/img/aj4-bred.png",
+            "colorway": "Bred Reimagined",
+            "size": "10.5",
+            "sizeSystem": "US",
+            "startPrice": 250,
+            "currentPrice": 387,
+            "reservePrice": 350,
+            "reserveMet": true,
+            "bidCount": 15,
+            "watchers": 67,
+            "endsAt": "2026-05-05T16:00:00Z",
+            "status": "live"
+        },
+        {
+            "id": "auc_seller_002",
+            "productName": "Air Force 1 Low",
+            "productImage": "/mocks/img/af1-white.png",
+            "colorway": "Triple White",
+            "size": "11",
+            "sizeSystem": "US",
+            "startPrice": 80,
+            "currentPrice": 95,
+            "reservePrice": null,
+            "reserveMet": true,
+            "bidCount": 4,
+            "watchers": 12,
+            "endsAt": "2026-05-08T10:00:00Z",
+            "status": "live"
+        }
+    ],
+    "ended": [
+        {
+            "id": "auc_seller_old_001",
+            "productName": "Dunk High",
+            "productImage": "/mocks/img/dunk-high-syracuse.png",
+            "colorway": "Syracuse",
+            "size": "10",
+            "sizeSystem": "US",
+            "startPrice": 100,
+            "finalPrice": 234,
+            "soldTo": "user_891",
+            "soldToUsername": "snkr_hunter",
+            "endedAt": "2026-04-28T15:00:00Z",
+            "bidCount": 19,
+            "status": "ended"
+        }
+    ]
+}

@@ -1,0 +1,98 @@
+{
+    "id": "auc_001",
+    "product": {
+        "id": "prod_001",
+        "name": "Air Jordan 1 Retro High OG",
+        "brand": "Nike",
+        "category": "Sneakers",
+        "colorway": "Chicago Lost & Found",
+        "size": "10",
+        "sizeSystem": "US",
+        "condition": "new",
+        "images": [
+            "https://picsum.photos/seed/aj1chicago/600/600",
+            "https://picsum.photos/seed/aj1chicago2/600/600",
+            "https://picsum.photos/seed/aj1chicago3/600/600"
+        ],
+        "retailPrice": 180,
+        "estimatedMarketValue": 520
+    },
+    "seller": {
+        "id": "seller_001",
+        "username": "SneakerVault",
+        "avatarUrl": "https://picsum.photos/seed/seller1/100/100",
+        "rating": 4.9,
+        "totalSales": 342,
+        "isVerified": true
+    },
+    "status": "live",
+    "startPrice": 200,
+    "currentPrice": 487,
+    "reservePrice": 400,
+    "reserveMet": true,
+    "bidCount": 23,
+    "uniqueBidders": 8,
+    "startsAt": "2026-05-01T10:00:00Z",
+    "endsAt": "2026-06-01T18:45:00Z",
+    "originalEndsAt": "2026-06-01T18:30:00Z",
+    "extensionCount": 1,
+    "highestBidderId": "user_042",
+    "highestBidderUsername": "k1ck5hunter",
+    "duration": "7d",
+    "views": 1204,
+    "watchers": 142,
+    "description": "Deadstock pair, original box included. Purchased directly from Nike SNKRS. Ships within 24h of auction end.",
+    "isWatching": false,
+    "recentBids": [
+        {
+            "id": "bid_023",
+            "auctionId": "auc_001",
+            "bidderId": "user_042",
+            "bidderUsername": "k1ck5hunter",
+            "amount": 487,
+            "placedAt": "2026-05-25T17:22:10Z",
+            "isAutoBid": false,
+            "triggeredExtension": false
+        },
+        {
+            "id": "bid_022",
+            "auctionId": "auc_001",
+            "bidderId": "user_019",
+            "bidderUsername": "solecollector99",
+            "amount": 465,
+            "placedAt": "2026-05-25T17:18:44Z",
+            "isAutoBid": true,
+            "triggeredExtension": false
+        },
+        {
+            "id": "bid_021",
+            "auctionId": "auc_001",
+            "bidderId": "user_007",
+            "bidderUsername": "hypebeasts_ro",
+            "amount": 450,
+            "placedAt": "2026-05-25T16:55:02Z",
+            "isAutoBid": false,
+            "triggeredExtension": false
+        },
+        {
+            "id": "bid_020",
+            "auctionId": "auc_001",
+            "bidderId": "user_042",
+            "bidderUsername": "k1ck5hunter",
+            "amount": 430,
+            "placedAt": "2026-05-25T16:30:19Z",
+            "isAutoBid": true,
+            "triggeredExtension": true
+        },
+        {
+            "id": "bid_019",
+            "auctionId": "auc_001",
+            "bidderId": "user_019",
+            "bidderUsername": "solecollector99",
+            "amount": 415,
+            "placedAt": "2026-05-25T16:28:55Z",
+            "isAutoBid": false,
+            "triggeredExtension": false
+        }
+    ]
+}

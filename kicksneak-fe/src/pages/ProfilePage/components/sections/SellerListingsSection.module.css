@@ -1,0 +1,202 @@
+.wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.title {
+    font-family: var(--font-display);
+    font-size: 1.2rem;
+    font-weight: 800;
+    color: var(--color-text);
+}
+
+.statsRow {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+}
+
+.statCard {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    gap: 4px !important;
+    padding: 16px !important;
+    text-align: center;
+}
+
+.statValue {
+    font-family: var(--font-display);
+    font-size: 1.3rem;
+    font-weight: 800;
+    color: var(--color-text);
+}
+
+.statLabel {
+    font-family: var(--font-body);
+    font-size: 0.7rem;
+    color: var(--color-text-muted);
+}
+
+.tableHeader {
+    display: grid;
+    grid-template-columns: 2fr 0.6fr 0.7fr 0.8fr 0.6fr 1fr;
+    gap: 8px;
+    padding: 10px 16px;
+    border-bottom: 1px solid var(--color-border);
+    font-family: var(--font-display);
+    font-size: 0.68rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--color-text-muted);
+}
+
+.tableRow {
+    display: grid;
+    grid-template-columns: 2fr 0.6fr 0.7fr 0.8fr 0.6fr 1fr;
+    gap: 8px;
+    padding: 10px 16px;
+    align-items: center;
+    border-bottom: 1px solid var(--color-border);
+    transition: background 0.15s ease;
+}
+
+.tableRow:last-child {
+    border-bottom: none;
+}
+
+.tableRow:hover {
+    background: rgba(64, 138, 113, 0.04);
+}
+
+.productCell {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-width: 0;
+}
+
+.listingImg {
+    width: 44px;
+    height: 44px;
+    border-radius: 8px;
+    object-fit: cover;
+    flex-shrink: 0;
+    background: var(--color-surface);
+}
+
+.listingName {
+    display: block;
+    font-family: var(--font-body);
+    font-size: 0.78rem;
+    font-weight: 500;
+    color: var(--color-text);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.auctionBtn {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    background: rgba(167,139,250,0.1);
+    border: 1px solid rgba(167,139,250,0.3);
+    border-radius: 8px;
+    padding: 4px 10px;
+    font-family: var(--font-display);
+    font-size: 0.72rem;
+    font-weight: 600;
+    color: #a78bfa;
+    cursor: pointer;
+    transition: all 0.15s ease;
+}
+
+.auctionBtn:hover {
+    background: rgba(167,139,250,0.2);
+    border-color: #a78bfa;
+}
+
+.listingBrand {
+    display: block;
+    font-family: var(--font-display);
+    font-size: 0.62rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+    letter-spacing: 0.06em;
+}
+
+.cell {
+    font-family: var(--font-body);
+    font-size: 0.8rem;
+    color: var(--color-text-muted);
+}
+
+.cellPrice {
+    font-family: var(--font-display);
+    font-size: 0.88rem;
+    font-weight: 700;
+    color: var(--color-text);
+}
+
+.viewsCell {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-family: var(--font-body);
+    font-size: 0.78rem;
+    color: var(--color-text-muted);
+}
+
+.actionsCell {
+    display: flex;
+    gap: 6px;
+}
+
+.editBtn {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    padding: 4px 10px;
+    border-radius: 8px;
+    border: 1px solid var(--color-border);
+    background: var(--color-surface);
+    color: var(--color-text-muted);
+    font-family: var(--font-display);
+    font-size: 0.68rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.15s ease;
+}
+
+.editBtn:hover {
+    border-color: var(--color-accent);
+    color: var(--color-accent);
+}
+
+@media (max-width: 768px) {
+    .statsRow {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .tableHeader,
+    .tableRow {
+        grid-template-columns: 1fr 0.6fr 0.7fr 0.8fr;
+    }
+
+    .tableHeader> :nth-child(5),
+    .tableHeader> :nth-child(6),
+    .tableRow> :nth-child(5),
+    .tableRow> :nth-child(6) {
+        display: none;
+    }
+}

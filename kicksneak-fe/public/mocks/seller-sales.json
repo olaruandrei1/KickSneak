@@ -1,0 +1,63 @@
+{
+    "totalRevenue": 3240,
+    "totalSales": 23,
+    "avgOrderValue": 140.87,
+    "chart": [
+        {
+            "month": "Nov",
+            "revenue": 280,
+            "sales": 2
+        },
+        {
+            "month": "Dec",
+            "revenue": 520,
+            "sales": 4
+        },
+        {
+            "month": "Jan",
+            "revenue": 195,
+            "sales": 1
+        },
+        {
+            "month": "Feb",
+            "revenue": 650,
+            "sales": 5
+        },
+        {
+            "month": "Mar",
+            "revenue": 840,
+            "sales": 6
+        },
+        {
+            "month": "Apr",
+            "revenue": 755,
+            "sales": 5
+        }
+    ],
+    "recentSales": [
+        {
+            "id": "ss-001",
+            "buyer": "M***u",
+            "item": "adidas Samba OG",
+            "price": 130,
+            "date": "2026-04-18",
+            "status": "completed"
+        },
+        {
+            "id": "ss-002",
+            "buyer": "I***n",
+            "item": "Nike Air Force 1",
+            "price": 100,
+            "date": "2026-04-10",
+            "status": "completed"
+        },
+        {
+            "id": "ss-003",
+            "buyer": "A***a",
+            "item": "Jordan 3 White Cement",
+            "price": 325,
+            "date": "2026-03-28",
+            "status": "completed"
+        }
+    ]
+}

@@ -1,0 +1,52 @@
+@import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap');
+
+:root {
+  --font-display: 'Syne', sans-serif;
+  --font-body: 'DM Sans', sans-serif;
+  --transition-theme: background-color 0.4s ease, color 0.4s ease, border-color 0.4s ease;
+}
+
+[data-theme='dark'] {
+  --color-bg:        #091413;
+  --color-primary:   #285A48;
+  --color-secondary: #408A71;
+  --color-accent:    #B0E4CC;
+  --color-text:      #B0E4CC;
+  --color-text-muted:#408A71;
+  --color-surface:   rgba(40, 90, 72, 0.15);
+  --color-border:    rgba(176, 228, 204, 0.12);
+  --color-shadow:    rgba(0, 0, 0, 0.6);
+  --color-overlay:   rgba(9, 20, 19, 0.82);
+}
+
+[data-theme='light'] {
+  --color-bg:        #FFF2F2;
+  --color-primary:   #7286D3;
+  --color-secondary: #8EA7E9;
+  --color-accent:    #7286D3;
+  --color-text:      #3a3a5c;
+  --color-text-muted:#8EA7E9;
+  --color-surface:   rgba(142, 167, 233, 0.12);
+  --color-border:    rgba(114, 134, 211, 0.2);
+  --color-shadow:    rgba(114, 134, 211, 0.25);
+  --color-overlay:   rgba(255, 242, 242, 0.82);
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body, #root {
+  height: 100%;
+  width: 100%;
+}
+
+body {
+  font-family: var(--font-body);
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  transition: var(--transition-theme);
+  -webkit-font-smoothing: antialiased;
+}

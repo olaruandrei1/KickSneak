@@ -1,0 +1,185 @@
+.page {
+    min-height: 100vh;
+    background: var(--color-bg);
+    padding: 40px 0 80px;
+}
+
+.inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 32px;
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+}
+
+.header { display: flex; flex-direction: column; gap: 6px; }
+
+.title {
+    font-family: var(--font-display);
+    font-size: 2rem;
+    font-weight: 800;
+    color: var(--color-text);
+}
+
+.subtitle {
+    font-family: var(--font-body);
+    font-size: 0.88rem;
+    color: var(--color-text-muted);
+}
+
+/* Search */
+.searchWrap {
+    position: relative;
+    max-width: 480px;
+}
+
+.searchIcon {
+    position: absolute;
+    left: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 18px; height: 18px;
+    color: var(--color-text-muted);
+}
+
+.searchInput {
+    width: 100%;
+    padding: 12px 40px 12px 42px;
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: 100px;
+    font-family: var(--font-body);
+    font-size: 0.88rem;
+    color: var(--color-text);
+    outline: none;
+    transition: border-color 0.15s ease;
+    box-sizing: border-box;
+}
+
+.searchInput:focus { border-color: var(--color-accent); }
+.searchInput::placeholder { color: var(--color-text-muted); }
+
+.clearSearch {
+    position: absolute;
+    right: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    color: var(--color-text-muted);
+    cursor: pointer;
+    font-size: 0.75rem;
+}
+
+/* Section */
+.section { display: flex; flex-direction: column; gap: 16px; }
+
+.sectionTitle {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-family: var(--font-display);
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--color-text);
+}
+
+.sectionDot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: var(--color-secondary);
+    flex-shrink: 0;
+}
+
+/* Grid */
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 16px;
+}
+
+/* Brand card */
+.brandCard {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    padding: 20px 16px;
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: 16px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-align: center;
+}
+
+.brandCard:hover {
+    border-color: var(--color-accent);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px var(--color-shadow);
+}
+
+.logoWrap {
+    width: 80px; height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+.logo {
+    max-width: 80px;
+    max-height: 40px;
+    object-fit: contain;
+    filter: var(--logo-filter, none);
+}
+
+[data-theme='dark'] .logo {
+    filter: brightness(0) invert(1) opacity(0.85);
+}
+
+.logoFallback {
+    display: none;
+}
+
+[data-theme='dark'] .logo {
+    filter: brightness(0) invert(1) opacity(0.7);
+}
+
+[data-theme='light'] .logo {
+    filter: none;
+}
+
+.brandInfo {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.brandName {
+    font-family: var(--font-display);
+    font-size: 0.82rem;
+    font-weight: 700;
+    color: var(--color-text);
+}
+
+.brandCount {
+    font-family: var(--font-body);
+    font-size: 0.7rem;
+    color: var(--color-text-muted);
+}
+
+.empty {
+    font-family: var(--font-body);
+    font-size: 0.88rem;
+    color: var(--color-text-muted);
+    text-align: center;
+    padding: 40px;
+}
+
+@media (max-width: 768px) {
+    .inner { padding: 0 16px; }
+    .grid { grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 12px; }
+    .title { font-size: 1.5rem; }
+}

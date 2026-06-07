@@ -1,0 +1,102 @@
+.wrapper { display: flex; flex-direction: column; gap: 16px; }
+
+.title {
+    font-family: var(--font-display);
+    font-size: 1.2rem;
+    font-weight: 800;
+    color: var(--color-text);
+}
+
+.list { display: flex; flex-direction: column; gap: 10px; }
+
+.card {
+    display: flex !important;
+    align-items: center !important;
+    gap: 14px !important;
+    cursor: pointer;
+    transition: border-color 0.15s ease;
+}
+
+.card:hover { border-color: var(--color-accent) !important; }
+
+.img {
+    width: 64px; height: 64px;
+    border-radius: 10px;
+    object-fit: contain;
+    background: var(--color-primary);
+    padding: 4px;
+    flex-shrink: 0;
+}
+
+.info { flex: 1; display: flex; flex-direction: column; gap: 2px; }
+
+.brand {
+    font-family: var(--font-display);
+    font-size: 0.65rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--color-text-muted);
+}
+
+.name {
+    font-family: var(--font-display);
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--color-text);
+}
+
+.meta {
+    font-family: var(--font-body);
+    font-size: 0.75rem;
+    color: var(--color-text-muted);
+}
+
+.right {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 4px;
+}
+
+.price {
+    font-family: var(--font-display);
+    font-size: 1rem;
+    font-weight: 800;
+    color: var(--color-text);
+}
+
+.bids {
+    font-family: var(--font-body);
+    font-size: 0.72rem;
+    color: var(--color-text-muted);
+}
+
+.empty {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    padding: 32px;
+    font-size: 2rem;
+    color: var(--color-text-muted);
+}
+
+.empty p {
+    font-family: var(--font-body);
+    font-size: 0.88rem;
+    color: var(--color-text-muted);
+    margin: 0;
+}
+
+.browseBtn {
+    background: var(--color-secondary);
+    color: var(--color-bg);
+    border: none;
+    border-radius: 100px;
+    padding: 10px 24px;
+    font-family: var(--font-display);
+    font-size: 0.82rem;
+    font-weight: 700;
+    cursor: pointer;
+}

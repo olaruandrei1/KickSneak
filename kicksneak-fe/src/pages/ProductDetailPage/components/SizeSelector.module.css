@@ -1,0 +1,137 @@
+.wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+/* System toggle */
+.systems {
+    display: flex;
+    gap: 4px;
+    flex-wrap: wrap;
+}
+
+.sysBtn {
+    padding: 5px 12px;
+    border-radius: 100px;
+    border: 1px solid var(--color-border);
+    background: transparent;
+    color: var(--color-text-muted);
+    font-family: var(--font-body);
+    font-size: 0.75rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.15s ease;
+}
+
+.sysBtn:hover {
+    border-color: var(--color-secondary);
+    color: var(--color-text);
+}
+
+.sysBtnActive {
+    background: var(--color-text) !important;
+    color: var(--color-bg) !important;
+    border-color: var(--color-text) !important;
+    font-weight: 600;
+}
+
+/* Grid */
+.grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+    max-height: 280px;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: var(--color-border) transparent;
+    padding-right: 4px;
+}
+
+.sizeBtn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 2px;
+    padding: 10px 6px;
+    border-radius: 10px;
+    border: 1px solid var(--color-border);
+    background: var(--color-surface);
+    cursor: pointer;
+    transition: all 0.15s ease;
+    min-height: 56px;
+}
+
+.sizeBtn:hover {
+    border-color: var(--color-secondary);
+    background: rgba(64, 138, 113, 0.08);
+}
+
+.sizeBtnActive {
+    border-color: var(--color-accent) !important;
+    background: rgba(64, 138, 113, 0.15) !important;
+}
+
+.sizeBid {
+    opacity: 0.6;
+}
+
+.sizeLabel {
+    font-family: var(--font-body);
+    font-size: 0.78rem;
+    color: var(--color-text);
+    font-weight: 500;
+}
+
+.sizePriceWrap {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+}
+
+.sizePrice {
+    font-family: var(--font-display);
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: var(--color-accent);
+    transition: color 0.3s ease;
+}
+
+@keyframes pulseUp {
+    0% {
+        color: var(--color-accent);
+    }
+
+    30% {
+        color: #22c55e;
+        text-shadow: 0 0 8px rgba(34, 197, 94, 0.6);
+    }
+
+    100% {
+        color: var(--color-accent);
+    }
+}
+
+@keyframes pulseDown {
+    0% {
+        color: var(--color-accent);
+    }
+
+    30% {
+        color: #ef4444;
+        text-shadow: 0 0 8px rgba(239, 68, 68, 0.6);
+    }
+
+    100% {
+        color: var(--color-accent);
+    }
+}
+
+.pulseUp {
+    animation: pulseUp 1s ease forwards;
+}
+
+.pulseDown {
+    animation: pulseDown 1s ease forwards;
+}

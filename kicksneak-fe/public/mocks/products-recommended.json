@@ -1,0 +1,71 @@
+{
+  "title": "Recommended For You",
+  "items": [
+    {
+      "id": "rec-001",
+      "name": "Nike Air Max 1 Anniversary",
+      "brand": "Nike",
+      "price": 175,
+      "image": "https://images.unsplash.com/photo-1514989940723-e8e51635b782?w=400&q=80",
+      "category": "Sneakers",
+      "sold": 3421,
+      "isNew": false,
+      "isFavorite": false
+    },
+    {
+      "id": "rec-002",
+      "name": "Jordan 3 Retro White Cement",
+      "brand": "Air Jordan",
+      "price": 325,
+      "image": "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400&q=80",
+      "category": "Sneakers",
+      "sold": 2876,
+      "isNew": false,
+      "isFavorite": true
+    },
+    {
+      "id": "rec-003",
+      "name": "adidas Ultra Boost 22 Black",
+      "brand": "adidas",
+      "price": 145,
+      "image": "https://images.unsplash.com/photo-1608231387042-66d1773070a5?w=400&q=80",
+      "category": "Sneakers",
+      "sold": 1987,
+      "isNew": false,
+      "isFavorite": false
+    },
+    {
+      "id": "rec-004",
+      "name": "Rick Owens DRKSHDW Ramones",
+      "brand": "Rick Owens",
+      "price": 620,
+      "image": "https://images.unsplash.com/photo-1597045566677-8cf032ed6634?w=400&q=80",
+      "category": "Sneakers",
+      "sold": 543,
+      "isNew": false,
+      "isFavorite": false
+    },
+    {
+      "id": "rec-005",
+      "name": "Converse Chuck 70 Parchment",
+      "brand": "Converse",
+      "price": 85,
+      "image": "https://images.unsplash.com/photo-1606107557195-0e29a4b5b4aa?w=400&q=80",
+      "category": "Sneakers",
+      "sold": 4321,
+      "isNew": false,
+      "isFavorite": false
+    },
+    {
+      "id": "rec-006",
+      "name": "Salomon XT-6 Black Phantom",
+      "brand": "Salomon",
+      "price": 200,
+      "image": "https://images.unsplash.com/photo-1556906781-9a412961a28c?w=400&q=80",
+      "category": "Sneakers",
+      "sold": 1654,
+      "isNew": true,
+      "isFavorite": false
+    }
+  ]
+}

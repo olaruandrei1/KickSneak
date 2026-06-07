@@ -1,0 +1,182 @@
+.sidebar {
+    width: 240px;
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    background: var(--color-bg);
+    border-right: 1px solid var(--color-border);
+    min-height: calc(100vh - 120px);
+    position: sticky;
+    top: 120px;
+    max-height: calc(100vh - 120px);
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: var(--color-border) transparent;
+    padding-bottom: 40px;
+}
+
+/* Toggle rows */
+.toggleRow {
+    padding: 10px 16px;
+}
+
+.toggleLabel {
+    font-family: var(--font-body);
+    font-size: 0.85rem;
+    color: var(--color-text);
+    display: flex;
+    align-items: center;
+}
+
+/* Section headers */
+.sectionHeader {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 13px 16px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    transition: background 0.15s ease;
+}
+
+.sectionHeader:hover {
+    background: var(--color-surface);
+}
+
+.sectionLabel {
+    font-family: var(--font-display);
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    color: var(--color-text);
+}
+
+/* Category option list */
+.optionList {
+    padding: 4px 16px 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.optionItem {
+    background: none;
+    border: none;
+    font-family: var(--font-body);
+    font-size: 0.88rem;
+    color: var(--color-text);
+    cursor: pointer;
+    text-align: left;
+    padding: 6px 8px;
+    border-radius: 8px;
+    transition: background 0.15s ease, color 0.15s ease;
+}
+
+.optionItem:hover {
+    background: var(--color-surface);
+    color: var(--color-accent);
+}
+
+.optionActive {
+    color: var(--color-accent) !important;
+    font-weight: 600;
+}
+
+/* Checkbox list */
+.checkList {
+    padding: 4px 8px 12px;
+    display: flex;
+    flex-direction: column;
+}
+
+.scrollable {
+    max-height: 220px;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: var(--color-border) transparent;
+}
+
+.checkLabel {
+    font-family: var(--font-body);
+    font-size: 0.85rem;
+    color: var(--color-text);
+}
+
+/* Color grid */
+.colorGrid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
+    padding: 8px 16px 16px;
+}
+
+.colorItem {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 4px;
+    border-radius: 8px;
+    transition: background 0.15s ease;
+}
+
+.colorItem:hover {
+    background: var(--color-surface);
+}
+
+.colorDot {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    display: block;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.colorActive .colorDot {
+    box-shadow: 0 0 0 3px var(--color-accent);
+    transform: scale(1.1);
+}
+
+.colorLabel {
+    font-size: 0.65rem;
+    font-family: var(--font-body);
+    color: var(--color-text-muted);
+}
+
+/* Price */
+.priceWrap {
+    padding: 8px 20px 16px;
+}
+
+.priceLabels {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 4px;
+}
+
+.priceTag {
+    font-size: 0.75rem;
+    font-family: var(--font-display);
+    font-weight: 600;
+    color: var(--color-text);
+    padding: 3px 8px;
+    border: 1px solid var(--color-border);
+    border-radius: 6px;
+    background: var(--color-surface);
+}
+
+@media (max-width: 900px) {
+    .sidebar {
+        width: 100%;
+        position: static;
+        max-height: none;
+        border-right: none;
+        border-bottom: 1px solid var(--color-border);
+        min-height: unset;
+    }
+}

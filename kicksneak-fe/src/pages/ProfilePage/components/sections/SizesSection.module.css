@@ -1,0 +1,89 @@
+.wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.title {
+    font-family: var(--font-display);
+    font-size: 1.2rem;
+    font-weight: 800;
+    color: var(--color-text);
+}
+
+.systemToggle {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.systemLabel {
+    font-family: var(--font-body);
+    font-size: 0.85rem;
+    color: var(--color-text-muted);
+}
+
+.sectionSubtitle {
+    font-family: var(--font-display);
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: var(--color-text);
+    margin-bottom: 16px;
+}
+
+.sizeGroup {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 16px;
+}
+
+.sizeGroup:last-child {
+    margin-bottom: 0;
+}
+
+.sizeGroupLabel {
+    font-family: var(--font-display);
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--color-text-muted);
+}
+
+.sizeOptions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+
+.sizeBtn {
+    padding: 6px 12px;
+    border-radius: 8px;
+    border: 1px solid var(--color-border);
+    background: var(--color-surface);
+    color: var(--color-text);
+    font-family: var(--font-body);
+    font-size: 0.78rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.15s ease;
+}
+
+.sizeBtn:hover {
+    border-color: var(--color-secondary);
+    color: var(--color-accent);
+}
+
+.sizeBtnActive {
+    background: var(--color-primary) !important;
+    border-color: var(--color-accent) !important;
+    color: var(--color-accent) !important;
+    font-weight: 700;
+}

@@ -1,0 +1,22 @@
+{
+  "items": [
+    {
+      "id": "new-003",
+      "name": "adidas Gazelle Indoor Scarlet",
+      "brand": "adidas",
+      "price": 110,
+      "image": "https://images.unsplash.com/photo-1608231387042-66d1773070a5?w=400&q=80",
+      "category": "Sneakers",
+      "isFavorite": true
+    },
+    {
+      "id": "trend-001",
+      "name": "adidas Samba OG Core Black",
+      "brand": "adidas",
+      "price": 130,
+      "image": "https://images.unsplash.com/photo-1608231387042-66d1773070a5?w=400&q=80",
+      "category": "Sneakers",
+      "isFavorite": true
+    }
+  ]
+}
