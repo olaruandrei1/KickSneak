@@ -74,9 +74,9 @@ func (r *ChatRepository) CreateSession(ctx context.Context, userID string, chatT
 func (r *ChatRepository) GetSession(ctx context.Context, sessionID uuid.UUID) (*domain.ChatSession, error) {
 	var s domain.ChatSession
 	err := r.pool.QueryRow(ctx,
-		`SELECT id, user_id, title, status, created_at, closed_at FROM chat_sessions WHERE id = $1`,
+		`SELECT id, user_id, title, status, created_at, closed_at, chat_type FROM chat_sessions WHERE id = $1`,
 		sessionID,
-	).Scan(&s.ID, &s.UserID, &s.Title, &s.Status, &s.CreatedAt, &s.ClosedAt)
+	).Scan(&s.ID, &s.UserID, &s.Title, &s.Status, &s.CreatedAt, &s.ClosedAt, &s.ChatType)
 	if err != nil {
 		return nil, fmt.Errorf("get session: %w", err)
 	}
@@ -85,7 +85,7 @@ func (r *ChatRepository) GetSession(ctx context.Context, sessionID uuid.UUID) (*
 
 func (r *ChatRepository) GetUserSessions(ctx context.Context, userID string, chatType int) ([]domain.ChatSession, error) {
 	rows, err := r.pool.Query(ctx,
-		`SELECT id, user_id, chat_type, title, status, created_at, closed_at 
+		`SELECT id, user_id, chat_type, title, status, created_at, closed_at
 		 FROM chat_sessions WHERE user_id = $1 AND chat_type = $2 ORDER BY created_at DESC LIMIT 50`,
 		userID, chatType,
 	)
@@ -97,7 +97,7 @@ func (r *ChatRepository) GetUserSessions(ctx context.Context, userID string, cha
 	var sessions []domain.ChatSession
 	for rows.Next() {
 		var s domain.ChatSession
-		if err := rows.Scan(&s.ID, &s.UserID, &s.Title, &s.Status, &s.CreatedAt, &s.ClosedAt); err != nil {
+		if err := rows.Scan(&s.ID, &s.UserID, &s.ChatType, &s.Title, &s.Status, &s.CreatedAt, &s.ClosedAt); err != nil {
 			return nil, fmt.Errorf("scan session: %w", err)
 		}
 		sessions = append(sessions, s)

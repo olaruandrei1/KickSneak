@@ -1,7 +1,7 @@
 ﻿using KickSneak.Application.Contracts.Persistence;
+using KickSneak.Domain.Common;
 using KickSneak.Domain.ConfigurableObjects;
 using KickSneak.Persistence.Context;
-using KickSneak.Persistence.Interceptors;
 using KickSneak.Persistence.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
@@ -15,7 +15,7 @@ public static class RegisterPersistenceDependencies
     public static IServiceCollection AddPersistenceDependencies(this IServiceCollection services, IConfiguration configuration)
     {
         services.AddHttpContextAccessor();
-        services.AddSingleton<RlsSessionInterceptor>();
+        services.AddSingleton<RlsContext>();
 
         ConnectionStrings connStrings = new ();
 
@@ -26,7 +26,6 @@ public static class RegisterPersistenceDependencies
         services.AddDbContext<AppDbContext>((sp, options) =>
             options.UseNpgsql(connStrings.DatabaseConnection, npgsql => npgsql.EnableRetryOnFailure(3, TimeSpan.FromSeconds(5), null))
                    .ConfigureWarnings(w => w.Ignore(RelationalEventId.PendingModelChangesWarning))
-                   .AddInterceptors(sp.GetRequiredService<RlsSessionInterceptor>())
         );
 
         services.AddScoped(typeof(IRepository<>), typeof(Repository<>));

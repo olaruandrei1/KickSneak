@@ -12,8 +12,11 @@ namespace KickSneak.WebApi.Endpoints;
 
 public static class SeedEndpoints
 {
-    private const string OllamaUrl = "http://localhost:11434/api/generate";
-    private const string OllamaModel = "qwen2.5:7b";
+    private static readonly string OllamaUrl =
+        $"{Environment.GetEnvironmentVariable("OLLAMA_URL") ?? "http://localhost:11434"}/api/generate";
+
+    private static readonly string OllamaModel =
+        Environment.GetEnvironmentVariable("OLLAMA_MODEL") ?? "qwen2.5:7b";
 
     private static readonly JsonSerializerOptions JsonOpts = new()
     {

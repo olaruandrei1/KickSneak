@@ -162,89 +162,78 @@ GRANT USAGE, SELECT ON ALL SEQUENCES IN SCHEMA public TO ks_chat_service;
 
 -- ----------------------------------------------
 -- 10. RLS POLICIES
+-- ENABLE without FORCE = owner (ks_owner) bypasses RLS
+-- Non-owner roles (ks_user, ks_seller via SET LOCAL ROLE) 
+-- are subject to policies on writes
 -- ----------------------------------------------
 
 ALTER TABLE user_addresses ENABLE ROW LEVEL SECURITY;
-ALTER TABLE user_addresses FORCE ROW LEVEL SECURITY;
 CREATE POLICY user_addresses_own ON user_addresses
-    USING ("UserId"::text = current_setting('app.current_user_id', true) OR current_user = 'ks_admin');
+    USING ("UserId"::text = current_setting('app.current_user_id', true) OR current_user IN ('ks_owner', 'ks_admin'));
 
 ALTER TABLE user_contacts ENABLE ROW LEVEL SECURITY;
-ALTER TABLE user_contacts FORCE ROW LEVEL SECURITY;
 CREATE POLICY user_contacts_own ON user_contacts
-    USING ("UserId"::text = current_setting('app.current_user_id', true) OR current_user = 'ks_admin');
+    USING ("UserId"::text = current_setting('app.current_user_id', true) OR current_user IN ('ks_owner', 'ks_admin'));
 
 ALTER TABLE user_cart ENABLE ROW LEVEL SECURITY;
-ALTER TABLE user_cart FORCE ROW LEVEL SECURITY;
 CREATE POLICY user_cart_own ON user_cart
-    USING ("UserId"::text = current_setting('app.current_user_id', true) OR current_user = 'ks_admin');
+    USING ("UserId"::text = current_setting('app.current_user_id', true) OR current_user IN ('ks_owner', 'ks_admin'));
 
 ALTER TABLE user_favorites ENABLE ROW LEVEL SECURITY;
-ALTER TABLE user_favorites FORCE ROW LEVEL SECURITY;
 CREATE POLICY user_favorites_own ON user_favorites
-    USING ("UserId"::text = current_setting('app.current_user_id', true) OR current_user = 'ks_admin');
+    USING ("UserId"::text = current_setting('app.current_user_id', true) OR current_user IN ('ks_owner', 'ks_admin'));
 
 ALTER TABLE "UserSizePreference" ENABLE ROW LEVEL SECURITY;
-ALTER TABLE "UserSizePreference" FORCE ROW LEVEL SECURITY;
 CREATE POLICY user_size_pref_own ON "UserSizePreference"
-    USING ("UserId"::text = current_setting('app.current_user_id', true) OR current_user = 'ks_admin');
+    USING ("UserId"::text = current_setting('app.current_user_id', true) OR current_user IN ('ks_owner', 'ks_admin'));
 
 ALTER TABLE orders ENABLE ROW LEVEL SECURITY;
-ALTER TABLE orders FORCE ROW LEVEL SECURITY;
 CREATE POLICY orders_own ON orders
     USING ("BuyerId"::text = current_setting('app.current_user_id', true)
-           OR current_user IN ('ks_seller', 'ks_admin', 'ks_chat_service'));
+           OR current_user IN ('ks_owner', 'ks_seller', 'ks_admin', 'ks_chat_service'));
 
 ALTER TABLE returns ENABLE ROW LEVEL SECURITY;
-ALTER TABLE returns FORCE ROW LEVEL SECURITY;
 CREATE POLICY returns_own ON returns
     USING ("UserId"::text = current_setting('app.current_user_id', true)
-           OR current_user IN ('ks_seller', 'ks_admin', 'ks_chat_service'));
+           OR current_user IN ('ks_owner', 'ks_seller', 'ks_admin', 'ks_chat_service'));
 
 ALTER TABLE notifications ENABLE ROW LEVEL SECURITY;
-ALTER TABLE notifications FORCE ROW LEVEL SECURITY;
 CREATE POLICY notifications_own ON notifications
-    USING ("UserId"::text = current_setting('app.current_user_id', true) OR current_user = 'ks_admin');
+    USING ("UserId"::text = current_setting('app.current_user_id', true) OR current_user IN ('ks_owner', 'ks_admin'));
 
 ALTER TABLE bids ENABLE ROW LEVEL SECURITY;
-ALTER TABLE bids FORCE ROW LEVEL SECURITY;
 CREATE POLICY bids_read ON bids FOR SELECT USING (true);
 CREATE POLICY bids_insert ON bids FOR INSERT
-    WITH CHECK ("BidderId"::text = current_setting('app.current_user_id', true) OR current_user = 'ks_admin');
+    WITH CHECK ("BidderId"::text = current_setting('app.current_user_id', true) OR current_user IN ('ks_owner', 'ks_admin'));
 CREATE POLICY bids_update ON bids FOR UPDATE
-    USING ("BidderId"::text = current_setting('app.current_user_id', true) OR current_user = 'ks_admin');
+    USING ("BidderId"::text = current_setting('app.current_user_id', true) OR current_user IN ('ks_owner', 'ks_admin'));
 
 ALTER TABLE auto_bids ENABLE ROW LEVEL SECURITY;
-ALTER TABLE auto_bids FORCE ROW LEVEL SECURITY;
 CREATE POLICY auto_bids_own ON auto_bids
-    USING ("UserId"::text = current_setting('app.current_user_id', true) OR current_user = 'ks_admin');
+    USING ("UserId"::text = current_setting('app.current_user_id', true) OR current_user IN ('ks_owner', 'ks_admin'));
 
 ALTER TABLE stock_items ENABLE ROW LEVEL SECURITY;
-ALTER TABLE stock_items FORCE ROW LEVEL SECURITY;
 CREATE POLICY stock_items_read ON stock_items FOR SELECT USING (true);
 CREATE POLICY stock_items_insert ON stock_items FOR INSERT
-    WITH CHECK ("SellerId"::text = current_setting('app.current_user_id', true) OR current_user = 'ks_admin');
+    WITH CHECK ("SellerId"::text = current_setting('app.current_user_id', true) OR current_user IN ('ks_owner', 'ks_admin'));
 CREATE POLICY stock_items_update ON stock_items FOR UPDATE
-    USING ("SellerId"::text = current_setting('app.current_user_id', true) OR current_user = 'ks_admin');
+    USING ("SellerId"::text = current_setting('app.current_user_id', true) OR current_user IN ('ks_owner', 'ks_admin'));
 
 ALTER TABLE used_items ENABLE ROW LEVEL SECURITY;
-ALTER TABLE used_items FORCE ROW LEVEL SECURITY;
 CREATE POLICY used_items_read ON used_items FOR SELECT USING (true);
 CREATE POLICY used_items_insert ON used_items FOR INSERT
-    WITH CHECK ("SellerId"::text = current_setting('app.current_user_id', true) OR current_user = 'ks_admin');
+    WITH CHECK ("SellerId"::text = current_setting('app.current_user_id', true) OR current_user IN ('ks_owner', 'ks_admin'));
 CREATE POLICY used_items_update ON used_items FOR UPDATE
-    USING ("SellerId"::text = current_setting('app.current_user_id', true) OR current_user = 'ks_admin');
+    USING ("SellerId"::text = current_setting('app.current_user_id', true) OR current_user IN ('ks_owner', 'ks_admin'));
 
 ALTER TABLE webpush_subscriptions ENABLE ROW LEVEL SECURITY;
-ALTER TABLE webpush_subscriptions FORCE ROW LEVEL SECURITY;
 CREATE POLICY webpush_own ON webpush_subscriptions
-    USING ("UserId"::text = current_setting('app.current_user_id', true) OR current_user = 'ks_admin');
+    USING ("UserId"::text = current_setting('app.current_user_id', true) OR current_user IN ('ks_owner', 'ks_admin'));
 
 ALTER TABLE reviews ENABLE ROW LEVEL SECURITY;
-ALTER TABLE reviews FORCE ROW LEVEL SECURITY;
 CREATE POLICY reviews_read ON reviews FOR SELECT USING (true);
 CREATE POLICY reviews_insert ON reviews FOR INSERT
-    WITH CHECK ("BuyerId"::text = current_setting('app.current_user_id', true) OR current_user = 'ks_admin');
+    WITH CHECK ("BuyerId"::text = current_setting('app.current_user_id', true) OR current_user IN ('ks_owner', 'ks_admin'));
 
 -- ----------------------------------------------
 -- 11. LOCK DOWN EF MIGRATIONS
