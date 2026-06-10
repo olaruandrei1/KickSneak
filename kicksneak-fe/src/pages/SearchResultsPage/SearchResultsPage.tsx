@@ -3,7 +3,6 @@ import { useSearchParams, useNavigate } from 'react-router-dom';
 import { Typography, Drawer, Button, IconButton, Chip, Box } from '@mui/material';
 import { Close, TuneOutlined } from '@mui/icons-material';
 import { httpClient } from '../../services/axiosService';
-import { ApiRoutes } from '../../services/apiRoutes';
 import { localStorageService } from '../../services/localStorageService';
 import type { ProductItem } from '../../types/product';
 import type { FilterState } from '../../types/filters';
@@ -14,9 +13,34 @@ import { ProductGrid } from '../../components/molecules/ProductGrid/ProductGrid'
 import { FiltersSidebar } from './components/FiltersSidebar';
 import { Spinner } from '../../components/atoms/Spinner/Spinner';
 import { useResponsiveStore } from '../../services/responsiveObserver';
+import { Switch, FormControlLabel } from '@mui/material';
+import { AutoAwesome } from '@mui/icons-material';
+import { aiSearchService } from '../../services/aiSearchService';
+import type { SearchHit } from '../../services/searchHubService';
 import styles from './SearchResultsPage.module.css';
+import { useAuthStore } from '../../store/authStore';
 
 const PAGE_SIZE = 12;
+
+interface ElasticSearchResponse {
+    items: SearchHit[];
+    total: number;
+    tookMs: number;
+}
+
+const hitToProductItem = (hit: SearchHit): ProductItem => ({
+    id: hit.id,
+    name: hit.title,
+    brand: hit.brand,
+    category: hit.category,
+    price: hit.price,
+    image: hit.image,
+    sold: hit.sold,
+    isNew: hit.isNew,
+    isFavorite: false,
+});
+
+// ── AI Recommendations (client-side cosine similarity on viewed history) ──
 
 type FeatureVector = Record<string, number>;
 
@@ -67,7 +91,7 @@ const getRecommendations = (
         .map((r) => r.item);
 };
 
-// ── Helpers ──────────────────────────────────────────────────────────────────
+// ── Helpers ──
 
 const filtersFromParams = (sp: URLSearchParams): FilterState => ({
     ...DEFAULT_FILTERS,
@@ -110,6 +134,8 @@ export const SearchResultsPage = () => {
     const [filters, setFilters] = useState<FilterState>(() => filtersFromParams(searchParams));
     const [sort, setSort] = useState<SortOption>(sortParam);
     const [drawerOpen, setDrawerOpen] = useState(false);
+    const [aiMode, setAiMode] = useState(false);
+    const [aiLoading, setAiLoading] = useState(false);
 
     const observerRef = useRef<IntersectionObserver | null>(null);
     const sentinelRef = useRef<HTMLDivElement>(null);
@@ -120,7 +146,7 @@ export const SearchResultsPage = () => {
         []
     );
 
-    // ── Sync filters + sort din URL (single source of truth) ──
+    // ── Sync filters + sort din URL ──
     useEffect(() => {
         setFilters(filtersFromParams(searchParams));
         setSort(sortParam);
@@ -128,50 +154,110 @@ export const SearchResultsPage = () => {
         setHasMore(true);
     }, [paramsKey]);
 
-    // ── Fetch data când se schimbă query ──
-    const fetchAll = useCallback(async () => {
+    // ── Fetch from Elastic ──
+    const fetchFromElastic = useCallback(async () => {
+        if (!query.trim()) {
+            setAllItems([]);
+            return;
+        }
+
         setLoading(true);
         try {
-            const res = await httpClient.get<{ items: ProductItem[] } | ProductItem[]>(
-                ApiRoutes.searchProducts(query)
+            const params = new URLSearchParams({ q: query, size: '50' });
+
+            // Pass filters to Elastic for server-side filtering
+            const currentFilters = filtersFromParams(searchParams);
+            if (currentFilters.brands.length === 1)
+                params.set('brand', currentFilters.brands[0]);
+            if (currentFilters.categories.length === 1)
+                params.set('category', currentFilters.categories[0]);
+            if (currentFilters.genders.length === 1)
+                params.set('gender', currentFilters.genders[0]);
+            if (currentFilters.priceMin > 0)
+                params.set('minPrice', String(currentFilters.priceMin));
+            if (currentFilters.priceMax < 10000)
+                params.set('maxPrice', String(currentFilters.priceMax));
+
+            const res = await httpClient.get<ElasticSearchResponse>(
+                `/api/search?${params.toString()}`
             );
-            const raw = Array.isArray(res.data) ? res.data : (res.data as any).items ?? [];
-            setAllItems(raw);
+
+            const items = res.data.items.map(hitToProductItem);
+            setAllItems(items);
         } catch {
             setAllItems([]);
         } finally {
             setLoading(false);
         }
-    }, [query]);
+    }, [query, searchParams]);
 
     useEffect(() => {
         isFirstLoad.current = true;
-        fetchAll().then(() => { isFirstLoad.current = false; });
-    }, [query]);
+        fetchFromElastic().then(() => { isFirstLoad.current = false; });
+    }, [query, paramsKey]);
 
-    // ── Filter + sort client-side ──
+
+    // ── AI search mode ──
+    useEffect(() => {
+        if (!aiMode || !query.trim()) return;
+
+        const fetchAi = async () => {
+            setAiLoading(true);
+            try {
+                const params = new URLSearchParams({ q: query, size: '50' });
+                const res = await httpClient.get<ElasticSearchResponse>(
+                    `/api/search?${params.toString()}`
+                );
+                const elasticItems = res.data.items.map(hitToProductItem);
+
+                if (elasticItems.length === 0) {
+                    setAllItems([]);
+                    return;
+                }
+
+                const firebaseUid = useAuthStore.getState().user?.uid ?? null;
+
+                // Send candidate IDs to AI reranker
+                const candidateIds = elasticItems.map(item => item.id);
+                const aiResults = await aiSearchService.rerank(
+                    query.trim(),
+                    candidateIds,
+                    firebaseUid,
+                );
+
+                if (aiResults.length === 0) {
+                    // Flask down — use Elastic order
+                    setAllItems(elasticItems);
+                    return;
+                }
+
+                const scoreMap = new Map(aiResults.map(r => [r.id, r.score]));
+                const reranked = [...elasticItems].sort((a, b) => {
+                    const scoreA = scoreMap.get(a.id) ?? 0;
+                    const scoreB = scoreMap.get(b.id) ?? 0;
+                    return scoreB - scoreA;
+                });
+
+                setAllItems(reranked);
+            } catch {
+                await fetchFromElastic();
+            } finally {
+                setAiLoading(false);
+            }
+        };
+
+        fetchAi();
+    }, [aiMode, query]);
+
     const filtered = useMemo(() => {
         let list = [...allItems];
 
-        if (query.trim().length >= 3) {
-            const q = query.toLowerCase();
-            list = list.filter((item) =>
-                item.name.toLowerCase().includes(q) ||
-                item.brand.toLowerCase().includes(q) ||
-                item.category.toLowerCase().includes(q)
-            );
-        }
-
-        if (filters.categories.length)
+        if (filters.categories.length > 1)
             list = list.filter((i) => filters.categories.includes(i.category));
-        if (filters.brands.length)
+        if (filters.brands.length > 1)
             list = list.filter((i) => filters.brands.includes(i.brand));
-        if (filters.genders.length)
+        if (filters.genders.length > 1)
             list = list.filter((i) => filters.genders.includes((i as any).gender));
-        if (filters.priceMin > 0)
-            list = list.filter((i) => i.price >= filters.priceMin);
-        if (filters.priceMax < 10000)
-            list = list.filter((i) => i.price <= filters.priceMax);
 
         switch (sort) {
             case 'price_asc': list.sort((a, b) => a.price - b.price); break;
@@ -181,7 +267,7 @@ export const SearchResultsPage = () => {
         }
 
         return list;
-    }, [allItems, query, filters, sort]);
+    }, [allItems, filters, sort]);
 
     const pagedItems = useMemo(() => filtered.slice(0, page * PAGE_SIZE), [filtered, page]);
 
@@ -211,7 +297,7 @@ export const SearchResultsPage = () => {
         return () => observerRef.current?.disconnect();
     }, [hasMore, loading]);
 
-    // ── Handler filters — URL e sursa de adevăr ──
+    // ── Handlers ──
     const handleFiltersChange = useCallback((next: FilterState) => {
         setSearchParams(filtersToParams(next, query, sort), { replace: true });
     }, [query, sort, setSearchParams]);
@@ -232,7 +318,6 @@ export const SearchResultsPage = () => {
 
     const isMobileOrTablet = isMobile || isTablet;
 
-    // ── Breadcrumb ──
     const breadcrumb = (() => {
         const parts: string[] = [];
         if (filters.genders.length) parts.push(filters.genders.join(' & '));
@@ -281,6 +366,50 @@ export const SearchResultsPage = () => {
                             </Button>
                         </div>
                     )}
+
+                    <div className={styles.aiToggle}>
+                        <FormControlLabel
+                            control={
+                                <Switch
+                                    checked={aiMode}
+                                    onChange={(_, checked) => setAiMode(checked)}
+                                    sx={{
+                                        '& .MuiSwitch-switchBase.Mui-checked': {
+                                            color: 'var(--color-secondary)',
+                                        },
+                                        '& .MuiSwitch-switchBase.Mui-checked + .MuiSwitch-track': {
+                                            backgroundColor: 'var(--color-secondary)',
+                                        },
+                                    }}
+                                />
+                            }
+                            label={
+                                <span style={{
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    gap: 6,
+                                    fontFamily: 'var(--font-display)',
+                                    fontSize: '0.82rem',
+                                    color: aiMode ? 'var(--color-secondary)' : 'var(--color-text-muted)',
+                                    transition: 'color 0.2s ease',
+                                }}>
+                                    <AutoAwesome sx={{ fontSize: 16 }} />
+                                    Search with AI
+                                    {aiLoading && (
+                                        <span style={{
+                                            width: 14,
+                                            height: 14,
+                                            border: '2px solid var(--color-secondary)',
+                                            borderTopColor: 'transparent',
+                                            borderRadius: '50%',
+                                            animation: 'spin 0.6s linear infinite',
+                                            display: 'inline-block',
+                                        }} />
+                                    )}
+                                </span>
+                            }
+                        />
+                    </div>
 
                     <ProductGrid
                         totalCount={total}

@@ -7,8 +7,7 @@ import {
 import { useNavigate } from 'react-router-dom';
 import type { ProductItem } from '../../../types/product';
 import { ProductChip } from '../../atoms/ProductChip/ProductChip';
-import { cachedFetch } from '../../../services/cachedFetchService';
-import { ApiRoutes } from '../../../services/apiRoutes';
+import { searchHubService, type SearchHit } from '../../../services/searchHubService';
 import styles from './SearchBox.module.css';
 
 interface SearchBoxProps {
@@ -18,7 +17,17 @@ interface SearchBoxProps {
     autoFocus?: boolean;
 }
 
-let allMockResults: ProductItem[] = [];
+const hitToProductItem = (hit: SearchHit): ProductItem => ({
+    id: hit.id,
+    name: hit.title,
+    brand: hit.brand,
+    category: hit.category,
+    price: hit.price,
+    image: hit.image,
+    sold: hit.sold,
+    isNew: hit.isNew,
+    isFavorite: false,
+});
 
 export const SearchBox = ({
     variant = 'desktop',
@@ -30,6 +39,7 @@ export const SearchBox = ({
     const [query, setQuery] = useState('');
     const [results, setResults] = useState<ProductItem[]>([]);
     const [displayed, setDisplayed] = useState<ProductItem[]>([]);
+    const [total, setTotal] = useState(0);
     const [isOpen, setIsOpen] = useState(false);
     const [isExiting, setIsExiting] = useState(false);
     const [dropdownAnim, setDropdownAnim] = useState(false);
@@ -37,13 +47,32 @@ export const SearchBox = ({
     const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
     const wrapperRef = useRef<HTMLDivElement>(null);
 
+    // Subscribe to SignalR results
     useEffect(() => {
-        cachedFetch<ProductItem[]>({
-            key: 'search_mock_cache',
-            url: ApiRoutes.searchProducts(''),
-            onData: (data) => { allMockResults = data; },
+        searchHubService.onResults((response) => {
+            const items = response.items.map(hitToProductItem);
+            setResults(items);
+            setTotal(response.total);
+
+            if (items.length > 0) {
+                if (!isOpen) {
+                    setIsOpen(true);
+                    setTimeout(() => {
+                        setDropdownAnim(true);
+                        setDisplayed(items.slice(0, 6));
+                    }, 40);
+                } else {
+                    setDisplayed(items.slice(0, 6));
+                }
+            } else {
+                closeDropdown();
+            }
         });
-    }, []);
+
+        return () => {
+            searchHubService.disconnect();
+        };
+    }, [isOpen]);
 
     useEffect(() => {
         if (autoFocus) inputRef.current?.focus();
@@ -68,19 +97,6 @@ export const SearchBox = ({
         }, 220);
     };
 
-    const updateResults = useCallback((newResults: ProductItem[]) => {
-        if (displayed.length > 0) {
-            setIsExiting(true);
-            setTimeout(() => {
-                setIsExiting(false);
-                setDisplayed(newResults.slice(0, 6));
-            }, 180);
-        } else {
-            setDisplayed(newResults.slice(0, 6));
-        }
-        setResults(newResults);
-    }, [displayed]);
-
     const goToSearch = useCallback((q: string) => {
         if (!q.trim()) return;
         closeDropdown();
@@ -100,32 +116,11 @@ export const SearchBox = ({
             return;
         }
 
-        // Live search — minim 3 caractere ca Elasticsearch
-        if (val.trim().length < 3) return;
+        if (val.trim().length < 2) return;
 
         debounceRef.current = setTimeout(() => {
-            const q = val.toLowerCase();
-            const filtered = allMockResults.filter(
-                (p) =>
-                    p.name.toLowerCase().includes(q) ||
-                    p.brand.toLowerCase().includes(q) ||
-                    p.category.toLowerCase().includes(q)
-            );
-
-            if (filtered.length > 0) {
-                if (!isOpen) {
-                    setIsOpen(true);
-                    setTimeout(() => {
-                        setDropdownAnim(true);
-                        updateResults(filtered);
-                    }, 40);
-                } else {
-                    updateResults(filtered);
-                }
-            } else {
-                closeDropdown();
-            }
-        }, 220);
+            searchHubService.search(val.trim());
+        }, 200);
     };
 
     const handleProductClick = (item: ProductItem) => {
@@ -136,9 +131,7 @@ export const SearchBox = ({
     };
 
     const handleKeyDown = (e: React.KeyboardEvent) => {
-        if (e.key === 'Enter') {
-            goToSearch(query);
-        }
+        if (e.key === 'Enter') goToSearch(query);
         if (e.key === 'Escape') {
             closeDropdown();
             onClose?.();
@@ -186,7 +179,7 @@ export const SearchBox = ({
                 `}>
                     <div className={styles.dropdownHeader}>
                         <span className={styles.dropdownLabel}>
-                            {results.length} result{results.length !== 1 ? 's' : ''} for
+                            {total} result{total !== 1 ? 's' : ''} for
                             <strong> "{query}"</strong>
                         </span>
                     </div>
@@ -202,13 +195,13 @@ export const SearchBox = ({
                         ))}
                     </div>
 
-                    {results.length > 6 && (
+                    {total > 6 && (
                         <div className={styles.dropdownFooter}>
                             <button
                                 className={styles.seeAll}
                                 onClick={() => goToSearch(query)}
                             >
-                                See all {results.length} results →
+                                See all {total} results →
                             </button>
                         </div>
                     )}

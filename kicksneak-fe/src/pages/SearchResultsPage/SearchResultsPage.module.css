@@ -160,3 +160,14 @@
     grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
     gap: 16px;
 }
+
+.aiToggle {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    padding: 0 0 12px 0;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}

@@ -18,13 +18,14 @@ public static class EndpointExtensions
         app.MapBrandEndpoints();
         app.MapNavEndpoints();
         app.MapUserProfileEndpoints();
-        app.MapSeedEndpoints();
         app.MapAuthEndpoints();
         app.MapReturnEndpoints();
         app.MapReviewEndpoints();
+        app.MapSearchEndpoints();
 
         app.MapHub<NotificationHub>("/hubs/notifications");
         app.MapHub<AuctionHub>("/hubs/auction");
+        app.MapHub<SearchHub>("/hubs/search");
 
         return app;
     }

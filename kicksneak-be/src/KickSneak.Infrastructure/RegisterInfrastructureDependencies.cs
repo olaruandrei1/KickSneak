@@ -1,5 +1,6 @@
 ﻿using Azure.Data.Tables;
 using Azure.Storage.Blobs;
+using Elastic.Clients.Elasticsearch;
 using FirebaseAdmin;
 using Google.Apis.Auth.OAuth2;
 using KickSneak.Domain.ConfigurableObjects;
@@ -55,6 +56,14 @@ public static class RegisterInfrastructureDependencies
                 ProjectId = Environment.GetEnvironmentVariable("FIREBASE_PROJECT_ID")
             });
         }
+
+        var elasticUrl = Environment.GetEnvironmentVariable("ELASTICSEARCH_URL") ?? "http://localhost:9200";
+
+        services.AddSingleton(new ElasticsearchClient(new ElasticsearchClientSettings(new Uri(elasticUrl))
+            .DefaultIndex("kicksneak-products")
+        ));
+
+        services.AddScoped<IElasticSearchService, ElasticSearchService>();
 
         var appInsightsConn = configuration["ApplicationInsights:ConnectionString"];
 

@@ -1,4 +1,6 @@
-﻿using KickSneak.BackgroundServices.Jobs;
+﻿using KickSneak.BackgroundServices.Channels;
+using KickSneak.BackgroundServices.Jobs;
+using KickSneak.Infrastructure.Contracts;
 using Microsoft.Extensions.DependencyInjection;
 using Quartz;
 
@@ -26,7 +28,18 @@ public static class RegisterDependencies
             return services;
         }
 
+        public IServiceCollection AddElasticIndexing()
+        {
+            services.AddSingleton<ProductIndexChannel>();
+            services.AddSingleton<IProductIndexChannel>(sp => sp.GetRequiredService<ProductIndexChannel>());
+            services.AddHostedService<ProductIndexingJob>();
+            services.AddHostedService<ElasticInitJob>();
+
+            return services;
+        }
+
         public IServiceCollection AddJobs()
-        => services.AddCloseAuctionJob();
+        => services.AddCloseAuctionJob()
+                   .AddElasticIndexing();
     }
 }

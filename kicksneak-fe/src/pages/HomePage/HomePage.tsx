@@ -1,6 +1,9 @@
 import { useEffect, useState } from 'react';
 import { cachedFetch } from '../../services/cachedFetchService';
+import { httpClient } from '../../services/axiosService';
 import { ApiRoutes } from '../../services/apiRoutes';
+import { aiSearchService } from '../../services/aiSearchService';
+import { useAuthStore } from '../../store/authStore';
 import type { ProductItem } from '../../types/product';
 import { ProductCard } from '../../components/atoms/ProductCard/ProductCard';
 import { CarouselSection } from './components/CarouselSection';
@@ -16,15 +19,17 @@ interface CarouselData {
 const CAROUSEL_ROUTES = [
     { key: 'home_new', url: ApiRoutes.productsNew, cacheKey: 'home_new' },
     { key: 'home_trending', url: ApiRoutes.productsTrending, cacheKey: 'home_trending' },
-    { key: 'home_rec', url: ApiRoutes.productsRecommended, cacheKey: 'home_rec' },
     { key: 'home_recent', url: ApiRoutes.productsRecentlyViewed, cacheKey: 'home_recent' },
 ];
 
 export const HomePage = () => {
     const [carousels, setCarousels] = useState<Record<string, CarouselData>>({});
+    const [aiRecommendations, setAiRecommendations] = useState<ProductItem[]>([]);
     const [loading, setLoading] = useState(true);
     const navigate = useNavigate();
+    const { user } = useAuthStore();
 
+    // ── Standard carousels (Elastic/DB) ──
     useEffect(() => {
         let loaded = 0;
         CAROUSEL_ROUTES.forEach(({ key, url, cacheKey }) => {
@@ -41,6 +46,40 @@ export const HomePage = () => {
             });
         });
     }, []);
+
+    // ── AI Recommendations (Flask neural net) ──
+    useEffect(() => {
+        if (!user?.uid) return;
+
+        const fetchAiRecs = async () => {
+            const aiItems = await aiSearchService.recommend(user.uid, 6);
+
+            if (aiItems.length === 0) return;
+
+            // Enrich AI results with full product data from backend
+            try {
+                const ids = aiItems.map(i => i.id);
+                const scoreMap = new Map(aiItems.map(i => [i.id, i.score]));
+
+                const res = await httpClient.get<{ items: ProductItem[] }>(
+                    `/api/search?q=*&size=50`
+                );
+                const allProducts = Array.isArray(res.data)
+                    ? res.data
+                    : res.data.items ?? [];
+
+                const enriched = allProducts
+                    .filter(p => ids.includes(p.id))
+                    .sort((a, b) => (scoreMap.get(b.id) ?? 0) - (scoreMap.get(a.id) ?? 0));
+
+                setAiRecommendations(enriched);
+            } catch {
+                // Flask gave IDs but can't enrich — skip
+            }
+        };
+
+        fetchAiRecs();
+    }, [user?.uid]);
 
     if (loading && Object.keys(carousels).length === 0) {
         return <Spinner fullPage size="lg" />;
@@ -97,8 +136,18 @@ export const HomePage = () => {
                             </CarouselSection>
                         );
                     })}
-                </section>
 
+                    {aiRecommendations.length > 0 && (
+                        <CarouselSection
+                            title="Recommended For You ✦ AI"
+                            sectionIndex={CAROUSEL_ROUTES.length}
+                        >
+                            {aiRecommendations.map((item) => (
+                                <ProductCard key={item.id} item={item} />
+                            ))}
+                        </CarouselSection>
+                    )}
+                </section>
             </div>
         </main>
     );
