@@ -1,0 +1,182 @@
+[
+  {
+    "Id": "1e7b2d56-3c8a-4f9e-9d1c-5a6b7c8d9e0f",
+    "Name": "Black",
+    "IsDeleted": false,
+    "CreatedAt": "2026-02-10T08:23:45",
+    "CreatedBy": "seed",
+    "ModifiedAt": "2026-02-10T08:45:12",
+    "ModifiedBy": "seed"
+  },
+  {
+    "Id": "2c9d4e7f-5a1b-4d3c-8e0f-1a2b3c4d5e6f",
+    "Name": "White",
+    "IsDeleted": false,
+    "CreatedAt": "2026-03-22T11:05:30",
+    "CreatedBy": "seed",
+    "ModifiedAt": "2026-03-22T11:20:01",
+    "ModifiedBy": "seed"
+  },
+  {
+    "Id": "3b1a5c8d-6e9f-4f2a-8c7b-0d1e2f3a4b5c",
+    "Name": "Red",
+    "IsDeleted": false,
+    "CreatedAt": "2025-12-15T16:40:10",
+    "CreatedBy": "seed",
+    "ModifiedAt": "2025-12-15T16:55:05",
+    "ModifiedBy": "seed"
+  },
+  {
+    "Id": "4a2b6d9e-7f0c-4e1b-9a8d-1c2e3f4a5b6d",
+    "Name": "Blue",
+    "IsDeleted": false,
+    "CreatedAt": "2026-01-05T09:15:20",
+    "CreatedBy": "seed",
+    "ModifiedAt": "2026-01-05T09:30:18",
+    "ModifiedBy": "seed"
+  },
+  {
+    "Id": "5c3d7e0f-8a1b-4d2c-9e0f-2a3b4c5d6e7f",
+    "Name": "Green",
+    "IsDeleted": false,
+    "CreatedAt": "2026-04-01T14:50:00",
+    "CreatedBy": "seed",
+    "ModifiedAt": "2026-04-01T15:05:40",
+    "ModifiedBy": "seed"
+  },
+  {
+    "Id": "6d4e8f1a-9b2c-4f3d-8a1b-3c4d5e6f7a8b",
+    "Name": "Grey",
+    "IsDeleted": false,
+    "CreatedAt": "2026-05-18T10:00:15",
+    "CreatedBy": "seed",
+    "ModifiedAt": "2026-05-18T10:15:30",
+    "ModifiedBy": "seed"
+  },
+  {
+    "Id": "7e5f9a2b-0c3d-4e4f-9b2c-4d5e6f7a8b9c",
+    "Name": "Navy",
+    "IsDeleted": false,
+    "CreatedAt": "2026-01-20T07:30:00",
+    "CreatedBy": "seed",
+    "ModifiedAt": "2026-01-20T07:45:10",
+    "ModifiedBy": "seed"
+  },
+  {
+    "Id": "8f6a0b3c-1d4e-4f5a-8c3d-5e6f7a8b9c0d",
+    "Name": "Beige",
+    "IsDeleted": false,
+    "CreatedAt": "2026-03-08T13:10:05",
+    "CreatedBy": "seed",
+    "ModifiedAt": "2026-03-08T13:25:00",
+    "ModifiedBy": "seed"
+  },
+  {
+    "Id": "9a7b1c4d-2e5f-4f6a-9d4e-6f7a8b9c0d1e",
+    "Name": "Pink",
+    "IsDeleted": false,
+    "CreatedAt": "2026-04-25T17:00:20",
+    "CreatedBy": "seed",
+    "ModifiedAt": "2026-04-25T17:15:15",
+    "ModifiedBy": "seed"
+  },
+  {
+    "Id": "0b8c2d5e-3f6a-4f7b-8e5f-7a8b9c0d1e2f",
+    "Name": "Orange",
+    "IsDeleted": false,
+    "CreatedAt": "2026-02-28T09:40:30",
+    "CreatedBy": "seed",
+    "ModifiedAt": "2026-02-28T09:55:08",
+    "ModifiedBy": "seed"
+  },
+  {
+    "Id": "1c9d3e6f-4a7b-4f8c-9f6a-8b9c0d1e2f3a",
+    "Name": "Brown",
+    "IsDeleted": false,
+    "CreatedAt": "2026-05-03T11:20:10",
+    "CreatedBy": "seed",
+    "ModifiedAt": "2026-05-03T11:35:00",
+    "ModifiedBy": "seed"
+  },
+  {
+    "Id": "2d0e4f7a-5b8c-4f9d-8a7b-9c0d1e2f3a4b",
+    "Name": "Purple",
+    "IsDeleted": false,
+    "CreatedAt": "2026-01-10T14:10:00",
+    "CreatedBy": "seed",
+    "ModifiedAt": "2026-01-10T14:25:55",
+    "ModifiedBy": "seed"
+  },
+  {
+    "Id": "3e1f5a8b-6c9d-4fae-9b8c-0d1e2f3a4b5c",
+    "Name": "Yellow",
+    "IsDeleted": false,
+    "CreatedAt": "2026-03-17T16:00:45",
+    "CreatedBy": "seed",
+    "ModifiedAt": "2026-03-17T16:15:30",
+    "ModifiedBy": "seed"
+  },
+  {
+    "Id": "4f2a6b9c-7d0e-4fb1-8c9d-1e2f3a4b5c6d",
+    "Name": "Sail",
+    "IsDeleted": false,
+    "CreatedAt": "2026-04-12T08:05:10",
+    "CreatedBy": "seed",
+    "ModifiedAt": "2026-04-12T08:20:00",
+    "ModifiedBy": "seed"
+  },
+  {
+    "Id": "5a3b7c0d-8e1f-4fc2-9d0e-2f3a4b5c6d7e",
+    "Name": "Olive",
+    "IsDeleted": false,
+    "CreatedAt": "2026-02-01T10:30:00",
+    "CreatedBy": "seed",
+    "ModifiedAt": "2026-02-01T10:45:10",
+    "ModifiedBy": "seed"
+  },
+  {
+    "Id": "6b4c8d1e-9f2a-4fd3-8e1f-3a4b5c6d7e8f",
+    "Name": "Cream",
+    "IsDeleted": false,
+    "CreatedAt": "2026-05-29T13:40:20",
+    "CreatedBy": "seed",
+    "ModifiedAt": "2026-05-29T13:55:00",
+    "ModifiedBy": "seed"
+  },
+  {
+    "Id": "7c5d9e2f-0a3b-4fe4-9f2a-4b5c6d7e8f9a",
+    "Name": "Bone",
+    "IsDeleted": false,
+    "CreatedAt": "2025-12-28T09:00:00",
+    "CreatedBy": "seed",
+    "ModifiedAt": "2025-12-28T09:15:05",
+    "ModifiedBy": "seed"
+  },
+  {
+    "Id": "8d6e0f3a-1b4c-4ff5-8a3b-5c6d7e8f9a0b",
+    "Name": "Multi-Color",
+    "IsDeleted": false,
+    "CreatedAt": "2026-03-01T15:20:10",
+    "CreatedBy": "seed",
+    "ModifiedAt": "2026-03-01T15:35:00",
+    "ModifiedBy": "seed"
+  },
+  {
+    "Id": "9e7f1a4b-2c5d-4f06-9b4c-6d7e8f9a0b1c",
+    "Name": "Bred (Black/Red)",
+    "IsDeleted": false,
+    "CreatedAt": "2026-01-25T11:00:00",
+    "CreatedBy": "seed",
+    "ModifiedAt": "2026-01-25T11:15:20",
+    "ModifiedBy": "seed"
+  },
+  {
+    "Id": "0f8a2b5c-3d6e-4f17-8c5d-7e8f9a0b1c2d",
+    "Name": "University Blue",
+    "IsDeleted": false,
+    "CreatedAt": "2026-04-05T10:45:00",
+    "CreatedBy": "seed",
+    "ModifiedAt": "2026-04-05T11:00:15",
+    "ModifiedBy": "seed"
+  }
+]

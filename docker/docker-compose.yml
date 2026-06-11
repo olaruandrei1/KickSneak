@@ -171,6 +171,22 @@ services:
       elasticsearch:
         condition: service_healthy
 
+  # ── Seed ETL (runs once after backend) ──
+  seed-etl:
+    build:
+      context: ../kicksneak-be/KickSneak.Seed.DatabaseETL
+      dockerfile: Dockerfile
+    container_name: kicksneak-seed-etl
+    restart: "no"
+    environment:
+      - SEED_CONNECTION=Host=postgres;Port=5432;Database=${POSTGRES_DB};Username=${POSTGRES_USER};Password=${POSTGRES_PASSWORD};Include Error Detail=true
+      - ELASTICSEARCH_URL=http://elasticsearch:9200
+    depends_on:
+      backend:
+        condition: service_started
+      elasticsearch:
+        condition: service_healthy
+
   # ── Chat Service (Go) ──
   chat-service:
     build:

@@ -4,7 +4,6 @@
   </Folder>
   <Folder Name="/src/">
     <Project Path="KickSneak.BackgroundServices/KickSneak.BackgroundServices.csproj" Id="6c02c1b3-7286-4f23-acab-b4ee4dd48dec" />
-    <Project Path="KickSneak.SeedGenerator/KickSneak.SeedGenerator.csproj" Id="372fb220-83ca-454e-8a19-17a52b2702ea" />
     <Project Path="src/KickSneak.Application/KickSneak.Application.csproj" />
     <Project Path="src/KickSneak.Domain/KickSneak.Domain.csproj" />
     <Project Path="src/KickSneak.Infrastructure/KickSneak.Infrastructure.csproj" />

@@ -1,43 +1,33 @@
 ﻿using KickSneak.Infrastructure.Contracts;
-using Microsoft.ApplicationInsights;
-using Microsoft.ApplicationInsights.DataContracts;
+using Microsoft.Extensions.Logging;
 
 namespace KickSneak.Infrastructure.Implementations;
 
-public sealed class ApplicationInsightsFactory(TelemetryClient telemetryClient) : IApplicationInsightsFactory
+public sealed class GrafanaObservabilityFactory(ILogger<GrafanaObservabilityFactory> logger) : IObservabilityFactory
 {
     public void TrackRequest(string name, DateTimeOffset startTime, TimeSpan duration, string responseCode, bool success, string? userId = null, Dictionary<string, string>? properties = null)
     {
-        var telemetry = new RequestTelemetry
+        using (logger.BeginScope(properties ?? []))
         {
-            Name = name,
-            Timestamp = startTime,
-            Duration = duration,
-            ResponseCode = responseCode,
-            Success = success
-        };
-
-        if (userId is not null)
-            telemetry.Context.User.AuthenticatedUserId = userId;
-
-        if (properties is not null)
-            foreach (var (key, value) in properties)
-                telemetry.Properties[key] = value;
-
-        telemetryClient.TrackRequest(telemetry);
+            logger.LogInformation(
+                "[REQUEST] {Name} | {StatusCode} | {Duration}ms | User: {User} | Success: {Success}",
+                name, responseCode, duration.TotalMilliseconds, userId ?? "anonymous", success);
+        }
     }
 
     public void TrackException(Exception exception, Dictionary<string, string>? properties = null)
     {
-        var telemetry = new ExceptionTelemetry(exception);
-
-        if (properties is not null)
-            foreach (var (key, value) in properties)
-                telemetry.Properties[key] = value;
-
-        telemetryClient.TrackException(telemetry);
+        using (logger.BeginScope(properties ?? []))
+        {
+            logger.LogError(exception, "[EXCEPTION] {Message}", exception.Message);
+        }
     }
 
     public void TrackEvent(string eventName, Dictionary<string, string>? properties = null)
-    => telemetryClient.TrackEvent(eventName, properties);
+    {
+        using (logger.BeginScope(properties ?? []))
+        {
+            logger.LogInformation("[EVENT] {EventName}", eventName);
+        }
+    }
 }

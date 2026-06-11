@@ -23,7 +23,7 @@ public sealed class ProductIndexingJob(
         {
             try
             {
-                using var scope = scopeFactory.CreateScope();
+                await using var scope = scopeFactory.CreateAsyncScope();
                 var elastic = scope.ServiceProvider.GetRequiredService<IElasticSearchService>();
 
                 switch (evt.Action)

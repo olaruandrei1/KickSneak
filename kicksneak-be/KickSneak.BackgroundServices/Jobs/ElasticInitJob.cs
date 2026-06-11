@@ -24,7 +24,7 @@ public sealed class ElasticInitJob : BackgroundService
 
         try
         {
-            using var scope = _scopeFactory.CreateScope();
+            await using var scope = _scopeFactory.CreateAsyncScope();
             var elastic = scope.ServiceProvider.GetRequiredService<IElasticSearchService>();
             var uow = scope.ServiceProvider.GetRequiredService<IUnitOfWork>();
 

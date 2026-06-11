@@ -1,0 +1,56 @@
+[
+  {
+    "Id": "a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d",
+    "Name": "Men",
+    "IsDeleted": false,
+    "CreatedAt": "2026-03-10T10:15:20",
+    "CreatedBy": "seed",
+    "ModifiedAt": "2026-03-10T10:15:25",
+    "ModifiedBy": "seed"
+  },
+  {
+    "Id": "b2c3d4e5-f6a7-4b8c-9d0e-1f2a3b4c5d6e",
+    "Name": "Women",
+    "IsDeleted": false,
+    "CreatedAt": "2026-01-22T08:45:10",
+    "CreatedBy": "seed",
+    "ModifiedAt": "2026-01-22T08:45:15",
+    "ModifiedBy": "seed"
+  },
+  {
+    "Id": "c3d4e5f6-a7b8-4c9d-a0e1-f2a3b4c5d6e7",
+    "Name": "Unisex",
+    "IsDeleted": false,
+    "CreatedAt": "2025-12-05T16:00:00",
+    "CreatedBy": "seed",
+    "ModifiedAt": "2025-12-05T16:00:05",
+    "ModifiedBy": "seed"
+  },
+  {
+    "Id": "d4e5f6a7-b8c9-4d0e-b1f2-a3b4c5d6e7f8",
+    "Name": "Non-Binary",
+    "IsDeleted": false,
+    "CreatedAt": "2026-05-18T11:30:40",
+    "CreatedBy": "seed",
+    "ModifiedAt": "2026-05-18T11:30:45",
+    "ModifiedBy": "seed"
+  },
+  {
+    "Id": "e5f6a7b8-c9d0-4e1f-c2a3-b4c5d6e7f8a9",
+    "Name": "Genderfluid",
+    "IsDeleted": false,
+    "CreatedAt": "2026-02-28T09:00:00",
+    "CreatedBy": "seed",
+    "ModifiedAt": "2026-02-28T09:00:05",
+    "ModifiedBy": "seed"
+  },
+  {
+    "Id": "f6a7b8c9-d0e1-4f2a-d3b4-c5d6e7f8a9b0",
+    "Name": "Kids",
+    "IsDeleted": false,
+    "CreatedAt": "2026-04-01T13:15:30",
+    "CreatedBy": "seed",
+    "ModifiedAt": "2026-04-01T13:15:35",
+    "ModifiedBy": "seed"
+  }
+]

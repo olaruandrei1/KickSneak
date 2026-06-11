@@ -1,0 +1,712 @@
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["partialIndexes"]
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model UserSizePreference {
+  Id              String    @id(map: "PK_UserSizePreference") @db.Uuid
+  UserId          String    @unique(map: "IX_UserSizePreference_UserId") @db.Uuid
+  PreferredSystem String?
+  FootwearEU      String?
+  FootwearUS      String?
+  FootwearUK      String?
+  Tops            String?
+  Bottoms         String?
+  IsDeleted       Boolean
+  CreatedAt       DateTime  @db.Timestamp(6)
+  CreatedBy       String?
+  ModifiedAt      DateTime? @db.Timestamp(6)
+  ModifiedBy      String?
+  users           users     @relation(fields: [UserId], references: [Id], onDelete: Cascade, onUpdate: NoAction, map: "FK_UserSizePreference_users_UserId")
+}
+
+model EFMigrationsHistory {
+  MigrationId    String @id(map: "PK___EFMigrationsHistory") @db.VarChar(150)
+  ProductVersion String @db.VarChar(32)
+
+  @@map("__EFMigrationsHistory")
+}
+
+model affiliates {
+  Id                   String    @id(map: "PK_affiliates") @db.Uuid
+  AffiliateCompanyName String?   @db.VarChar(255)
+  Details              String?
+  PhotoPath            String?   @db.VarChar(500)
+  ContactEmail         String?   @db.VarChar(255)
+  IsDeleted            Boolean
+  CreatedAt            DateTime  @db.Timestamp(6)
+  CreatedBy            String?
+  ModifiedAt           DateTime? @db.Timestamp(6)
+  ModifiedBy           String?
+  sellers              sellers[]
+}
+
+model auctions {
+  Id             String      @id(map: "PK_auctions") @db.Uuid
+  StockItemId    String      @db.Uuid
+  SellerId       String      @db.Uuid
+  StartPrice     Float
+  CurrentPrice   Float
+  ReservePrice   Float?
+  ReserveMet     Boolean
+  BidCount       Int
+  ExtensionCount Int
+  StartsAt       DateTime    @db.Timestamp(6)
+  EndsAt         DateTime    @db.Timestamp(6)
+  Status         Int
+  IsDeleted      Boolean
+  CreatedAt      DateTime    @db.Timestamp(6)
+  CreatedBy      String?
+  ModifiedAt     DateTime?   @db.Timestamp(6)
+  ModifiedBy     String?
+  sellers        sellers     @relation(fields: [SellerId], references: [Id], onUpdate: NoAction, map: "FK_auctions_sellers_SellerId")
+  stock_items    stock_items @relation(fields: [StockItemId], references: [Id], onUpdate: NoAction, map: "FK_auctions_stock_items_StockItemId")
+  auto_bids      auto_bids[]
+  bids           bids[]
+
+  @@index([SellerId], map: "IX_auctions_SellerId")
+  @@index([StockItemId], map: "IX_auctions_StockItemId")
+}
+
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model auto_bids {
+  Id         String    @id(map: "PK_auto_bids") @db.Uuid
+  AuctionId  String    @db.Uuid
+  UserId     String    @db.Uuid
+  MaxAmount  Float
+  IsActive   Boolean
+  IsDeleted  Boolean
+  CreatedAt  DateTime  @db.Timestamp(6)
+  CreatedBy  String?
+  ModifiedAt DateTime? @db.Timestamp(6)
+  ModifiedBy String?
+  auctions   auctions  @relation(fields: [AuctionId], references: [Id], onDelete: Cascade, onUpdate: NoAction, map: "FK_auto_bids_auctions_AuctionId")
+  users      users     @relation(fields: [UserId], references: [Id], onDelete: Cascade, onUpdate: NoAction, map: "FK_auto_bids_users_UserId")
+
+  @@index([AuctionId], map: "IX_auto_bids_AuctionId")
+  @@index([UserId], map: "IX_auto_bids_UserId")
+}
+
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model bids {
+  Id                 String    @id(map: "PK_bids") @db.Uuid
+  AuctionId          String    @db.Uuid
+  BidderId           String    @db.Uuid
+  Amount             Float
+  PlacedAt           DateTime  @db.Timestamp(6)
+  IsAutoBid          Boolean
+  TriggeredExtension Boolean
+  IsDeleted          Boolean
+  CreatedAt          DateTime  @db.Timestamp(6)
+  CreatedBy          String?
+  ModifiedAt         DateTime? @db.Timestamp(6)
+  ModifiedBy         String?
+  auctions           auctions  @relation(fields: [AuctionId], references: [Id], onDelete: Cascade, onUpdate: NoAction, map: "FK_bids_auctions_AuctionId")
+  users              users     @relation(fields: [BidderId], references: [Id], onUpdate: NoAction, map: "FK_bids_users_BidderId")
+
+  @@index([AuctionId], map: "IX_bids_AuctionId")
+  @@index([BidderId], map: "IX_bids_BidderId")
+}
+
+model brands {
+  Id           String     @id(map: "PK_brands") @db.Uuid
+  Name         String?    @db.VarChar(255)
+  ParentId     String?    @db.Uuid
+  IsDeleted    Boolean
+  CreatedAt    DateTime   @db.Timestamp(6)
+  CreatedBy    String?
+  ModifiedAt   DateTime?  @db.Timestamp(6)
+  ModifiedBy   String?
+  brands       brands?    @relation("brandsTobrands", fields: [ParentId], references: [Id], onUpdate: NoAction, map: "FK_brands_brands_ParentId")
+  other_brands brands[]   @relation("brandsTobrands")
+  products     products[]
+
+  @@index([ParentId], map: "IX_brands_ParentId")
+}
+
+model categories {
+  Id               String       @id(map: "PK_categories") @db.Uuid
+  Name             String?      @db.VarChar(255)
+  ParentId         String?      @db.Uuid
+  IsDeleted        Boolean
+  CreatedAt        DateTime     @db.Timestamp(6)
+  CreatedBy        String?
+  ModifiedAt       DateTime?    @db.Timestamp(6)
+  ModifiedBy       String?
+  categories       categories?  @relation("categoriesTocategories", fields: [ParentId], references: [Id], onUpdate: NoAction, map: "FK_categories_categories_ParentId")
+  other_categories categories[] @relation("categoriesTocategories")
+  products         products[]
+
+  @@index([ParentId], map: "IX_categories_ParentId")
+}
+
+model chat_sessions {
+  id            String          @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  user_id       String          @db.VarChar(128)
+  title         String          @default("New Chat") @db.VarChar(500)
+  status        String          @default("active") @db.VarChar(20)
+  created_at    DateTime        @default(now()) @db.Timestamptz(6)
+  closed_at     DateTime?       @db.Timestamptz(6)
+  chat_type     Int             @default(0) @db.SmallInt
+  chat_messages chat_messages[]
+}
+
+model chat_messages {
+  id            String        @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  session_id    String        @db.Uuid
+  role          String        @db.VarChar(20)
+  content       String
+  created_at    DateTime      @default(now()) @db.Timestamptz(6)
+  chat_sessions chat_sessions @relation(fields: [session_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+}
+
+model colors {
+  Id         String     @id(map: "PK_colors") @db.Uuid
+  Name       String?    @db.VarChar(100)
+  IsDeleted  Boolean
+  CreatedAt  DateTime   @db.Timestamp(6)
+  CreatedBy  String?
+  ModifiedAt DateTime?  @db.Timestamp(6)
+  ModifiedBy String?
+  products   products[]
+}
+
+model fits {
+  Id         String     @id(map: "PK_fits") @db.Uuid
+  Name       String?    @db.VarChar(100)
+  IsDeleted  Boolean
+  CreatedAt  DateTime   @db.Timestamp(6)
+  CreatedBy  String?
+  ModifiedAt DateTime?  @db.Timestamp(6)
+  ModifiedBy String?
+  products   products[]
+}
+
+model genders {
+  Id         String     @id(map: "PK_genders") @db.Uuid
+  Name       String?    @db.VarChar(100)
+  IsDeleted  Boolean
+  CreatedAt  DateTime   @db.Timestamp(6)
+  CreatedBy  String?
+  ModifiedAt DateTime?  @db.Timestamp(6)
+  ModifiedBy String?
+  products   products[]
+  users      users[]
+}
+
+model materials {
+  Id         String     @id(map: "PK_materials") @db.Uuid
+  Name       String?    @db.VarChar(255)
+  IsDeleted  Boolean
+  CreatedAt  DateTime   @db.Timestamp(6)
+  CreatedBy  String?
+  ModifiedAt DateTime?  @db.Timestamp(6)
+  ModifiedBy String?
+  products   products[]
+}
+
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model notifications {
+  Id         String    @id(map: "PK_notifications") @db.Uuid
+  UserId     String    @db.Uuid
+  Type       String?   @db.VarChar(100)
+  Title      String?   @db.VarChar(255)
+  Body       String?
+  IsRead     Boolean
+  IsDeleted  Boolean
+  CreatedAt  DateTime  @db.Timestamp(6)
+  CreatedBy  String?
+  ModifiedAt DateTime? @db.Timestamp(6)
+  ModifiedBy String?
+  users      users     @relation(fields: [UserId], references: [Id], onDelete: Cascade, onUpdate: NoAction, map: "FK_notifications_users_UserId")
+
+  @@index([UserId], map: "IX_notifications_UserId")
+}
+
+model offers {
+  Id         String    @id(map: "PK_offers") @db.Uuid
+  ProductId  String    @db.Uuid
+  SizeId     String    @db.Uuid
+  GivenPrice Float
+  BuyerId    String    @db.Uuid
+  Status     Int
+  ExpiresAt  DateTime? @db.Timestamp(6)
+  IsDeleted  Boolean
+  CreatedAt  DateTime  @db.Timestamp(6)
+  CreatedBy  String?
+  ModifiedAt DateTime? @db.Timestamp(6)
+  ModifiedBy String?
+  products   products  @relation(fields: [ProductId], references: [Id], onDelete: Cascade, onUpdate: NoAction, map: "FK_offers_products_ProductId")
+  sizes      sizes     @relation(fields: [SizeId], references: [Id], onUpdate: NoAction, map: "FK_offers_sizes_SizeId")
+  users      users     @relation(fields: [BuyerId], references: [Id], onDelete: Cascade, onUpdate: NoAction, map: "FK_offers_users_BuyerId")
+
+  @@index([BuyerId], map: "IX_offers_BuyerId")
+  @@index([ProductId], map: "IX_offers_ProductId")
+  @@index([SizeId], map: "IX_offers_SizeId")
+}
+
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model orders {
+  Id                                                    String          @id(map: "PK_orders") @db.Uuid
+  StockItemId                                           String?         @unique(map: "IX_orders_StockItemId", where: raw("(\"StockItemId\" IS NOT NULL)")) @db.Uuid
+  UsedItemId                                            String?         @unique(map: "IX_orders_UsedItemId", where: raw("(\"UsedItemId\" IS NOT NULL)")) @db.Uuid
+  BuyerId                                               String          @db.Uuid
+  BuyerAddressId                                        String?         @db.Uuid
+  SellerAddressId                                       String?         @db.Uuid
+  Status                                                Int
+  TotalPrice                                            Float
+  TrackingNumber                                        String?         @db.VarChar(100)
+  IsDeleted                                             Boolean
+  CreatedAt                                             DateTime        @db.Timestamp(6)
+  CreatedBy                                             String?
+  ModifiedAt                                            DateTime?       @db.Timestamp(6)
+  ModifiedBy                                            String?
+  stock_items                                           stock_items?    @relation(fields: [StockItemId], references: [Id], onDelete: Restrict, onUpdate: NoAction, map: "FK_orders_stock_items_StockItemId")
+  used_items                                            used_items?     @relation(fields: [UsedItemId], references: [Id], onDelete: Restrict, onUpdate: NoAction, map: "FK_orders_used_items_UsedItemId")
+  user_addresses_orders_BuyerAddressIdTouser_addresses  user_addresses? @relation("orders_BuyerAddressIdTouser_addresses", fields: [BuyerAddressId], references: [Id], onUpdate: NoAction, map: "FK_orders_user_addresses_BuyerAddressId")
+  user_addresses_orders_SellerAddressIdTouser_addresses user_addresses? @relation("orders_SellerAddressIdTouser_addresses", fields: [SellerAddressId], references: [Id], onUpdate: NoAction, map: "FK_orders_user_addresses_SellerAddressId")
+  users                                                 users           @relation(fields: [BuyerId], references: [Id], onUpdate: NoAction, map: "FK_orders_users_BuyerId")
+  returns                                               returns[]
+  reviews                                               reviews?
+
+  @@index([BuyerAddressId], map: "IX_orders_BuyerAddressId")
+  @@index([BuyerId], map: "IX_orders_BuyerId")
+  @@index([SellerAddressId], map: "IX_orders_SellerAddressId")
+}
+
+model product_photos {
+  Id           String    @id(map: "PK_product_photos") @db.Uuid
+  ProductId    String    @db.Uuid
+  PhotoUrl     String?   @db.VarChar(500)
+  IsPrimary    Boolean
+  DisplayOrder Int?
+  IsDeleted    Boolean
+  CreatedAt    DateTime  @db.Timestamp(6)
+  CreatedBy    String?
+  ModifiedAt   DateTime? @db.Timestamp(6)
+  ModifiedBy   String?
+  products     products  @relation(fields: [ProductId], references: [Id], onDelete: Cascade, onUpdate: NoAction, map: "FK_product_photos_products_ProductId")
+
+  @@index([ProductId], map: "IX_product_photos_ProductId")
+}
+
+model product_viewed {
+  UserId    String   @db.Uuid
+  ProductId String   @db.Uuid
+  ViewCount Int
+  products  products @relation(fields: [ProductId], references: [Id], onDelete: Cascade, onUpdate: NoAction, map: "FK_product_viewed_products_ProductId")
+  users     users    @relation(fields: [UserId], references: [Id], onDelete: Cascade, onUpdate: NoAction, map: "FK_product_viewed_users_UserId")
+
+  @@id([UserId, ProductId], map: "PK_product_viewed")
+  @@index([ProductId], map: "IX_product_viewed_ProductId")
+}
+
+model products {
+  Id                 String           @id(map: "PK_products") @db.Uuid
+  BrandId            String?          @db.Uuid
+  CategoryId         String?          @db.Uuid
+  GenderId           String?          @db.Uuid
+  FitId              String?          @db.Uuid
+  Title              String?          @db.VarChar(255)
+  ShortDescription   String?          @db.VarChar(500)
+  Description        String?
+  MaterialId         String?          @db.Uuid
+  ColorId            String?          @db.Uuid
+  RetailPrice        Float?
+  ReleaseDate        DateTime?        @db.Timestamp(6)
+  ProductUniversalId String?          @db.VarChar(255)
+  IsDeleted          Boolean
+  CreatedAt          DateTime         @db.Timestamp(6)
+  CreatedBy          String?
+  ModifiedAt         DateTime?        @db.Timestamp(6)
+  ModifiedBy         String?
+  offers             offers[]
+  product_photos     product_photos[]
+  product_viewed     product_viewed[]
+  brands             brands?          @relation(fields: [BrandId], references: [Id], onUpdate: NoAction, map: "FK_products_brands_BrandId")
+  categories         categories?      @relation(fields: [CategoryId], references: [Id], onUpdate: NoAction, map: "FK_products_categories_CategoryId")
+  colors             colors?          @relation(fields: [ColorId], references: [Id], onUpdate: NoAction, map: "FK_products_colors_ColorId")
+  fits               fits?            @relation(fields: [FitId], references: [Id], onUpdate: NoAction, map: "FK_products_fits_FitId")
+  genders            genders?         @relation(fields: [GenderId], references: [Id], onUpdate: NoAction, map: "FK_products_genders_GenderId")
+  materials          materials?       @relation(fields: [MaterialId], references: [Id], onUpdate: NoAction, map: "FK_products_materials_MaterialId")
+  stock_items        stock_items[]
+  used_items         used_items[]
+  user_favorites     user_favorites[]
+
+  @@index([BrandId], map: "IX_products_BrandId")
+  @@index([CategoryId], map: "IX_products_CategoryId")
+  @@index([ColorId], map: "IX_products_ColorId")
+  @@index([FitId], map: "IX_products_FitId")
+  @@index([GenderId], map: "IX_products_GenderId")
+  @@index([MaterialId], map: "IX_products_MaterialId")
+}
+
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model returns {
+  Id          String    @id(map: "PK_returns") @db.Uuid
+  OrderId     String    @db.Uuid
+  UserId      String    @db.Uuid
+  Reason      String?   @db.VarChar(200)
+  Description String?   @db.VarChar(1000)
+  Status      Int
+  IsDeleted   Boolean
+  CreatedAt   DateTime  @db.Timestamp(6)
+  CreatedBy   String?
+  ModifiedAt  DateTime? @db.Timestamp(6)
+  ModifiedBy  String?
+  orders      orders    @relation(fields: [OrderId], references: [Id], onUpdate: NoAction, map: "FK_returns_orders_OrderId")
+  users       users     @relation(fields: [UserId], references: [Id], onUpdate: NoAction, map: "FK_returns_users_UserId")
+
+  @@index([OrderId], map: "IX_returns_OrderId")
+  @@index([UserId], map: "IX_returns_UserId")
+}
+
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model reviews {
+  Id         String    @id(map: "PK_reviews") @db.Uuid
+  BuyerId    String    @db.Uuid
+  SellerId   String    @db.Uuid
+  OrderId    String    @unique(map: "IX_reviews_OrderId") @db.Uuid
+  Score      Float
+  Title      String?   @db.VarChar(255)
+  Comment    String?
+  IsDeleted  Boolean
+  CreatedAt  DateTime  @db.Timestamp(6)
+  CreatedBy  String?
+  ModifiedAt DateTime? @db.Timestamp(6)
+  ModifiedBy String?
+  orders     orders    @relation(fields: [OrderId], references: [Id], onDelete: Cascade, onUpdate: NoAction, map: "FK_reviews_orders_OrderId")
+  sellers    sellers   @relation(fields: [SellerId], references: [Id], onUpdate: NoAction, map: "FK_reviews_sellers_SellerId")
+  users      users     @relation(fields: [BuyerId], references: [Id], onUpdate: NoAction, map: "FK_reviews_users_BuyerId")
+
+  @@index([BuyerId], map: "IX_reviews_BuyerId")
+  @@index([SellerId], map: "IX_reviews_SellerId")
+}
+
+model roles {
+  Id         String    @id(map: "PK_roles") @db.Uuid
+  Name       String?   @db.VarChar(100)
+  Level      Int
+  IsDeleted  Boolean
+  CreatedAt  DateTime  @db.Timestamp(6)
+  CreatedBy  String?
+  ModifiedAt DateTime? @db.Timestamp(6)
+  ModifiedBy String?
+  users      users[]
+}
+
+model sellers {
+  Id             String        @id(map: "PK_sellers") @db.Uuid
+  UserId         String        @db.Uuid
+  EnrollmentDate DateTime?     @db.Timestamp(6)
+  IsBlocked      Boolean
+  IsSuspended    Boolean
+  Reason         String?
+  AffiliateId    String?       @db.Uuid
+  TrustScore     Float?
+  IsDeleted      Boolean
+  CreatedAt      DateTime      @db.Timestamp(6)
+  CreatedBy      String?
+  ModifiedAt     DateTime?     @db.Timestamp(6)
+  ModifiedBy     String?
+  City           String?       @db.VarChar(100)
+  CompanyName    String?       @db.VarChar(200)
+  HasCompany     Boolean       @default(false)
+  Phone          String?       @db.VarChar(50)
+  ProductType    String?       @db.VarChar(100)
+  SellType       String?       @db.VarChar(100)
+  StoreName      String?       @db.VarChar(200)
+  VatNumber      String?       @db.VarChar(50)
+  auctions       auctions[]
+  reviews        reviews[]
+  affiliates     affiliates?   @relation(fields: [AffiliateId], references: [Id], onUpdate: NoAction, map: "FK_sellers_affiliates_AffiliateId")
+  users          users         @relation(fields: [UserId], references: [Id], onDelete: Cascade, onUpdate: NoAction, map: "FK_sellers_users_UserId")
+  stock_items    stock_items[]
+  used_items     used_items[]
+
+  @@index([AffiliateId], map: "IX_sellers_AffiliateId")
+  @@index([UserId], map: "IX_sellers_UserId")
+}
+
+model size_types {
+  Id         String    @id(map: "PK_size_types") @db.Uuid
+  Name       String?   @db.VarChar(50)
+  IsDeleted  Boolean
+  CreatedAt  DateTime  @db.Timestamp(6)
+  CreatedBy  String?
+  ModifiedAt DateTime? @db.Timestamp(6)
+  ModifiedBy String?
+  sizes      sizes[]
+}
+
+model sizes {
+  Id          String        @id(map: "PK_sizes") @db.Uuid
+  SizeTypeId  String        @db.Uuid
+  SizeLabel   String?       @db.VarChar(20)
+  SizeUs      String?       @db.VarChar(20)
+  SizeEu      String?       @db.VarChar(20)
+  SizeUk      String?       @db.VarChar(20)
+  SizeCm      Float?
+  IsDeleted   Boolean
+  CreatedAt   DateTime      @db.Timestamp(6)
+  CreatedBy   String?
+  ModifiedAt  DateTime?     @db.Timestamp(6)
+  ModifiedBy  String?
+  offers      offers[]
+  size_types  size_types    @relation(fields: [SizeTypeId], references: [Id], onDelete: Cascade, onUpdate: NoAction, map: "FK_sizes_size_types_SizeTypeId")
+  stock_items stock_items[]
+  used_items  used_items[]
+
+  @@index([SizeTypeId], map: "IX_sizes_SizeTypeId")
+}
+
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model stock_items {
+  Id           String      @id(map: "PK_stock_items") @db.Uuid
+  ProductId    String      @db.Uuid
+  SellerId     String      @db.Uuid
+  SizeId       String      @db.Uuid
+  Price        Float
+  StatusItem   Int
+  RefuseReason String?     @db.VarChar(500)
+  IsDeleted    Boolean
+  CreatedAt    DateTime    @db.Timestamp(6)
+  CreatedBy    String?
+  ModifiedAt   DateTime?   @db.Timestamp(6)
+  ModifiedBy   String?
+  auctions     auctions[]
+  orders       orders?
+  products     products    @relation(fields: [ProductId], references: [Id], onDelete: Cascade, onUpdate: NoAction, map: "FK_stock_items_products_ProductId")
+  sellers      sellers     @relation(fields: [SellerId], references: [Id], onDelete: Cascade, onUpdate: NoAction, map: "FK_stock_items_sellers_SellerId")
+  sizes        sizes       @relation(fields: [SizeId], references: [Id], onUpdate: NoAction, map: "FK_stock_items_sizes_SizeId")
+  user_cart    user_cart[]
+
+  @@index([ProductId], map: "IX_stock_items_ProductId")
+  @@index([SellerId], map: "IX_stock_items_SellerId")
+  @@index([SizeId], map: "IX_stock_items_SizeId")
+}
+
+model task_comments {
+  Id         String    @id(map: "PK_task_comments") @db.Uuid
+  TaskId     String    @db.Uuid
+  UserId     String    @db.Uuid
+  Text       String?
+  IsDeleted  Boolean
+  CreatedAt  DateTime  @db.Timestamp(6)
+  CreatedBy  String?
+  ModifiedAt DateTime? @db.Timestamp(6)
+  ModifiedBy String?
+  tasks      tasks     @relation(fields: [TaskId], references: [Id], onDelete: Cascade, onUpdate: NoAction, map: "FK_task_comments_tasks_TaskId")
+  users      users     @relation(fields: [UserId], references: [Id], onUpdate: NoAction, map: "FK_task_comments_users_UserId")
+
+  @@index([TaskId], map: "IX_task_comments_TaskId")
+  @@index([UserId], map: "IX_task_comments_UserId")
+}
+
+model tasks {
+  Id            String          @id(map: "PK_tasks") @db.Uuid
+  Title         String?         @db.VarChar(255)
+  Description   String?
+  Status        Int
+  AssignedTo    String?         @db.Uuid
+  Priority      Int
+  DueDate       DateTime?       @db.Timestamp(6)
+  IsDeleted     Boolean
+  CreatedAt     DateTime        @db.Timestamp(6)
+  CreatedBy     String?
+  ModifiedAt    DateTime?       @db.Timestamp(6)
+  ModifiedBy    String?
+  task_comments task_comments[]
+  users         users?          @relation(fields: [AssignedTo], references: [Id], onUpdate: NoAction, map: "FK_tasks_users_AssignedTo")
+
+  @@index([AssignedTo], map: "IX_tasks_AssignedTo")
+}
+
+model used_item_photos {
+  Id           String     @id(map: "PK_used_item_photos") @db.Uuid
+  UsedItemId   String     @db.Uuid
+  PhotoUrl     String?    @db.VarChar(500)
+  IsPrimary    Boolean
+  DisplayOrder Int?
+  IsDeleted    Boolean
+  CreatedAt    DateTime   @db.Timestamp(6)
+  CreatedBy    String?
+  ModifiedAt   DateTime?  @db.Timestamp(6)
+  ModifiedBy   String?
+  used_items   used_items @relation(fields: [UsedItemId], references: [Id], onDelete: Cascade, onUpdate: NoAction, map: "FK_used_item_photos_used_items_UsedItemId")
+
+  @@index([UsedItemId], map: "IX_used_item_photos_UsedItemId")
+}
+
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model used_items {
+  Id               String             @id(map: "PK_used_items") @db.Uuid
+  ProductId        String             @db.Uuid
+  SellerId         String             @db.Uuid
+  SizeId           String             @db.Uuid
+  Price            Float
+  Condition        Int
+  StatusItem       Int
+  IsDeleted        Boolean
+  CreatedAt        DateTime           @db.Timestamp(6)
+  CreatedBy        String?
+  ModifiedAt       DateTime?          @db.Timestamp(6)
+  ModifiedBy       String?
+  orders           orders?
+  used_item_photos used_item_photos[]
+  products         products           @relation(fields: [ProductId], references: [Id], onDelete: Cascade, onUpdate: NoAction, map: "FK_used_items_products_ProductId")
+  sellers          sellers            @relation(fields: [SellerId], references: [Id], onDelete: Cascade, onUpdate: NoAction, map: "FK_used_items_sellers_SellerId")
+  sizes            sizes              @relation(fields: [SizeId], references: [Id], onUpdate: NoAction, map: "FK_used_items_sizes_SizeId")
+  user_cart        user_cart[]
+
+  @@index([ProductId], map: "IX_used_items_ProductId")
+  @@index([SellerId], map: "IX_used_items_SellerId")
+  @@index([SizeId], map: "IX_used_items_SizeId")
+}
+
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model user_addresses {
+  Id                                            String    @id(map: "PK_user_addresses") @db.Uuid
+  UserId                                        String    @db.Uuid
+  AddressName                                   String?   @db.VarChar(255)
+  IsPrincipal                                   Boolean
+  FirstName                                     String?   @db.VarChar(100)
+  LastName                                      String?   @db.VarChar(100)
+  Country                                       String?   @db.VarChar(100)
+  City                                          String?   @db.VarChar(100)
+  County                                        String?   @db.VarChar(100)
+  Street                                        String?   @db.VarChar(255)
+  StreetNumber                                  String?   @db.VarChar(20)
+  Building                                      String?   @db.VarChar(50)
+  Stairwell                                     String?   @db.VarChar(50)
+  Floor                                         String?   @db.VarChar(20)
+  Apartment                                     String?   @db.VarChar(20)
+  AccessCode                                    String?   @db.VarChar(50)
+  PostalCode                                    String?   @db.VarChar(20)
+  DeliveryInstructions                          String?
+  Phone                                         String?   @db.VarChar(50)
+  IsDeleted                                     Boolean
+  CreatedAt                                     DateTime  @db.Timestamp(6)
+  CreatedBy                                     String?
+  ModifiedAt                                    DateTime? @db.Timestamp(6)
+  ModifiedBy                                    String?
+  orders_orders_BuyerAddressIdTouser_addresses  orders[]  @relation("orders_BuyerAddressIdTouser_addresses")
+  orders_orders_SellerAddressIdTouser_addresses orders[]  @relation("orders_SellerAddressIdTouser_addresses")
+  users                                         users     @relation(fields: [UserId], references: [Id], onDelete: Cascade, onUpdate: NoAction, map: "FK_user_addresses_users_UserId")
+
+  @@index([UserId], map: "IX_user_addresses_UserId")
+}
+
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model user_cart {
+  Id          String       @id(map: "PK_user_cart") @db.Uuid
+  UserId      String       @db.Uuid
+  StockItemId String?      @db.Uuid
+  UsedItemId  String?      @db.Uuid
+  IsDeleted   Boolean
+  CreatedAt   DateTime     @db.Timestamp(6)
+  CreatedBy   String?
+  ModifiedAt  DateTime?    @db.Timestamp(6)
+  ModifiedBy  String?
+  stock_items stock_items? @relation(fields: [StockItemId], references: [Id], onDelete: Cascade, onUpdate: NoAction, map: "FK_user_cart_stock_items_StockItemId")
+  used_items  used_items?  @relation(fields: [UsedItemId], references: [Id], onDelete: Cascade, onUpdate: NoAction, map: "FK_user_cart_used_items_UsedItemId")
+  users       users        @relation(fields: [UserId], references: [Id], onDelete: Cascade, onUpdate: NoAction, map: "FK_user_cart_users_UserId")
+
+  @@unique([UserId, StockItemId], map: "IX_user_cart_UserId_StockItemId", where: raw("(\"StockItemId\" IS NOT NULL)"))
+  @@unique([UserId, UsedItemId], map: "IX_user_cart_UserId_UsedItemId", where: raw("(\"UsedItemId\" IS NOT NULL)"))
+  @@index([StockItemId], map: "IX_user_cart_StockItemId")
+  @@index([UsedItemId], map: "IX_user_cart_UsedItemId")
+}
+
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model user_contacts {
+  Id                   String    @id(map: "PK_user_contacts") @db.Uuid
+  UserId               String    @db.Uuid
+  IsPrincipal          Boolean
+  Phone                String?   @db.VarChar(50)
+  EmailAddress         String?   @db.VarChar(255)
+  EmailAddressVerified Boolean
+  IsDeleted            Boolean
+  CreatedAt            DateTime  @db.Timestamp(6)
+  CreatedBy            String?
+  ModifiedAt           DateTime? @db.Timestamp(6)
+  ModifiedBy           String?
+  users                users     @relation(fields: [UserId], references: [Id], onDelete: Cascade, onUpdate: NoAction, map: "FK_user_contacts_users_UserId")
+
+  @@index([UserId], map: "IX_user_contacts_UserId")
+}
+
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model user_favorites {
+  UserId    String   @db.Uuid
+  ProductId String   @db.Uuid
+  IsDeleted Boolean
+  CreatedAt DateTime @db.Timestamp(6)
+  products  products @relation(fields: [ProductId], references: [Id], onDelete: Cascade, onUpdate: NoAction, map: "FK_user_favorites_products_ProductId")
+  users     users    @relation(fields: [UserId], references: [Id], onDelete: Cascade, onUpdate: NoAction, map: "FK_user_favorites_users_UserId")
+
+  @@id([UserId, ProductId], map: "PK_user_favorites")
+  @@index([ProductId], map: "IX_user_favorites_ProductId")
+}
+
+model users {
+  Id                    String                  @id(map: "PK_users") @db.Uuid
+  FirebaseUid           String                  @unique(map: "IX_users_FirebaseUid") @db.VarChar(255)
+  FirstName             String?                 @db.VarChar(100)
+  LastName              String?                 @db.VarChar(100)
+  GenderId              String?                 @db.Uuid
+  BirthDate             DateTime?               @db.Timestamp(6)
+  RoleId                String?                 @db.Uuid
+  ProfilePhoto          String?                 @db.VarChar(500)
+  IsSuspended           Boolean
+  IsBlocked             Boolean
+  IsDeleted             Boolean
+  CreatedAt             DateTime                @db.Timestamp(6)
+  CreatedBy             String?
+  ModifiedAt            DateTime?               @db.Timestamp(6)
+  ModifiedBy            String?
+  UserSizePreference    UserSizePreference?
+  auto_bids             auto_bids[]
+  bids                  bids[]
+  notifications         notifications[]
+  offers                offers[]
+  orders                orders[]
+  product_viewed        product_viewed[]
+  returns               returns[]
+  reviews               reviews[]
+  sellers               sellers[]
+  task_comments         task_comments[]
+  tasks                 tasks[]
+  user_addresses        user_addresses[]
+  user_cart             user_cart[]
+  user_contacts         user_contacts[]
+  user_favorites        user_favorites[]
+  genders               genders?                @relation(fields: [GenderId], references: [Id], onUpdate: NoAction, map: "FK_users_genders_GenderId")
+  roles                 roles?                  @relation(fields: [RoleId], references: [Id], onUpdate: NoAction, map: "FK_users_roles_RoleId")
+  webpush_subscriptions webpush_subscriptions[]
+
+  @@index([GenderId], map: "IX_users_GenderId")
+  @@index([RoleId], map: "IX_users_RoleId")
+}
+
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model webpush_subscriptions {
+  Id         String    @id(map: "PK_webpush_subscriptions") @db.Uuid
+  UserId     String    @db.Uuid
+  Endpoint   String?
+  AuthKey    String?
+  PrivateKey String?
+  IsDeleted  Boolean
+  CreatedAt  DateTime  @db.Timestamp(6)
+  CreatedBy  String?
+  ModifiedAt DateTime? @db.Timestamp(6)
+  ModifiedBy String?
+  users      users     @relation(fields: [UserId], references: [Id], onDelete: Cascade, onUpdate: NoAction, map: "FK_webpush_subscriptions_users_UserId")
+
+  @@index([UserId], map: "IX_webpush_subscriptions_UserId")
+}

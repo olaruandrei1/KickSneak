@@ -1,0 +1,29 @@
+[
+  {
+    "Id": "f7d3e2b1-5c8a-4d90-8e12-3a4b5c6d7e8f",
+    "Name": "US",
+    "IsDeleted": false,
+    "CreatedAt": "2026-03-10T11:00:00",
+    "CreatedBy": "seed",
+    "ModifiedAt": "2026-03-10T11:00:00",
+    "ModifiedBy": "seed"
+  },
+  {
+    "Id": "a1b2c3d4-e5f6-4789-90ab-cdef01234567",
+    "Name": "EU",
+    "IsDeleted": false,
+    "CreatedAt": "2025-12-25T09:15:00",
+    "CreatedBy": "seed",
+    "ModifiedAt": "2025-12-25T09:15:00",
+    "ModifiedBy": "seed"
+  },
+  {
+    "Id": "b8c9d0e1-f2a3-4b4c-8d5e-6f7a8b9c0d1e",
+    "Name": "UK",
+    "IsDeleted": false,
+    "CreatedAt": "2026-05-01T16:45:00",
+    "CreatedBy": "seed",
+    "ModifiedAt": "2026-05-01T16:45:00",
+    "ModifiedBy": "seed"
+  }
+]

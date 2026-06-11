@@ -1,0 +1,312 @@
+[
+  {
+    "Id": "1a2b3c4d-5e6f-47a8-8b9c-0d1e2f3a4b5c",
+    "Name": "Nike",
+    "ParentId": null,
+    "IsDeleted": false,
+    "CreatedAt": "2026-03-10T10:15:30",
+    "CreatedBy": "seed",
+    "ModifiedAt": "2026-03-10T10:15:30",
+    "ModifiedBy": "seed"
+  },
+  {
+    "Id": "2b3c4d5e-6f7a-48b9-9c0d-1e2f3a4b5c6d",
+    "Name": "Adidas",
+    "ParentId": null,
+    "IsDeleted": false,
+    "CreatedAt": "2026-01-20T08:45:10",
+    "CreatedBy": "seed",
+    "ModifiedAt": "2026-01-20T08:45:10",
+    "ModifiedBy": "seed"
+  },
+  {
+    "Id": "3c4d5e6f-7a8b-49c0-ab1d-2e3f4a5b6c7e",
+    "Name": "New Balance",
+    "ParentId": null,
+    "IsDeleted": false,
+    "CreatedAt": "2025-12-05T14:00:00",
+    "CreatedBy": "seed",
+    "ModifiedAt": "2025-12-05T14:00:00",
+    "ModifiedBy": "seed"
+  },
+  {
+    "Id": "4d5e6f7a-8b9c-4a0b-bc2e-3f4a5b6c7d8f",
+    "Name": "Puma",
+    "ParentId": null,
+    "IsDeleted": false,
+    "CreatedAt": "2026-04-22T11:30:00",
+    "CreatedBy": "seed",
+    "ModifiedAt": "2026-04-22T11:30:00",
+    "ModifiedBy": "seed"
+  },
+  {
+    "Id": "5e6f7a8b-9c0d-4b1c-cd3f-4a5b6c7d8e90",
+    "Name": "Reebok",
+    "ParentId": null,
+    "IsDeleted": false,
+    "CreatedAt": "2026-02-18T09:10:20",
+    "CreatedBy": "seed",
+    "ModifiedAt": "2026-02-18T09:10:20",
+    "ModifiedBy": "seed"
+  },
+  {
+    "Id": "6f7a8b9c-0d1e-4c2d-de4a-5b6c7d8e9f01",
+    "Name": "ASICS",
+    "ParentId": null,
+    "IsDeleted": false,
+    "CreatedAt": "2026-05-01T16:05:00",
+    "CreatedBy": "seed",
+    "ModifiedAt": "2026-05-01T16:05:00",
+    "ModifiedBy": "seed"
+  },
+  {
+    "Id": "7a8b9c0d-1e2f-4d3e-ef5b-6c7d8e9f0123",
+    "Name": "Saucony",
+    "ParentId": null,
+    "IsDeleted": false,
+    "CreatedAt": "2026-01-08T13:20:15",
+    "CreatedBy": "seed",
+    "ModifiedAt": "2026-01-08T13:20:15",
+    "ModifiedBy": "seed"
+  },
+  {
+    "Id": "8b9c0d1e-2f3a-4e4f-fa6c-7d8e9f012345",
+    "Name": "Hoka",
+    "ParentId": null,
+    "IsDeleted": false,
+    "CreatedAt": "2026-03-25T07:50:05",
+    "CreatedBy": "seed",
+    "ModifiedAt": "2026-03-25T07:50:05",
+    "ModifiedBy": "seed"
+  },
+  {
+    "Id": "9c0d1e2f-3a4b-4f5a-ab7d-8e9f01234567",
+    "Name": "On Running",
+    "ParentId": null,
+    "IsDeleted": false,
+    "CreatedAt": "2026-04-01T10:00:00",
+    "CreatedBy": "seed",
+    "ModifiedAt": "2026-04-01T10:00:00",
+    "ModifiedBy": "seed"
+  },
+  {
+    "Id": "0d1e2f3a-4b5c-40b6-bc8e-9f0123456789",
+    "Name": "Under Armour",
+    "ParentId": null,
+    "IsDeleted": false,
+    "CreatedAt": "2026-02-01T15:40:30",
+    "CreatedBy": "seed",
+    "ModifiedAt": "2026-02-01T15:40:30",
+    "ModifiedBy": "seed"
+  },
+  {
+    "Id": "1e2f3a4b-5c6d-41c7-cd9f-0123456789ab",
+    "Name": "Converse",
+    "ParentId": null,
+    "IsDeleted": false,
+    "CreatedAt": "2026-05-15T11:00:00",
+    "CreatedBy": "seed",
+    "ModifiedAt": "2026-05-15T11:00:00",
+    "ModifiedBy": "seed"
+  },
+  {
+    "Id": "2f3a4b5c-6d7e-42d8-de0a-123456789abc",
+    "Name": "Vans",
+    "ParentId": null,
+    "IsDeleted": false,
+    "CreatedAt": "2026-01-12T17:00:00",
+    "CreatedBy": "seed",
+    "ModifiedAt": "2026-01-12T17:00:00",
+    "ModifiedBy": "seed"
+  },
+  {
+    "Id": "3a4b5c6d-7e8f-43e9-ef1b-23456789abcd",
+    "Name": "Salomon",
+    "ParentId": null,
+    "IsDeleted": false,
+    "CreatedAt": "2026-06-01T09:00:00",
+    "CreatedBy": "seed",
+    "ModifiedAt": "2026-06-01T09:00:00",
+    "ModifiedBy": "seed"
+  },
+  {
+    "Id": "4b5c6d7e-8f9a-44fa-fa2c-3456789abcde",
+    "Name": "Balenciaga",
+    "ParentId": null,
+    "IsDeleted": false,
+    "CreatedAt": "2026-03-01T14:00:00",
+    "CreatedBy": "seed",
+    "ModifiedAt": "2026-03-01T14:00:00",
+    "ModifiedBy": "seed"
+  },
+  {
+    "Id": "5c6d7e8f-9a0b-450b-bc3d-456789abcdef",
+    "Name": "Gucci",
+    "ParentId": null,
+    "IsDeleted": false,
+    "CreatedAt": "2026-02-20T10:30:00",
+    "CreatedBy": "seed",
+    "ModifiedAt": "2026-02-20T10:30:00",
+    "ModifiedBy": "seed"
+  },
+  {
+    "Id": "6d7e8f9a-0b1c-461c-cd4e-56789abcdef0",
+    "Name": "Louis Vuitton",
+    "ParentId": null,
+    "IsDeleted": false,
+    "CreatedAt": "2026-01-25T16:15:00",
+    "CreatedBy": "seed",
+    "ModifiedAt": "2026-01-25T16:15:00",
+    "ModifiedBy": "seed"
+  },
+  {
+    "Id": "7e8f9a0b-1c2d-472d-de5f-6789abcdef01",
+    "Name": "Dior",
+    "ParentId": null,
+    "IsDeleted": false,
+    "CreatedAt": "2026-04-05T11:45:00",
+    "CreatedBy": "seed",
+    "ModifiedAt": "2026-04-05T11:45:00",
+    "ModifiedBy": "seed"
+  },
+  {
+    "Id": "8f9a0b1c-2d3e-483e-ef6a-789abcdef012",
+    "Name": "Prada",
+    "ParentId": null,
+    "IsDeleted": false,
+    "CreatedAt": "2026-03-15T09:30:00",
+    "CreatedBy": "seed",
+    "ModifiedAt": "2026-03-15T09:30:00",
+    "ModifiedBy": "seed"
+  },
+  {
+    "Id": "9a0b1c2d-3e4f-494f-fa7b-89abcdef0123",
+    "Name": "Versace",
+    "ParentId": null,
+    "IsDeleted": false,
+    "CreatedAt": "2026-02-08T13:00:00",
+    "CreatedBy": "seed",
+    "ModifiedAt": "2026-02-08T13:00:00",
+    "ModifiedBy": "seed"
+  },
+  {
+    "Id": "a0b1c2d3-e4f5-4a5a-ab8c-9abcdef01234",
+    "Name": "Alexander McQueen",
+    "ParentId": null,
+    "IsDeleted": false,
+    "CreatedAt": "2026-05-10T14:00:00",
+    "CreatedBy": "seed",
+    "ModifiedAt": "2026-05-10T14:00:00",
+    "ModifiedBy": "seed"
+  },
+  {
+    "Id": "b1c2d3e4-f5a6-4b6b-bc9d-abcdef012345",
+    "Name": "Rick Owens",
+    "ParentId": null,
+    "IsDeleted": false,
+    "CreatedAt": "2026-01-18T10:00:00",
+    "CreatedBy": "seed",
+    "ModifiedAt": "2026-01-18T10:00:00",
+    "ModifiedBy": "seed"
+  },
+  {
+    "Id": "c2d3e4f5-a6b7-4c7c-cd0e-bcdef0123456",
+    "Name": "Supreme",
+    "ParentId": null,
+    "IsDeleted": false,
+    "CreatedAt": "2026-03-08T12:00:00",
+    "CreatedBy": "seed",
+    "ModifiedAt": "2026-03-08T12:00:00",
+    "ModifiedBy": "seed"
+  },
+  {
+    "Id": "d3e4f5a6-b7c8-4d8d-de1f-cdef01234567",
+    "Name": "A Bathing Ape (BAPE)",
+    "ParentId": null,
+    "IsDeleted": false,
+    "CreatedAt": "2026-02-25T15:00:00",
+    "CreatedBy": "seed",
+    "ModifiedAt": "2026-02-25T15:00:00",
+    "ModifiedBy": "seed"
+  },
+  {
+    "Id": "e4f5a6b7-c8d9-4e9e-ef2a-def012345678",
+    "Name": "Stussy",
+    "ParentId": null,
+    "IsDeleted": false,
+    "CreatedAt": "2026-04-10T11:00:00",
+    "CreatedBy": "seed",
+    "ModifiedAt": "2026-04-10T11:00:00",
+    "ModifiedBy": "seed"
+  },
+  {
+    "Id": "f5a6b7c8-d9e0-4f0f-fa3b-ef0123456789",
+    "Name": "Fear of God",
+    "ParentId": null,
+    "IsDeleted": false,
+    "CreatedAt": "2026-01-01T14:00:00",
+    "CreatedBy": "seed",
+    "ModifiedAt": "2026-01-01T14:00:00",
+    "ModifiedBy": "seed"
+  },
+  {
+    "Id": "a6b7c8d9-e0f1-4010-ab4c-f0123456789a",
+    "Name": "Off-White",
+    "ParentId": null,
+    "IsDeleted": false,
+    "CreatedAt": "2026-03-20T16:00:00",
+    "CreatedBy": "seed",
+    "ModifiedAt": "2026-03-20T16:00:00",
+    "ModifiedBy": "seed"
+  },
+  {
+    "Id": "b7c8d9e0-f1a2-4121-bc5d-0123456789ab",
+    "Name": "Travis Scott",
+    "ParentId": null,
+    "IsDeleted": false,
+    "CreatedAt": "2026-02-10T13:00:00",
+    "CreatedBy": "seed",
+    "ModifiedAt": "2026-02-10T13:00:00",
+    "ModifiedBy": "seed"
+  },
+  {
+    "Id": "c8d9e0f1-a2b3-4232-cd6e-123456789abc",
+    "Name": "Comme des Garcons",
+    "ParentId": null,
+    "IsDeleted": false,
+    "CreatedAt": "2026-04-15T10:00:00",
+    "CreatedBy": "seed",
+    "ModifiedAt": "2026-04-15T10:00:00",
+    "ModifiedBy": "seed"
+  },
+  {
+    "Id": "d9e0f1a2-b3c4-4343-de7f-23456789abcd",
+    "Name": "Air Jordan",
+    "ParentId": "1a2b3c4d-5e6f-47a8-8b9c-0d1e2f3a4b5c",
+    "IsDeleted": false,
+    "CreatedAt": "2026-03-12T10:20:00",
+    "CreatedBy": "seed",
+    "ModifiedAt": "2026-03-12T10:20:00",
+    "ModifiedBy": "seed"
+  },
+  {
+    "Id": "e0f1a2b3-c4d5-4454-ef8a-3456789abcde",
+    "Name": "Yeezy",
+    "ParentId": "2b3c4d5e-6f7a-48b9-9c0d-1e2f3a4b5c6d",
+    "IsDeleted": false,
+    "CreatedAt": "2026-01-22T08:50:00",
+    "CreatedBy": "seed",
+    "ModifiedAt": "2026-01-22T08:50:00",
+    "ModifiedBy": "seed"
+  },
+  {
+    "Id": "f1a2b3c4-d5e6-4565-fa9b-456789abcdef",
+    "Name": "FOG Essentials",
+    "ParentId": "f5a6b7c8-d9e0-4f0f-fa3b-ef0123456789",
+    "IsDeleted": false,
+    "CreatedAt": "2026-01-03T14:10:00",
+    "CreatedBy": "seed",
+    "ModifiedAt": "2026-01-03T14:10:00",
+    "ModifiedBy": "seed"
+  }
+]

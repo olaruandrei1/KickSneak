@@ -1,0 +1,32 @@
+[
+  {
+    "Id": "f8a4b6c3-e2d1-4f90-8a7b-1c2d3e4f5a6b",
+    "Name": "User",
+    "Level": 1,
+    "IsDeleted": false,
+    "CreatedAt": "2026-01-20T10:00:00",
+    "CreatedBy": "seed",
+    "ModifiedAt": "2026-01-20T10:05:00",
+    "ModifiedBy": "seed"
+  },
+  {
+    "Id": "a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d",
+    "Name": "Seller",
+    "Level": 2,
+    "IsDeleted": false,
+    "CreatedAt": "2026-03-10T11:30:00",
+    "CreatedBy": "seed",
+    "ModifiedAt": "2026-03-10T11:35:00",
+    "ModifiedBy": "seed"
+  },
+  {
+    "Id": "d5e6f7a8-b9c0-4d1e-9f2a-3b4c5d6e7f8a",
+    "Name": "Admin",
+    "Level": 3,
+    "IsDeleted": false,
+    "CreatedAt": "2025-12-25T09:15:00",
+    "CreatedBy": "seed",
+    "ModifiedAt": "2025-12-25T09:20:00",
+    "ModifiedBy": "seed"
+  }
+]

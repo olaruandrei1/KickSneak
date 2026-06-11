@@ -1,0 +1,202 @@
+[
+  {
+    "Id": "f7e8a9b0-c1d2-4e3f-9a8b-7c6d5e4f3a21",
+    "Name": "Sneakers",
+    "ParentId": null,
+    "IsDeleted": false,
+    "CreatedAt": "2026-01-05T10:15:30",
+    "CreatedBy": "seed",
+    "ModifiedAt": "2026-01-05T10:20:05",
+    "ModifiedBy": "seed"
+  },
+  {
+    "Id": "b8c9d0e1-f2a3-4b4c-8d9e-0f1a2b3c4d5e",
+    "Name": "Shoes",
+    "ParentId": null,
+    "IsDeleted": false,
+    "CreatedAt": "2026-02-10T11:20:45",
+    "CreatedBy": "seed",
+    "ModifiedAt": "2026-02-10T11:25:15",
+    "ModifiedBy": "seed"
+  },
+  {
+    "Id": "c3d4e5f6-a7b8-4c9d-8e0f-1a2b3c4d5e6f",
+    "Name": "Apparel",
+    "ParentId": null,
+    "IsDeleted": false,
+    "CreatedAt": "2025-12-20T09:00:10",
+    "CreatedBy": "seed",
+    "ModifiedAt": "2025-12-20T09:05:00",
+    "ModifiedBy": "seed"
+  },
+  {
+    "Id": "d9e0f1a2-b3c4-4d5e-8f6a-7b8c9d0e1f2a",
+    "Name": "Accessories",
+    "ParentId": null,
+    "IsDeleted": false,
+    "CreatedAt": "2026-03-18T14:00:00",
+    "CreatedBy": "seed",
+    "ModifiedAt": "2026-03-18T14:08:30",
+    "ModifiedBy": "seed"
+  },
+  {
+    "Id": "e4f5a6b7-c8d9-4e0f-9a1b-2c3d4e5f6a7b",
+    "Name": "Collectibles",
+    "ParentId": null,
+    "IsDeleted": false,
+    "CreatedAt": "2026-04-22T16:30:00",
+    "CreatedBy": "seed",
+    "ModifiedAt": "2026-04-22T16:35:40",
+    "ModifiedBy": "seed"
+  },
+  {
+    "Id": "1a2b3c4d-5e6f-4789-8012-34567890abcd",
+    "Name": "Running",
+    "ParentId": "f7e8a9b0-c1d2-4e3f-9a8b-7c6d5e4f3a21",
+    "IsDeleted": false,
+    "CreatedAt": "2026-01-10T15:00:00",
+    "CreatedBy": "seed",
+    "ModifiedAt": "2026-01-10T15:05:00",
+    "ModifiedBy": "seed"
+  },
+  {
+    "Id": "2b3c4d5e-6f7a-4890-a123-4567890abcde",
+    "Name": "Basketball",
+    "ParentId": "f7e8a9b0-c1d2-4e3f-9a8b-7c6d5e4f3a21",
+    "IsDeleted": false,
+    "CreatedAt": "2026-01-12T16:00:00",
+    "CreatedBy": "seed",
+    "ModifiedAt": "2026-01-12T16:07:00",
+    "ModifiedBy": "seed"
+  },
+  {
+    "Id": "3c4d5e6f-7a8b-4901-b234-567890abcdef",
+    "Name": "Lifestyle",
+    "ParentId": "f7e8a9b0-c1d2-4e3f-9a8b-7c6d5e4f3a21",
+    "IsDeleted": false,
+    "CreatedAt": "2026-01-14T17:00:00",
+    "CreatedBy": "seed",
+    "ModifiedAt": "2026-01-14T17:10:00",
+    "ModifiedBy": "seed"
+  },
+  {
+    "Id": "4d5e6f7a-8b9c-4012-c345-67890abcdef0",
+    "Name": "Skateboarding",
+    "ParentId": "f7e8a9b0-c1d2-4e3f-9a8b-7c6d5e4f3a21",
+    "IsDeleted": false,
+    "CreatedAt": "2026-01-16T18:00:00",
+    "CreatedBy": "seed",
+    "ModifiedAt": "2026-01-16T18:12:00",
+    "ModifiedBy": "seed"
+  },
+  {
+    "Id": "5e6f7a8b-9c0d-4123-d456-7890abcdef01",
+    "Name": "Trail",
+    "ParentId": "f7e8a9b0-c1d2-4e3f-9a8b-7c6d5e4f3a21",
+    "IsDeleted": false,
+    "CreatedAt": "2026-01-18T19:00:00",
+    "CreatedBy": "seed",
+    "ModifiedAt": "2026-01-18T19:15:00",
+    "ModifiedBy": "seed"
+  },
+  {
+    "Id": "6f7a8b9c-0d1e-4234-e567-890abcdef012",
+    "Name": "Slides & Sandals",
+    "ParentId": "b8c9d0e1-f2a3-4b4c-8d9e-0f1a2b3c4d5e",
+    "IsDeleted": false,
+    "CreatedAt": "2026-02-15T12:00:00",
+    "CreatedBy": "seed",
+    "ModifiedAt": "2026-02-15T12:06:00",
+    "ModifiedBy": "seed"
+  },
+  {
+    "Id": "7a8b9c0d-1e2f-4345-f678-90abcdef0123",
+    "Name": "Boots",
+    "ParentId": "b8c9d0e1-f2a3-4b4c-8d9e-0f1a2b3c4d5e",
+    "IsDeleted": false,
+    "CreatedAt": "2026-02-18T13:00:00",
+    "CreatedBy": "seed",
+    "ModifiedAt": "2026-02-18T13:08:00",
+    "ModifiedBy": "seed"
+  },
+  {
+    "Id": "8b9c0d1e-2f3a-4456-8789-0abcdef01234",
+    "Name": "T-Shirts",
+    "ParentId": "c3d4e5f6-a7b8-4c9d-8e0f-1a2b3c4d5e6f",
+    "IsDeleted": false,
+    "CreatedAt": "2025-12-25T10:00:00",
+    "CreatedBy": "seed",
+    "ModifiedAt": "2025-12-25T10:03:00",
+    "ModifiedBy": "seed"
+  },
+  {
+    "Id": "9c0d1e2f-3a4b-4567-9890-abcdef012345",
+    "Name": "Hoodies",
+    "ParentId": "c3d4e5f6-a7b8-4c9d-8e0f-1a2b3c4d5e6f",
+    "IsDeleted": false,
+    "CreatedAt": "2025-12-28T11:00:00",
+    "CreatedBy": "seed",
+    "ModifiedAt": "2025-12-28T11:07:00",
+    "ModifiedBy": "seed"
+  },
+  {
+    "Id": "0d1e2f3a-4b5c-4678-a901-bcdef0123456",
+    "Name": "Jackets",
+    "ParentId": "c3d4e5f6-a7b8-4c9d-8e0f-1a2b3c4d5e6f",
+    "IsDeleted": false,
+    "CreatedAt": "2026-01-02T12:00:00",
+    "CreatedBy": "seed",
+    "ModifiedAt": "2026-01-02T12:09:00",
+    "ModifiedBy": "seed"
+  },
+  {
+    "Id": "1e2f3a4b-5c6d-4789-b012-cdef01234567",
+    "Name": "Pants",
+    "ParentId": "c3d4e5f6-a7b8-4c9d-8e0f-1a2b3c4d5e6f",
+    "IsDeleted": false,
+    "CreatedAt": "2026-01-05T13:00:00",
+    "CreatedBy": "seed",
+    "ModifiedAt": "2026-01-05T13:11:00",
+    "ModifiedBy": "seed"
+  },
+  {
+    "Id": "2f3a4b5c-6d7e-4890-c123-def012345678",
+    "Name": "Hats",
+    "ParentId": "d9e0f1a2-b3c4-4d5e-8f6a-7b8c9d0e1f2a",
+    "IsDeleted": false,
+    "CreatedAt": "2026-03-20T15:00:00",
+    "CreatedBy": "seed",
+    "ModifiedAt": "2026-03-20T15:02:00",
+    "ModifiedBy": "seed"
+  },
+  {
+    "Id": "3a4b5c6d-7e8f-4901-d234-ef0123456789",
+    "Name": "Bags",
+    "ParentId": "d9e0f1a2-b3c4-4d5e-8f6a-7b8c9d0e1f2a",
+    "IsDeleted": false,
+    "CreatedAt": "2026-03-22T16:00:00",
+    "CreatedBy": "seed",
+    "ModifiedAt": "2026-03-22T16:05:00",
+    "ModifiedBy": "seed"
+  },
+  {
+    "Id": "4b5c6d7e-8f9a-4012-e345-f01234567890",
+    "Name": "Socks",
+    "ParentId": "d9e0f1a2-b3c4-4d5e-8f6a-7b8c9d0e1f2a",
+    "IsDeleted": false,
+    "CreatedAt": "2026-03-24T17:00:00",
+    "CreatedBy": "seed",
+    "ModifiedAt": "2026-03-24T17:07:00",
+    "ModifiedBy": "seed"
+  },
+  {
+    "Id": "5c6d7e8f-9a0b-4123-f456-012345678901",
+    "Name": "Trading Cards",
+    "ParentId": "e4f5a6b7-c8d9-4e0f-9a1b-2c3d4e5f6a7b",
+    "IsDeleted": false,
+    "CreatedAt": "2026-04-25T17:00:00",
+    "CreatedBy": "seed",
+    "ModifiedAt": "2026-04-25T17:04:00",
+    "ModifiedBy": "seed"
+  }
+]

@@ -65,17 +65,7 @@ public static class RegisterInfrastructureDependencies
 
         services.AddScoped<IElasticSearchService, ElasticSearchService>();
 
-        var appInsightsConn = configuration["ApplicationInsights:ConnectionString"];
-
-        if (!string.IsNullOrEmpty(appInsightsConn))
-        {
-            services.AddApplicationInsightsTelemetry();
-            services.AddSingleton<IApplicationInsightsFactory, ApplicationInsightsFactory>();
-        }
-        else
-        {
-            services.AddSingleton<IApplicationInsightsFactory, NoOpApplicationInsightsFactory>();
-        }
+        services.AddSingleton<IObservabilityFactory, GrafanaObservabilityFactory>();
 
         return services;
     }

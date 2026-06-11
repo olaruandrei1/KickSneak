@@ -3,7 +3,7 @@ using System.Diagnostics;
 
 namespace KickSneak.WebApi.Middlewares;
 
-public sealed class TraceMiddleware(RequestDelegate next, IApplicationInsightsFactory insights, ILogger<TraceMiddleware> logger)
+public sealed class TraceMiddleware(RequestDelegate next, IObservabilityFactory insights, ILogger<TraceMiddleware> logger)
 {
     public async Task InvokeAsync(HttpContext context)
     {
