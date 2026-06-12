@@ -1,0 +1,39 @@
+\chapter{Search, observabilitate și servicii de comunicare}
+
+Sistemele software de nivel enterprise necesită componente solide pentru căutarea rapidă a informațiilor, monitorizarea stării resurselor și comunicarea asincronă cu utilizatorii. Platforma KickSneak adresează aceste cerințe prin integrarea motorului de căutare dedicat Elasticsearch, a unui stack complet de observabilitate format din Prometheus, Loki și Grafana, precum și a unui serviciu poliglot de notificări scris în limbajul Kotlin sub formă de serverless functions. În acest capitol este descris modul în care aceste piese colaborează pentru a asigura performanța, diagnosticarea rapidă și informarea utilizatorilor în timp real.
+
+\section{Elasticsearch --- indexare și căutare}
+
+Căutarea textuală rapidă este asigurată de Elasticsearch 8.x \cite{elasticsearch2026search}, un motor de căutare distribuit construit pe Apache Lucene. În KickSneak, am creat indexul \texttt{products} pentru stocarea sneakers-ilor disponibili. Schema indexului definește câmpurile text (name, description) pentru full-text search, keyword (brand, category, tags, sizes) pentru filtrare exactă și float (price) pentru range queries.
+
+Pentru a asigura consistența datelor fără a penaliza performanța tranzacțională din backend, am implementat un model de sincronizare eventuală asincronă. Când un administrator sau un seller adaugă ori modifică un produs, serviciul \texttt{ProductService} introduce un eveniment de tip \texttt{ElasticSyncEvent(ProductId, OperationType)} într-un canal in-process asincron (\texttt{Channel<T>}) \cite{ms2026channels}. Un serviciu de fundal persistent (\texttt{ElasticsearchSyncService}, de tip \texttt{IHostedService}) ascultă acest canal în mod neblocant. Când primește un eveniment, serviciul preia starea actualizată a produsului din PostgreSQL, o transformă într-un document JSON optimizat și o indexează în Elasticsearch.
+
+Cererea de căutare din interfață apelează endpoint-ul de backend, care traduce parametrii într-o interogare Elasticsearch Query DSL. Căutarea folosește o structură de tip \texttt{multi\_match} pe câmpurile \texttt{name}, \texttt{brand} și \texttt{tags}, aplicând un algoritm de căutare aproximativă prin setarea \texttt{"fuzziness": "AUTO"} \cite{elasticsearch2026search}. Aceasta oferă o toleranță la greșeli de tipar (distanța Levenshtein de maximum 2 caractere), ordonând rezultatele pe baza scorului de relevanță textuală BM25.
+
+\section{Kibana}
+
+Platforma Kibana este utilizată ca instrument de dezvoltare și inspecție vizuală a datelor stocate în Elasticsearch, rulând local ca serviciu în Docker Compose. Prin intermediul consolei Dev Tools, Kibana a facilitat testarea, validarea și optimizarea mapping-urilor de index și a interogărilor JSON Query DSL înainte de transpunerea acestora în codul C\#. Din motive de securitate, acest utilitar este folosit exclusiv în faza de dezvoltare și testare, nefiind expus public în mediul de producție.
+
+\section{Stack-ul Grafana: Prometheus și Loki}
+
+Observabilitatea sistemului este o cerință critică într-o arhitectură distribuită. Am construit un stack de monitorizare centralizat bazat pe Prometheus, Loki și Grafana.
+
+\textbf{Prometheus} este utilizat pentru colectarea metricilor de performanță time-series \cite{prometheus2026metrics}. În backend-ul .NET, am integrat pachetul \texttt{prometheus-net.AspNetCore}, care expune un endpoint securizat la adresa \texttt{/metrics} (memorie RAM, timp CPU, rate de request-uri și latențe). Serviciul de chat în Go își expune propriile metrici custom (conexiunile WebSocket active, latența de răspuns a modelului Ollama). Prometheus scanează aceste endpoint-uri la fiecare 15 secunde.
+
+\textbf{Loki} funcționează ca un sistem de agregare a jurnalelor de execuție (\textit{logs}). Containerele Docker trimit output-ul standard (\texttt{stdout}) către driverul Loki, care indexează doar label-urile metadata.
+
+\textbf{Grafana} oferă interfața grafică de vizualizare, conectându-se la Prometheus și Loki ca surse de date. Am construit un panou de control custom în Grafana organizat pe baza metodologiei RED, monitorizând rata interogărilor (Rate, request-uri/secundă), erorile (Errors, rata de eșec HTTP) și durata (Duration, latența p95 și p99). Datorită utilizării aceluiași identificator de trace (\texttt{TraceId}), operatorul poate corela un vârf de latență din Grafana cu log-urile specifice din Loki pentru diagnosticarea rapidă a blocajelor.
+
+\section{Kotlin --- Serviciul de notificări push}
+
+Pentru a menține utilizatorii la curent cu stadiul licitațiilor și al comenzilor, am implementat un microserviciu dedicat trimiterii de notificări push în browser, scris în Kotlin. Acesta rulează sub formă de Azure Functions (JVM runtime) \cite{kotlin2026azfunc}. Serviciul folosește două modalități de declanșare: \textbf{Timer Trigger} (scanează periodic baza de date PostgreSQL la fiecare 5 minute prin cron-ul \texttt{0 */5 * * * *} pentru a identifica licitațiile care se finalizează curând) și \textbf{HTTP Trigger} (endpoint apelat de backend-ul .NET la schimbarea statusului comenzilor).
+
+Notificările sunt transmise utilizând protocolul standardizat *VAPID* \cite{vapid2017rfc}. Când un utilizator acceptă primirea notificărilor în frontend, browser-ul generează un obiect \texttt{Subscription} stocat în PostgreSQL în tabelul \texttt{push\_subscriptions}. Serviciul Kotlin citește aceste date și trimite mesajele criptat către serverele push ale browserului utilizând biblioteca \texttt{nl.martijndwars:web-push}:
+
+\begin{lstlisting}[language=Kotlin]
+val pushService = PushService(vapidPublicKey, vapidPrivateKey, subject)
+val notification = Notification(endpoint, userPublicKey, authAsBytes, payload.toByteArray())
+pushService.send(notification)
+\end{lstlisting}
+
+Notificarea este recepționată de un Service Worker în React și afișată la nivel de sistem de operare chiar dacă tab-ul platformei este închis. Acest design decuplează trimiterea de mesaje de serverul web principal.

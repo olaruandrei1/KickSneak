@@ -1,0 +1,51 @@
+\chapter{Interfața client (React)}
+
+Aplicația frontend destinată utilizatorilor finali ai platformei KickSneak joacă un rol critic în succesul sistemului, fiind responsabilă direct de oferirea unei experiențe de navigare rapide și interactive. Aceasta este dezvoltată utilizând biblioteca React 18, TypeScript și sistemul de build Vite. În acest capitol sunt prezentate structura componentelor client, gestiunea stării globale prin Zustand, optimizarea regăsirii datelor și integrarea fluxurilor în timp real.
+
+\section{Arhitectură și principii de design}
+
+Interfața grafică este structurată în conformitate cu metodologia \textit{Atomic Design} \cite{frost2016atomic}, fiind descompusă în elemente ierarhice: \textbf{Atoms} (componente de bază fără stare de business, ex. \texttt{GlassButton}), \textbf{Molecules} (asamblări simple cu stări interne de UI, ex. \texttt{SearchBar}), \textbf{Organisms} (secțiuni complexe ce interacționează cu store-urile globale, ex. \texttt{Navbar}) și \textbf{Pages} (ecrane complete rulate sub formă de rute, ex. \texttt{AuctionDetailPage}). Stilizarea componentelor utilizează \textit{CSS Modules} (\texttt{ComponentName.module.css}) asociate fiecărei componente, prevenind coliziunile. Designul vizual adoptă o estetică de tip \textit{Glassmorphism} (transparență opacă, border-uri fine și filtre de blur), configurată prin variabile CSS globale. Pentru rularea fără backend, s-a implementat variabila \texttt{VITE\_USE\_MOCKS=true}, care redirecționează apelurile către mock-uri JSON statice.
+
+\section{Gestiunea stării cu Zustand}
+
+Gestiunea stării globale utilizează biblioteca Zustand \cite{zustand}, bazată pe hook-uri React strongly-typed, care elimină boilerplate-ul specific Redux și previne re-randările inutile prin subscripții granulare. Store-urile configurate includ:
+\begin{itemize}
+    \item \texttt{useAuthStore}: Reține datele de profil Firebase, token-ul JWT și starea sesiunii.
+    \item \texttt{useCartStore}: Administrează produsele din coș și calculează prețul în timp real.
+    \item \texttt{useFavoritesStore}: Gestionează produsele marcate ca favorite.
+    \item \texttt{useNotificationStore}: Stochează alertele primite în timp real prin SignalR.
+\end{itemize}
+
+Store-urile de coș și favorite folosesc *Optimistic Updates*: starea se modifică instantaneu în interfață, urmată de apelul API asincron, executându-se un rollback automat în caz de eșec. Starea filtrelor active pe paginile de rezultate este păstrată direct în query parameters din URL (ex. \texttt{?brand=Nike\&size=42}), permițând navigarea nativă a browserului.
+
+\section{Serviciul CachedFetchService}
+
+Pentru a reduce latențele de încărcare a datelor statice, s-a dezvoltat \texttt{CachedFetchService}, care aplică o strategie \textit{stale-while-revalidate} peste \texttt{localStorage}:
+\begin{enumerate}
+    \item Verifică datele salvate local și le returnează instantaneu către componentă printr-un callback (\texttt{onData}) pentru randarea fără loading spinners.
+    \item Lansează o cerere HTTP asincronă în fundal către server pentru a prelua datele actuale.
+    \item Compară rezultatele și, dacă există diferențe, actualizează memoria locală și apelează din nou callback-ul \texttt{onData} pentru re-randarea lină.
+\end{enumerate}
+
+\section{Pagini și fluxuri interactive}
+
+Pagina de căutare (\texttt{SearchResultsPage}) utilizează tehnica de debouncing la introducerea textului pentru a evita suprasolicitarea API-ului și implementează \textit{infinite scroll} prin API-ul nativ \texttt{IntersectionObserver}.
+
+Pagina detaliată a licitației (\texttt{AuctionDetailPage}) integrează un countdown timer reactiv și un mecanism de \textit{anti-snipe}: plasarea unui bid în ultimele 2 minute extinde automat timpul de finalizare cu 1 minut, starea fiind sincronizată prin SignalR.
+
+Tabloul de bord al profilului este un tablou de bord complet al profilului cu secțiuni pentru comenzi, adrese, retururi, chat și funcționalități dedicate vânzătorilor.
+
+\section{Comunicarea în timp real și optimizări}
+
+Sincronizarea licitațiilor folosește biblioteca client \texttt{@microsoft/signalr} pentru a asculta evenimentul \texttt{BidPlaced} și a actualiza starea în mod reactiv:
+\begin{lstlisting}[language=TypeScript]
+connection.on("BidPlaced", (data: BidPlacedPayload) => {
+  if (data.auctionId === currentAuctionId) {
+    updateAuctionState(data.amount, data.bidderId);
+  }
+});
+\end{lstlisting}
+
+Pentru suport, clientul utilizează o conexiune WebSocket nativă către Go Chat Service. Token-urile generate de modelul Ollama sunt citite în format streaming și afișate progresiv cu un efect vizual de tastare.
+
+Performanța este optimizată prin importul asincron al rutelor utilizând \texttt{React.lazy()} și \texttt{Suspense} pentru fragmentarea bundle-ului principal, utilizarea hook-ului \texttt{useMemo} pentru a preveni recalcularea filtrelor pe liste mari, și aplicarea listener-ului \texttt{useWindowSize} pentru adaptarea ecranului fără randări redundante în DOM.

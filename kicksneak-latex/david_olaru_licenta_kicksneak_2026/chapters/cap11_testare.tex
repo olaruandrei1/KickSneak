@@ -1,0 +1,66 @@
+\chapter{Testare}
+
+Asigurarea funcționării corecte și a stabilității unei platforme distribuite poliglote necesită o strategie de validare riguroasă, aplicată la niveluri diferite de granularitate. Pentru platforma KickSneak, am proiectat și implementat un plan complet de testare, acoperind teste unitare de logică internă, teste de integrare a endpoint-urilor HTTP și scenarii automate de la un capăt la altul (E2E) pe interfața grafică. În acest capitol sunt descrise arhitectura suitei de teste, utilizarea bibliotecilor de mock-uire, rularea containerelor ephemere pentru baze de date de test și integrarea testelor în fluxul de integrare continuă (CI/CD).
+
+\section{Strategia de testare}
+
+Procesul de asigurare a calității codului în platforma KickSneak respectă structura clasică a piramidei de testare propusă de Martin Fowler \cite{fowler2026testing}. Aceasta organizează testele pe trei niveluri: \textbf{Unit Tests} (teste numeroase și rapide care izolează logica de business prin mock-uri), \textbf{Integration Tests} (teste de colaborare între componente și baza de date persistentă) și \textbf{End-to-End Tests} (teste de automatizare a browser-ului pe interfața React reală). Cerința academică minimă a tezei de a include cel puțin 10 teste unitare funcționale a fost acoperită și depășită pe deplin, asamblând o acoperire de cod robustă pentru cazurile critice.
+
+\section{Unit tests --- xUnit + NSubstitute + Shouldly}
+
+În backend-ul .NET, testele unitare sunt scrise utilizând framework-ul \texttt{xUnit} \cite{xunit2026docs}. Pentru crearea rapidă a obiectelor mock am ales biblioteca \texttt{NSubstitute} \cite{nsubstitute2026docs}, iar pentru scrierea aserțiunilor clare și lizibile am utilizat \texttt{Shouldly}. Fiecare test respectă structura standard AAA (\textit{Arrange / Act / Assert}).
+
+Am dezvoltat suite de teste detaliate pentru serviciile cheie ale platformei:
+
+\textbf{AuctionService}:
+\begin{itemize}
+    \item \texttt{PlaceBid\_HappyPath}: Validează plasarea unui bid valid, scrierea în Redis/PostgreSQL și transmiterea prin SignalR.
+    \item \texttt{PlaceBid\_BelowCurrentPrice}: Verifică aruncarea excepției \texttt{BusinessException} la introducerea unei sume inferioare ofertei curente.
+    \item \texttt{PlaceBid\_AutoBidChain}: Testează recursivitatea auto-bid-ului, limitată de guardul \texttt{MaxAutoBidDepth = 10}.
+\end{itemize}
+
+\textbf{OrderService}:
+\begin{itemize}
+    \item \texttt{CreateOrder\_HappyPath}: Validează crearea unei comenzi valide, decrementarea stocului și generarea sesiunii Stripe.
+    \item \texttt{CreateOrder\_OutOfStock}: Verifică blocarea tranzacției și aruncarea excepției când cantitatea din stoc este zero.
+\end{itemize}
+
+În mod similar, microserviciul Go Chat folosește pachetul nativ \texttt{testing} pentru validarea logicii de asistență virtuală. Testul \texttt{TestSendMessage\_EscalateIntent} trimite un mesaj cu intenție de plângere, validând că serviciul actualizează statusul sesiunii în PostgreSQL ca fiind \texttt{"escalated"} și returnează payload-ul corespunzător.
+
+\section{Integration tests --- ASP.NET Core TestServer}
+
+Testele de integrare din backend-ul .NET utilizează clasa \texttt{WebApplicationFactory<Program>} pentru a porni o instanță în memorie a întregului server web ASP.NET Core. Rutele HTTP sunt interogate utilizând un client HTTP de test configurat automat.
+
+Pentru a asigura o validare fidelă fără a polua baza de date de dezvoltare, am implementat două strategii pentru persistență:
+\begin{itemize}
+    \item \textbf{InMemory Database Provider}: Pentru testarea rapidă a endpoint-urilor simple, baza relațională este înlocuită cu un provider in-memory local.
+    \item \textbf{Testcontainers}: Pentru testarea politicilor RLS și a instrucțiunilor de switch de rol, biblioteca \texttt{Testcontainers} \cite{testcontainers2026docs} pornește asincron un container Docker PostgreSQL ephemeral înainte de rularea suitei și îl distruge la final.
+\end{itemize}
+
+Testele de integrare validează rutele critice:
+\begin{itemize}
+    \item \texttt{POST /api/v1/auctions/\{id\}/bid}: Trimite o cerere autentificată cu un token JWT de test, verificând returnarea statusului \texttt{200 OK} și actualizarea prețului.
+    \item \texttt{GET /api/v1/products/search}: Validează că interogările transmise către instanța Elasticsearch mockuită întorc rezultate structurate corespunzător.
+\end{itemize}
+
+\section{Automatizare și CI/CD}
+
+Testele de tip End-to-End validează interfața grafică React utilizând biblioteca \texttt{Playwright} \cite{playwright2026docs}, rulând o instanță headless de browser Chromium pe codul local. S-a dezvoltat un scenariu complet care validează fluxul principal de cumpărare:
+\begin{enumerate}
+    \item Căutarea produsului: Introduce textul în bara de căutare din interfață și validează sugestiile live.
+    \item Adăugarea în coș: Selectează produsul, se autentifică prin contul Firebase de test și adaugă articolul în coșul virtual.
+    \item Finalizarea tranzacției Stripe: Completează adresa, trece prin Stripe Checkout introducând cardul de test și validează ecranul de confirmare.
+\end{enumerate}
+
+În caz de eșec, Playwright capturează ecranul (\texttt{page.screenshot()}) pentru diagnosticare vizuală rapidă.
+
+Pentru a asigura calitatea codului la fiecare push sau pull request, am integrat suita de teste într-un pipeline de integrare continuă în GitHub Actions (\texttt{test.yml}). Pipeline-ul rulează în paralel:
+\begin{itemize}
+    \item \texttt{unit-tests}: Instalează .NET 10 și rulează comanda:
+    \begin{lstlisting}[language=Bash]
+    dotnet test --configuration Release --collect:"XPlat Code Coverage"
+    \end{lstlisting}
+    \item \texttt{go-tests}: Instalează Go și execută testele unitare pentru serviciul de chat.
+    \item \texttt{integration-tests}: Pornește PostgreSQL în runner, rulează migrările și execută testele de integrare.
+\end{itemize}
+La finalizare, statusul pipeline-ului este actualizat direct în repository, prevenind regresiunile în ramurile principale.

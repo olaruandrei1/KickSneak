@@ -1,0 +1,144 @@
+\chapter{Securitate aplicată}
+
+\section{Filozofia de securitate --- Defense in Depth}
+
+Securitatea reprezintă un pilon fundamental în proiectarea platformei KickSneak. Sistemul adoptă principiul de securitate în profunzime (\textit{Defense in Depth}), structurând protecția pe cinci straturi defensive independente capabile să se compenseze reciproc în cazul defectării uneia dintre ele:
+\begin{enumerate}
+    \item \textbf{Stratul Edge / Periferic}: Gestionează securitatea la nivel de transport HTTP, forțarea HTTPS, reguli CORS și headere de securitate browser-side.
+    \item \textbf{Stratul de Rate Limiting}: Protejează API-ul împotriva atacurilor de tip DDoS și brute-force pe rutele sensibile prin limitări per IP sau utilizator.
+    \item \textbf{Stratul de Autentificare}: Validează criptografic identitatea utilizatorilor prin Firebase SDK, corelat cu blacklist în Redis și urmărirea IP-urilor.
+    \item \textbf{Stratul de Autorizare}: Asigură controlul permisiunilor prin maparea identității pe roluri în baza de date (RBAC) și impunerea politicii Row Level Security (RLS).
+    \item \textbf{Stratul de Protecție a Datelor}: Previne SQL Injection prin ORM-uri parametrizate (EF Core și Prisma) și liste albe (whitelists) în interogările Dapper brute.
+\end{enumerate}
+
+Suplimentar, sistemul integrează un strat transversal de audit și observabilitate (\texttt{TraceMiddleware}), care urmărește fiecare tranzacție, alături de reguli de cod restrictive.
+
+\section{Pipeline-ul de middleware-uri}
+
+În cadrul backend-ului principal în .NET 10, toate request-urile HTTP sosite sunt trecute printr-un pipeline secvențial de middleware-uri configurate în \texttt{Program.cs}:
+\begin{enumerate}
+    \item \texttt{SecurityHeadersMiddleware}: Setează headerele HTTP de securitate pe orice răspuns, inclusiv în caz de excepții.
+    \item \texttt{TraceMiddleware}: Generează un identificator unic (\texttt{TraceId}), pornește cronometrarea performanței și inițializează contextul de auditare.
+    \item \texttt{RateLimiterMiddleware}: Verifică frecvența request-urilor și respinge apelurile abuzive cu codul HTTP 429, prevenind consumul de CPU.
+    \item \texttt{FirebaseAuthMiddleware}: Extrage token-ul JWT din header, verifică validitatea semnăturii criptografice și populează Claims în \texttt{ClaimsPrincipal}.
+    \item \texttt{UserResolverMiddleware}: Folosește identitatea pentru a efectua un lookup rapid în DB și a popula contextul tranzacțional (\texttt{RlsContext}) cu ID-ul intern și rolul aferent (\texttt{DbRole}).
+    \item \texttt{Endpoint Handlers / Controllers}: Logica efectivă a aplicației care rulează într-un context complet autentificat și controlat.
+\end{enumerate}
+
+Plasarea \texttt{RateLimiterMiddleware} înaintea \texttt{FirebaseAuthMiddleware} garantează că atacurile brute-force nu consumă resurse computaționale pentru validarea token-urilor JWT, request-urile abuzive fiind blocate instant pe baza adresei IP.
+
+\section{SecurityHeadersMiddleware}
+
+Rolul principal al \texttt{SecurityHeadersMiddleware} constă în întărirea politicilor de securitate din browserele clienților prin injectarea de headere HTTP specifice. Tabelul \ref{tab:secheaders} prezintă headerele setate la nivelul fiecărui răspuns returnat de platformă. Headerele \texttt{Cache-Control} și \texttt{Pragma} sunt setate pe \texttt{no-store, no-cache} pentru a preveni stocarea datelor sensibile, în timp ce \texttt{Referrer-Policy} protejează datele de navigare.
+
+\begin{table}[htbp]
+\centering
+\small
+\begin{tabular}{p{5cm} p{4cm} p{6cm}}
+\toprule
+\textbf{Header HTTP} & \textbf{Valoare configurată} & \textbf{Rol de securitate} \\
+\midrule
+\texttt{X-Content-Type-Options} & \texttt{nosniff} & Împiedică MIME sniffing, blocând execuția fișierelor script mascate ca imagini. \\
+\texttt{X-Frame-Options} & \texttt{DENY} & Protecție anti-clickjacking; interzice încadrarea aplicației în iframe-uri externe. \\
+\texttt{Content-Security-Policy} & \texttt{default-src 'self'; ...} & Permite execuția de scripturi și resurse doar de pe domeniul propriu, prevenind XSS. \\
+\texttt{Strict-Transport-Security} & \texttt{max-age=31536000} & (HSTS) Forțează browserul să comunice exclusiv prin HTTPS securizat. \\
+\texttt{Permissions-Policy} & \texttt{geolocation=(), ...} & Blochează accesul programatic la cameră, microfon și senzori hardware. \\
+\bottomrule
+\end{tabular}
+\caption{Configurația de securitate a headerelor HTTP în KickSneak}
+\label{tab:secheaders}
+\end{table}
+
+Suplimentar, pentru a îngreuna analiza amprentei software (\textit{fingerprinting reduction}), middleware-ul elimină headerele implicite: \texttt{X-Powered-By}, \texttt{Server}, \texttt{X-AspNet-Version} și \texttt{X-AspNetMvc-Version}. Politica CSP (\textit{Content Security Policy}) interzice explicit scripturile inline (\texttt{unsafe-inline}) și cele aduse de pe CDN-uri externe.
+
+\section{RateLimiterMiddleware}
+
+Middleware-ul de limitare a ratei de acces (\texttt{RateLimiterMiddleware}) folosește un algoritm de fereastră glisantă (\textit{sliding window}) implementat in-memory prin structuri thread-safe. Algoritmul reține timestamp-ul fiecărui request într-o coadă \texttt{Queue<DateTime>}. La sosirea unui request nou, procesul efectuează trei pași:
+\begin{enumerate}
+    \item \textbf{Curățarea}: Elimină din coada de apeluri timestamp-urile mai vechi decât lungimea ferestrei setate (ex. 60 de secunde).
+    \item \textbf{Validarea}: Verifică dacă numărul de apeluri rămase depășește pragul maxim definit; în caz afirmativ, returnează HTTP 429.
+    \item \textbf{Înregistrarea}: Adaugă timestamp-ul curent în coada utilizatorului și permite continuarea execuției request-ului.
+\end{enumerate}
+
+Platforma aplică politici diferențiate în funcție de sensibilitatea rutei apelate, conform Tabelului \ref{tab:ratelimit}.
+
+\begin{table}[htbp]
+\centering
+\small
+\begin{tabular}{p{4cm} p{2.5cm} p{2.5cm} p{6cm}}
+\toprule
+\textbf{Categorie rute} & \textbf{Limită request-uri} & \textbf{Fereastră timp} & \textbf{Justificare securitate} \\
+\midrule
+\texttt{/api/auth/*} & 10 request-uri & 60 secunde & Protecție brute-force pe validări token / login. \\
+\texttt{/api/checkout/*} & 5 request-uri & 60 secunde & Previne abuzul pe API-urile de plată și checkout Stripe. \\
+\texttt{/api/auctions/*/bid} & 30 request-uri & 60 secunde & Toleranță la plasarea rapidă de bid-uri în ultimele secunde. \\
+Rute implicite (Default) & 100 request-uri & 60 secunde & Limitare generală de trafic pentru utilizatori normali. \\
+\bottomrule
+\end{tabular}
+\caption{Politicile de limitare a ratei de acces per rută în KickSneak}
+\label{tab:ratelimit}
+\end{table}
+
+Pentru utilizatorii autentificați, limita este multiplicată cu 3, iar cheia bucket-ului devine \texttt{\{UserId\}:\{Path\}}, în timp ce pentru vizitatorii anonimi se folosește \texttt{\{IP\}:\{Path\}}. Mecanismul utilizează un \texttt{ConcurrentDictionary} cu blocări exclusive (\texttt{lock}) pe cheie pentru a asigura thread-safety.
+
+\section{FirebaseAuthMiddleware}
+
+Autentificarea utilizatorilor în KickSneak este gestionată asincron prin integrarea Firebase Authentication SDK. Procesul din \texttt{FirebaseAuthMiddleware} se desfășoară după următorul algoritm:
+\begin{enumerate}
+    \item Extrage header-ul \texttt{Authorization} din request; dacă acesta lipsește sau este invalid, conexiunea primește automat rolul de \texttt{ks\_guest}.
+    \item Verifică blacklist-ul în Redis (\texttt{auth:blacklist:\{token\_prefix\_20\}}) pentru a invalida token-urile utilizatorilor deconectați (logout).
+    \item Validează criptografic token-ul JWT Firebase (semnătură, expirare, audiență) prin \texttt{VerifyIdTokenAsync}.
+    \item Extrage Claims de identitate (UID Firebase, e-mail, nume) și asociază request-ului un obiect \texttt{ClaimsPrincipal}.
+    \item \textbf{Audit și sesiune}: Monitorizează IP-ul în Redis (\texttt{auth:ips:\{uid\}}) emitând alerte la locații noi și actualizează sesiunea activă cu un TTL de o oră.
+\end{enumerate}
+
+Dacă validarea criptografică eșuează, se interceptează excepția, se înregistrează eroarea pentru audit și se returnează codul HTTP 401 simplu, prevenind scurgerea datelor tehnice interne.
+
+\section{UserResolverMiddleware}
+
+Middleware-ul \texttt{UserResolverMiddleware} realizează maparea dintre identitatea externă Firebase și structurile interne din baza de date KickSneak, decuplând autentificarea de accesul la date:
+\begin{enumerate}
+    \item Extrage identificatorul unic \texttt{uid} din obiectul \texttt{ClaimsPrincipal} populat anterior de middleware-ul Firebase.
+    \item Execută o interogare rapidă cu micro-ORM-ul Dapper direct pe baza de date PostgreSQL, folosind conexiunea administrativă:
+    \begin{lstlisting}[language=SQL]
+    SELECT u."Id",
+           EXISTS(SELECT 1 FROM sellers s WHERE s."UserId" = u."Id" AND NOT s."IsDeleted") AS "IsSeller"
+    FROM users u
+    WHERE u."FirebaseUid" = @Uid AND NOT u."IsDeleted"
+    \end{lstlisting}
+    \item Populează contextul scoped \texttt{RlsContext} cu ID-ul intern (\texttt{UserId}) și rolul corespunzător (\texttt{DbRole.Seller} sau \texttt{DbRole.User}).
+    \item Salvează aceste valori în \texttt{HttpContext.Items} sub cheile \texttt{DbUserId} și \texttt{IsSeller} pentru acces rapid.
+\end{enumerate}
+
+Pentru prima autentificare a unui utilizator nou pe platformă, \texttt{UserResolverMiddleware} setează rolul temporar de \texttt{DbRole.User} în loc de \texttt{DbRole.Guest}, permițând inserarea inițială în tabela \texttt{users} (altfel blocată de RLS). Lookup-ul prin Dapper evită overhead-ul EF Core, asigurând o latență sub o milisecundă, cu parametrizare strictă contra SQL Injection.
+
+\section{TraceMiddleware --- Audit și observabilitate}
+
+La pornirea request-ului, \texttt{TraceMiddleware} generează sau extrage un identificator unic de request (\texttt{TraceId}), pe care îl injectează în răspuns ca \texttt{X-Trace-Id} și îl asociază logurilor. Middleware-ul folosește un \texttt{Stopwatch} pentru a cronometra performanța și, în caz de excepție necontrolată, înregistrează stack-trace-ul în Loki corelat cu \texttt{TraceId}. În final, calculează durata totală și înregistrează metricile în Prometheus prin interfața \texttt{IObservabilityFactory}.
+
+\section{Securitate la nivel de date}
+
+Securitatea la nivel de date garantează că baza de date nu poate fi compromisă prin interogări abuzive. Toate interogările EF Core și Prisma sunt traduse în interogări SQL parametrizate în mod nativ, eliminând SQL Injection. În porțiunile unde se utilizează Dapper pentru comanda \texttt{SET LOCAL ROLE}, valorile pentru rolul bazei de date sunt preluate dintr-o listă albă bazată pe structura unui enum:
+\begin{lstlisting}[language={[sharp]C}]
+string pgRole = role switch
+{
+    DbRole.User => "ks_user",
+    DbRole.Seller => "ks_seller",
+    DbRole.Admin => "ks_admin",
+    DbRole.Chat => "ks_chat_service",
+    _ => "ks_guest"
+};
+\end{lstlisting}
+
+Intrările din exterior nu influențează structura comenzii SQL. Politicile RLS acționează ca un ultim strat defensiv, refuzând returnarea datelor care aparțin altor utilizatori în caz de bug-uri.
+
+\section{Securitate la nivel de cod}
+
+Platforma aplică principiul privilegiului minim direct în organizarea fișierelor de cod prin modificatori de acces C\# moderni:
+\begin{itemize}
+    \item \textbf{Modificatorul \texttt{sealed}}: Clasele de middleware și serviciile sunt declared ca \texttt{public sealed class}, interzicând moștenirea și suprascrierea.
+    \item \textbf{Modificatorul \texttt{internal}}: Utilizat pe clasele auxiliare care prelucrează date sensibile din proiectul de infrastructură.
+    \item \textbf{\texttt{file}-scoped types}: Declară tipuri (cum ar fi clasa de lookup \texttt{UserLookup}) ca \texttt{file class}, fiind invizibile în afara fișierului de cod.
+    \item \textbf{Imutabilitatea}: Setările de securitate utilizează \texttt{record} și proprietăți de tip \texttt{init}, prevenind modificarea politicilor la runtime.
+    \item \textbf{Constructori primari (Primary Constructors)}: Declară automat dependențele de securitate injectate (logger, servicii Redis) ca readonly.
+\end{itemize}

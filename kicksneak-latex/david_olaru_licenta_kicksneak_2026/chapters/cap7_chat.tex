@@ -1,0 +1,130 @@
+\chapter{Microserviciul de chat (Go)}
+
+Pentru a asigura o asistență conversațională eficientă și rapidă în timp real, am proiectat și implementat un microserviciu dedicat pentru chat, scris în limbajul Go. Acest serviciu se conectează cu modelul LLM local rulate prin Ollama și facilitează comunicarea bidirecțională directă prin protocoale WebSocket. Alegerea limbajului Go și separarea acestei funcționalități într-un serviciu independent au la bază considerente clare de performanță, concurență și decuplare a responsabilităților arhitecturale. În acest capitol este detaliat design-ul tehnic al modulului, integrarea cu modelul mare de limbaj Llama 3.1 și modul în care se gestionează tranzacțiile de date și procesele de escaladare la operatorii umani.
+
+\section{Motivația alegerii Go pentru microserviciul de chat}
+
+Aplicațiile de chat în timp real se caracterizează printr-un comportament de tip \textit{I/O-bound}, marcat de menținerea unui număr foarte mare de conexiuni deschise în mod persistent (WebSocket). În limbajele tradiționale sau framework-urile sincrone, fiecare conexiune persistentă necesită alocarea unui fir de execuție al sistemului de operare (\textit{OS Thread}), consumând între 1 și 8 MB per thread, ceea ce limitează scalabilitatea serverului.
+
+Limbajul Go rezolvă această limitare prin intermediul modelului său de concurență bazat pe \textit{goroutine}-uri \cite{go2026concurrency}. O goroutine este administrată la nivel de runtime, stiva sa inițială ocupând doar 2 KB de memorie și extinzându-se dinamic. De asemenea, modelul CSP (\textit{Communicating Sequential Processes}) utilizează canale (\textit{channels}) pentru transmiterea sigură a mesajelor între goroutine-uri fără lock-uri complexe, fiind ideal pentru streaming-ul asincron al token-urilor de la Ollama. Din punct de vedere operațional, compilatorul generează un singur binar static de dimensiuni reduse (~15 MB în Docker), asigurând o modularitate completă și izolarea resurselor față de restul platformei.
+
+\section{Arhitectura serviciului}
+
+Structura proiectului reflectă organizarea modulară standard din ecosistemul Go, fiind separată în pachete cu responsabilități clare:
+\begin{itemize}
+    \item \texttt{cmd/server/main.go}: Punctul de intrare, responsabil cu încărcarea configurațiilor, inițializarea PostgreSQL și pornirea serverului.
+    \item \texttt{internal/config}: Încarcă variabilele de mediu (string PostgreSQL, URL Ollama) într-o structură strongly-typed.
+    \item \texttt{internal/domain}: Conține modelele de date comune (\texttt{ChatSession}, \texttt{ChatMessage}) și payload-urile JSON pentru WebSocket.
+    \item \texttt{internal/repository}: Implementează citirea și scrierea directă în PostgreSQL folosind driverul \texttt{pgx/v5}.
+    \item \texttt{internal/service}: Coordonarea logică realizată de \texttt{OllamaService} și \texttt{ChatService}.
+    \item \texttt{internal/handler}: Gestionează handlerele HTTP și upgrade-ul conexiunilor la WebSocket via \texttt{gorilla/websocket}.
+\end{itemize}
+
+Configurația aplicației se realizează exclusiv prin variabile de mediu. Serverul expune endpoint-urile \texttt{/ws/user-chat} pentru clienți și \texttt{/ws/seller-chat} pentru vânzători.
+
+\section{Integrarea Ollama cu streaming}
+
+Punctul central al inteligenței conversaționale a asistentului KickSneak îl reprezintă conexiunea cu modelul \textit{llama3.1:8b} (sau modelul \textit{qwen2.5:7b}), rulat local prin Ollama. Pentru a evita latența, am implementat streaming-ul token-by-token.
+
+Când un utilizator trimite un mesaj, \texttt{ChatService} parcurge următorul flux:
+\begin{enumerate}
+    \item Salvează mesajul utilizatorului în PostgreSQL și apelează \texttt{AnalyzeIntent} pentru a clasifica intenția utilizatorului prin prompt-ul de sistem.
+    \item În cazul în care interogarea necesită date din DB, rulează interogarea rapidă în PostgreSQL și injectează rezultatele ca mesaj sistem, apoi lansează cererea HTTP POST către Ollama cu \texttt{"stream": true}.
+\end{enumerate}
+
+Răspunsul stream este citit linie cu linie utilizând structura \texttt{bufio.Scanner} pe corpul de răspuns HTTP, conform algoritmului descris în Algoritmul \ref{alg:ollama_stream}.
+
+\begin{algorithm}[htbp]
+\DontPrintSemicolon
+\SetAlgoLined
+\KwIn{ctx, messages, prompt, onTokenCallback}
+\KwOut{Răspunsul complet asamblat ca string}
+\BlankLine
+$reqBody \leftarrow \text{Marshal(OllamaRequest\{Model: model, Messages: messages, Stream: true\})}$\;
+$req \leftarrow \text{NewRequest("POST", baseURL + "/api/chat", reqBody)}$\;
+$resp \leftarrow \text{client.Do(req)}$\;
+\Defer{$resp.Body.Close()$}\;
+\If{$resp.StatusCode \ne 200$}{
+    \Return{\text{Error("Status " + resp.StatusCode)}}\;
+}
+$fullResponse \leftarrow \text{""}$\;
+$scanner \leftarrow \text{bufio.NewScanner(resp.Body)}$\;
+\While{$scanner.Scan()$}{
+    $line \leftarrow scanner.Bytes()$\;
+    $var chunk \text{ OllamaStreamChunk}$\;
+    \If{$\text{Unmarshal(line, \&chunk) } == \text{ nil}$}{
+        $token \leftarrow chunk.Message.Content$\;
+        \If{$token \ne \text{""}$}{
+            $fullResponse \leftarrow fullResponse + token$\;
+            \text{onTokenCallback(token)}\;
+        }
+        \If{$chunk.Done$}{
+            \text{Break}\;
+        }
+    }
+}
+\Return{$fullResponse$}\;
+\caption{Algoritmul de streaming token-by-token de la Ollama API în Go}
+\label{alg:ollama_stream}
+\end{algorithm}
+
+Pentru fiecare bucată de text recepționată, se apelează funcția \texttt{onTokenCallback}, care o expediază clientului prin WebSocket sub forma unui payload \texttt{"token"}. La finalizarea stream-ului, mesajul integral este salvat în PostgreSQL.
+
+\section{Fluxul de escaladare la operator uman}
+
+Asistentul își recunoaște limitele de înțelegere. În cadrul metodei \texttt{AnalyzeIntent}, modelul LLM clasifică mesajul utilizatorului utilizând un format de tip JSON:
+\begin{lstlisting}[language=JSON]
+{
+  "intent": "escalate",
+  "tables": [],
+  "limit": 0
+}
+\end{lstlisting}
+Modelul returnează intenția \texttt{"escalate"} atunci când identifică reclamații, fraudă, litigii financiare sau solicitări explicite de conectare cu un om.
+
+În momentul în care clasificatorul întoarce valoarea \texttt{"escalate"}, \texttt{ChatService} execută următoarele operațiuni automate:
+\begin{enumerate}
+    \item Trimite utilizatorului un mesaj politicos de redirectare: „Am înțeles că doriți să discutați cu un operator. Vă conectez imediat la echipa noastră de suport."
+    \item Actualizează starea sesiunii curente ca fiind escaladată în PostgreSQL:
+    \begin{lstlisting}[language=SQL]
+    UPDATE chat_sessions SET escalated = true, status = 'escalated' WHERE id = $1;
+    \end{lstlisting}
+    \item Transmite un payload specific prin WebSocket, determinând clientul React să blocheze input-ul către LLM și să afișeze indicatorul de conectare cu operatorul.
+\end{enumerate}
+
+Sesiunile escalate devin vizibile în panoul administrativ Next.js, fiind preluate din baza de date prin interogarea rutei \texttt{GET /api/chat/admin/sessions?escalated=true}. Răspunsurile scrise de operator în interfața administrativă sunt trimise prin intermediul unui API HTTP securizat la serviciul Go, care le redirecționează către utilizator prin canalul WebSocket persistent deschis anterior.
+
+\section{Persistența sesiunilor și mesajelor în PostgreSQL}
+
+Securitatea la nivel de date este menținută prin configurarea unui rol dedicat în PostgreSQL numit \texttt{ks\_chat\_service}. Acest utilizator are permisiuni strict limitate la nivel de tabel: poate efectua operațiuni de tip \texttt{SELECT} readonly pe tabelele de catalog și are drepturi complete de tip \texttt{INSERT}, \texttt{SELECT} și \texttt{UPDATE} exclusiv pe tabelele de chat (\texttt{chat\_sessions} și \texttt{chat\_messages}). Această abordare respectă principiul \textit{least privilege}.
+
+Interacțiunea cu baza de date folosește biblioteca \texttt{pgx/v5} în mod direct, fără un ORM intermediar, asigurând performanțe optime și legarea parametrilor (de tipul \texttt{\$1, \$2}) pentru a preveni SQL injection. Scanarea rezultatelor se face în mod pozițional explicit:
+\begin{lstlisting}[language=Go]
+err := row.Scan(&session.ID, &session.UserID, &session.ChatType, &session.Status, &session.Escalated)
+\end{lstlisting}
+
+Sistemul implementează un mecanism de reconectare transparentă. La inițierea conexiunii, handlerul apelează \texttt{GetOrCreateSession}. Dacă există o sesiune activă, se reîncarcă istoricul complet al mesajelor și se trimite clientului pentru reluarea discuției. Titlul sesiunii este actualizat automat la primul mesaj trimis, fiind trunchiat la 60 de caractere.
+
+\section{Deployment și comunicare cu backend-ul .NET}
+
+Microserviciul de chat este complet containerizat utilizând un Dockerfile optimizat multi-stage:
+\begin{lstlisting}[language=Docker]
+# Stage 1: Build binary
+FROM golang:1.23-alpine AS builder
+WORKDIR /app
+COPY go.mod go.sum ./
+RUN go mod download
+COPY . .
+RUN CGO_ENABLED=0 GOOS=linux go build -ldflags="-w -s" -o chat-server cmd/server/main.go
+
+# Stage 2: Minimal runtime
+FROM alpine:3.19
+WORKDIR /app
+COPY --from=builder /app/chat-server .
+EXPOSE 8080
+CMD ["./chat-server"]
+\end{lstlisting}
+
+Utilizarea flag-urilor de compilare \texttt{-w -s} elimină informațiile de debugging, reducând dimensiunea binarului cu 40\%, iar imaginea de runtime bazată pe Alpine asigură o suprafață de atac minimă și un consum redus de resurse.
+
+Comunicarea dintre microserviciul Go și backend-ul principal .NET este proiectată ca o comunicare \textit{indirectă}, realizată exclusiv prin intermediul bazei de date PostgreSQL partajate. Backend-ul .NET nu apelează niciodată direct endpoint-urile Go, fapt care decuplează complet disponibilitatea celor două servicii. Aplicația client din React deschide direct canalul WebSocket către portul serviciului Go (8080). Această topologie reduce latența la streaming prin eliminarea unui proxy intermediar prin serverul .NET, permițând livrarea directă a token-urilor generate de modelul Ollama către browser-ul utilizatorului.

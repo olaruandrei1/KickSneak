@@ -1,0 +1,276 @@
+\chapter{Arhitectura sistemului}
+
+\section{Vedere de ansamblu}
+
+Aplicația KickSneak adoptă o arhitectură distribuită hibridă. Aceasta combină stabilitatea și consistența tranzacțională a unui nucleu .NET 10 cu performanțele specifice ale unor microservicii în Go și Python, deservind două interfețe frontend independente realizate în React și Next.js. Sistemul este structurat pe patru niveluri funcționale principale:
+\begin{enumerate}
+    \item \textbf{Layer-ul de Prezentare (Presentation Layer)}: Storefront-ul client (React 18, TypeScript, Vite) pentru utilizatori și Admin Panel-ul (Next.js, TypeScript, Prisma) pentru moderare și management de stoc.
+    \item \textbf{Layer-ul API (Core Backend)}: Scris în .NET 10, validează securitatea prin Firebase SDK și acționează ca un API gateway intern pentru microservicii.
+    \item \textbf{Layer-ul de Servicii (Service Layer)}: Microserviciul de chat în Go (WebSockets) și microserviciul AI în Python (Flask/PyTorch) pentru recomandări.
+    \item \textbf{Layer-ul de Date și Infrastructură (Data Layer)}: Centralizează persistența în PostgreSQL 16, cache-ul licitațiilor în Redis 7, căutarea în Elasticsearch 8 și stocarea de imagini în Azure Storage.
+\end{enumerate}
+
+Figura \ref{fig:arhitectura_sistem} ilustrează modul în care componentele KickSneak comunică între ele și partajează resursele de persistență.
+
+\begin{figure}[!htbp]
+\centering
+\begin{tikzpicture}[
+    node distance=1.5cm and 2.2cm,
+    client/.style={rectangle, draw=blue!80, fill=blue!5, text width=3cm, align=center, minimum height=1.8cm, rounded corners, font=\footnotesize\bfseries, line width=1pt},
+    server/.style={rectangle, draw=purple!80, fill=purple!5, text width=3cm, align=center, minimum height=1.8cm, rounded corners, font=\footnotesize\bfseries, line width=1pt},
+    % Database icons representation in TikZ
+    db/.style={cylinder, draw=red!80, fill=red!5, shape border rotate=90, text width=2.2cm, align=center, minimum height=1.8cm, font=\footnotesize\bfseries, line width=1pt},
+    redis/.style={rectangle, draw=green!80, fill=green!5, text width=2.2cm, align=center, minimum height=1.8cm, rounded corners, font=\footnotesize\bfseries, line width=1pt},
+    elastic/.style={rectangle, draw=cyan!80, fill=cyan!5, text width=2.2cm, align=center, minimum height=1.8cm, rounded corners, font=\footnotesize\bfseries, line width=1pt},
+    azure/.style={cloud, draw=magenta!80, fill=magenta!5, cloud puffs=10, cloud puff arc start angle=45, text width=2.4cm, align=center, minimum height=1.8cm, font=\footnotesize\bfseries, line width=1pt},
+    % Connection styles with distinct colors for easy tracking
+    ws-line/.style={-{Stealth[scale=1.0]}, thick, draw=orange, line width=1.2pt},
+    rest-line/.style={-{Stealth[scale=1.0]}, thick, draw=blue, line width=1.2pt},
+    pg-line/.style={{Stealth[scale=1.0]}-{Stealth[scale=1.0]}, thick, draw=red, line width=1.2pt},
+    redis-line/.style={{Stealth[scale=1.0]}-{Stealth[scale=1.0]}, thick, draw=green!60!black, line width=1.2pt},
+    elastic-line/.style={{Stealth[scale=1.0]}-{Stealth[scale=1.0]}, thick, draw=cyan!80!black, line width=1.2pt},
+    azure-line/.style={-{Stealth[scale=1.0]}, thick, draw=magenta, line width=1.2pt}
+]
+
+    % Nodes with official logos included
+    \node[client] (react) {\includegraphics[width=0.45cm]{images/logos/react.png}\\Storefront UI\\(React + Vite)};
+    \node[client, right=of react] (next) {\includegraphics[width=0.45cm]{images/logos/nextjs.png}\\Admin Panel\\(Next.js)};
+    
+    \node[server, below=2cm of react] (net) {\includegraphics[width=0.45cm]{images/logos/dotnet.png}\\Core Backend\\(.NET 10 API)};
+    \node[server, right=of net] (go) {\includegraphics[width=0.45cm]{images/logos/go.png}\\Chat Service\\(Go WebSocket)};
+    \node[server, below=1.5cm of go] (py) {\includegraphics[width=0.45cm]{images/logos/python.png}\\AI Recommender\\(Python Flask)};
+    
+    \node[db, below=2.5cm of net] (pg) {\includegraphics[width=0.45cm]{images/logos/postgresql.png}\\PostgreSQL 16\\(Relațional)};
+    \node[redis, left=of pg] (red) {\includegraphics[width=0.45cm]{images/logos/redis.png}\\Redis 7\\(In-Memory)};
+    \node[elastic, right=of pg] (es) {\includegraphics[width=0.45cm]{images/logos/elasticsearch.png}\\Elasticsearch\\(Index Text)};
+    \node[azure, right=1.5cm of es] (azu) {\includegraphics[width=0.45cm]{images/logos/azure.png}\\Azure Storage\\Account};
+
+    % Connections Presentation -> Gateway
+    \draw[rest-line] (react) -- node[left, font=\tiny\bfseries, text=blue] {REST} (net);
+    \draw[ws-line] (react) -- node[above, font=\tiny\bfseries, text=orange, sloped] {WebSocket} (go);
+    \draw[rest-line] (next) -- node[right, font=\tiny\bfseries, text=blue, near start] {Prisma} (pg);
+    
+    % Connection Gateway -> Microservices
+    \draw[rest-line] (net) -- node[above, font=\tiny\bfseries, text=blue] {HTTP} (go);
+    \draw[rest-line] (net) -- node[right, font=\tiny\bfseries, text=blue] {HTTP} (py);
+    
+    % Gateway -> DBs
+    \draw[redis-line] (net) -- (red);
+    \draw[pg-line] (net) -- (pg);
+    \draw[elastic-line] (net) -- (es);
+    \draw[azure-line] (net) -- (azu);
+    
+    % Microservices -> DBs
+    \draw[pg-line] (go) -- (pg);
+    \draw[elastic-line] (py) -- (es);
+    \draw[pg-line] (py) -- (pg);
+
+    % Labels/Groups
+    \node[draw, dashed, inner sep=0.3cm, fit=(react) (next), label={[anchor=south, font=\small\bfseries]above:Presentation Layer}] {};
+    \node[draw, dashed, inner sep=0.4cm, fit=(net) (go) (py), label={[anchor=south, font=\small\bfseries]above:Application \& Services Layer}] {};
+    \node[draw, dashed, inner sep=0.3cm, fit=(red) (pg) (es) (azu), label={[anchor=north, font=\small\bfseries]below:Data \& Infrastructure Layer}] {};
+
+\end{tikzpicture}
+\caption{Diagrama de arhitectură de nivel container (C4) pentru sistemul KickSneak}
+\label{fig:arhitectura_sistem}
+\end{figure}
+
+\section{Stack tehnologic}
+
+Fiecare componentă a sistemului KickSneak a fost selectată pe baza unui proces de evaluare tehnică riguros, asigurând un echilibru optim între performanță, compatibilitate și fiabilitate.
+
+\begin{itemize}
+    \item \textbf{React 18, Vite și TypeScript} (Storefront UI): React oferă un model declarativ stabil bazat pe componente pentru interfață. Vite garantează timpi de încărcare ultra-rapizi la dezvoltare prin utilizarea modulelor ES native, iar TypeScript asigură siguranța tipurilor la compilare, prevenind erorile runtime.
+    \item \textbf{Next.js 14 și Prisma} (Admin Panel): Next.js utilizează randarea pe server (\textit{SSR}) pentru a spori securitatea în panoul administrativ, limitând expunerea codului sensibil pe client. Prisma servește ca ORM, generând automat tipuri statice direct din schema bazei de date.
+    \item \textbf{.NET 10, EF Core și Dapper} (Backend Core): .NET 10 asigură un runtime de înaltă performanță pentru Minimal APIs. EF Core este ORM-ul principal pentru logica complexă, în timp ce micro-ORM-ul Dapper este folosit pentru performanță brută în execuția interogărilor SQL directe și a tranzacțiilor rapide.
+    \item \textbf{PostgreSQL 16}: Bază de date relațională utilizată ca sursă principală de adevăr tranzacțional. Suportă structuri JSON pentru metadate dinamice și implementează securitatea la nivel de rând (Row Level Security) direct din motorul bazei de date.
+    \item \textbf{Go} (Chat Service): Limbaj compilat cu performanțe remarcabile în procesarea concurențială. Este ideal pentru conexiuni WebSocket persistente datorită modelului CSP bazat pe goroutine-uri ușoare și canale de comunicare rapide.
+    \item \textbf{Python, Flask și PyTorch} (AI Service): Python oferă ecosistemul optim pentru învățarea automată. PyTorch este utilizat pentru a rula modelul NCF de recomandări, iar micro-framework-ul Flask expune logica de inferență prin API-uri REST.
+    \item \textbf{Elasticsearch 8}: Asigură motorul de căutare full-text secundar, indexând catalogul de produse pentru a permite căutări aproximative rapide bazate pe relevanță textuală.
+    \item \textbf{Redis 7}: Bază de date in-memory utilizată pentru cache și pentru stocarea stării volatile a licitațiilor active, garantând tranzacții atomice cu latențe sub o milisecundă.
+    \item \textbf{Ollama}: Rulează local modele mari de limbaj (cum ar fi \textit{llama3.1:8b}), garantând confidențialitatea totală a conversațiilor utilizatorilor și eliminând dependența de API-uri terțe.
+    \item \textbf{Azurite}: Emulator local pentru Azure Storage. Expune API-urile pentru Azure Blob (stocare imagini produse) și Table Storage (jurnale de audit), asigurând compatibilitate completă cu deployment-urile cloud.
+\end{itemize}
+
+\section{Componente principale și responsabilități}
+
+\begin{table}[htbp]
+\centering
+\small
+\begin{tabular}{|p{3cm}|p{3cm}|p{2.8cm}|p{5.8cm}|}
+\hline
+\textbf{Componentă} & \textbf{Rol primar} & \textbf{Tehnologie} & \textbf{Comunică cu (Protocoale)} \\
+\hline
+Storefront FE & Interfață publică & React, Vite, TS & Backend Core (HTTP/SignalR), Chat (WebSocket) \\
+\hline
+Admin FE & UI administrare & Next.js, Prisma & PostgreSQL direct (rol \texttt{ks\_admin}) \\
+\hline
+Backend Core & Core Business Logic & .NET 10, EF Core & Postgres, Redis, ES, Firebase, Stripe, Azure Storage Account \\
+\hline
+Chat Service & Asistent conversational & Go, WebSocket & PostgreSQL (rol \texttt{ks\_chat\_service}), Ollama \\
+\hline
+AI Recommender & Recomandări neuronale & Python, PyTorch & PostgreSQL (readonly), Elasticsearch \\
+\hline
+PostgreSQL 16 & Bază de date & Postgres 16 & Backend Core, Chat, Admin FE \\
+\hline
+Redis 7 & Cache / Auctions & Redis 7 & Backend Core \\
+\hline
+Elasticsearch 8 & Index căutare & ES 8 & Backend Core, AI Recommender \\
+\hline
+Azure Storage Account & Stocare Blob \& Tabele & Azurite SDK & Backend Core \\
+\hline
+Ollama & Motor LLM local & Ollama SDK & Chat Service (HTTP) \\
+\hline
+Prometheus & Colectare metrici & Prometheus & Toate serviciile (Scrape HTTP) \\
+\hline
+Loki & Agregare loguri & Loki / Promtail & Docker daemon \\
+\hline
+Grafana & Vizualizare telemetrie & Grafana & Prometheus, Loki \\
+\hline
+\end{tabular}
+\caption{Matricea componentelor sistemului KickSneak și protocoalele de comunicare}
+\label{tab:componente}
+\end{table}
+
+\section{Fluxuri de date end-to-end}
+
+Pentru a înțelege cum interacționează componentele, sunt analizate în continuare cinci scenarii critice de rulare a aplicației.
+
+\subsection{Scenariul 1: Căutare produs cu sugestii live}
+\begin{enumerate}
+    \item Utilizatorul introduce caractere în caseta de căutare din frontend.
+    \item Pe client se aplică un mecanism de \textit{debouncing} de 300ms. Dacă utilizatorul continuă să scrie, nu se trimite niciun request.
+    \item Când scrierea se oprește, clientul apelează prin SignalR metoda \texttt{SearchHub.SearchAsync(query)}.
+    \item Backend-ul Core interoghează indexul Elasticsearch prin interogări de tip \texttt{multi\_match} cu parametrul \texttt{fuzziness} setat pe \texttt{AUTO} (pentru a tolera greșelile de tipar).
+    \item Elasticsearch returnează documentele potrivite sortate după scorul BM25.
+    \item Dacă utilizatorul are activat filtrul "Search with AI", backend-ul apelează suplimentar microserviciul Python la endpoint-ul \texttt{POST /api/recommend}, obținând o listă de ID-uri ordonate conform vectorului de preferințe al utilizatorului.
+    \item Backend-ul re-mapează datele și le trimite înapoi prin conexiunea activă SignalR, rezultatele fiind afișate sub forma unui meniu dropdown instantaneu.
+\end{enumerate}
+
+\subsection{Scenariul 2: Cumpărare directă cu Stripe}
+\begin{enumerate}
+    \item Utilizatorul adaugă un produs în coș (stare sincronizată local și salvată în baza de date PostgreSQL prin backend).
+    \item În pagina de checkout, utilizatorul introduce datele de livrare și alege plata prin card bancar, trimițând un request la backend-ul .NET pe endpoint-ul \texttt{POST /api/checkout/create-session}.
+    \item Backend-ul validează stocurile și apelează API-ul Stripe pentru a genera o sesiune securizată de plată (\texttt{checkout.sessions.create}), trimițând metadata asociată comenzii (ID-ul comenzii interne și ID-ul utilizatorului).
+    \item Stripe returnează URL-ul sesiunii de checkout. Backend-ul trimite acest URL clientului, care redirecționează utilizatorul pe pagina securizată Stripe.
+    \item Utilizatorul introduce datele cardului pe pagina Stripe, beneficiind de autentificarea 3D Secure dacă este necesar.
+    \item Stripe confirmă plata și redirecționează utilizatorul pe o pagină de succes din frontend.
+    \item Asincron, serverele Stripe trimit un eveniment semnat criptografic de tip \texttt{checkout.session.completed} pe endpoint-ul de webhook al backend-ului \texttt{/webhooks/stripe}.
+    \item Backend-ul validează semnătura webhook-ului, marchează comanda ca plătită (\texttt{Paid}) și trimite asincron un eveniment în \texttt{Channel<NotificationEvent>} pentru a notifica utilizatorul live prin SignalR și a genera factura în fundal.
+\end{enumerate}
+
+\subsection{Scenariul 3: Licitație cu auto-bid și auto-close}
+\begin{enumerate}
+    \item Vânzătorul creează o licitație. Backend-ul Core o persistă în PostgreSQL și, simultan, inițializează starea licitației în baza de date Redis sub cheia \texttt{auction:\{id\}} ca un hash ce conține oferta curentă, timpul de finalizare și ID-ul ultimului ofertant.
+    \item Backend-ul înregistrează un job asincron în Quartz.NET programat să ruleze la data de expirare a licitației (\texttt{AuctionCloseJob}).
+    \item Când un cumpărător vizualizează pagina detaliată, clientul React se conectează la SignalR Hub-ul \texttt{AuctionsHub} și se alătură grupului \texttt{auction-\{id\}}.
+    \item Cumpărătorul plasează o ofertă. Request-ul ajunge la backend, care utilizează tranzacțiile Redis de tip optimistic locking (\texttt{WATCH / MULTI / EXEC}) pentru a asigura consistența concurențială:
+    \begin{lstlisting}[language={[sharp]C}]
+    // Cod conceptual de plasare bid in Redis
+    db.Watch(auctionKey);
+    var currentBid = db.HashGet(auctionKey, "currentBid");
+    if (newBid > currentBid) {
+        var transaction = db.CreateTransaction();
+        transaction.HashSetAsync(auctionKey, "currentBid", newBid);
+        transaction.HashSetAsync(auctionKey, "currentBidder", userId);
+        bool success = transaction.Execute();
+        // Daca success e false, tranzactia a esuat din cauza unui bid concurent
+    }
+    \end{lstlisting}
+    \item Dacă pe licitație există setat un prag maxim de auto-bid de către un alt utilizator, sistemul verifică dacă noul bid este mai mic decât pragul respectiv și plasează automat o contra-ofertă în mod recursiv până când se stabilește un nou câștigător.
+    \item Backend-ul notifică grupul SignalR \texttt{auction-\{id\}} cu noul status, actualizând ecranele tuturor utilizatorilor conectați în timp real.
+    \item La data finalizării, Quartz.NET execută \texttt{AuctionCloseJob}, scrie starea finală din Redis în PostgreSQL, generează comanda automat pentru câștigător și închide licitația.
+\end{enumerate}
+
+\subsection{Scenariul 4: Chat user-admin (escalare)}
+\begin{enumerate}
+    \item Clientul React inițiază o conexiune WebSocket cu microserviciul Go la \texttt{/ws/user-chat}, trimițând token-ul JWT Firebase în query string.
+    \item Serviciul în Go validează token-ul JWT și înregistrează sesiunea cu statusul activ în tabela \texttt{chat\_sessions} din PostgreSQL.
+    \item Mesajele trimise de utilizator sunt persistate în baza de date și retransmise instant operatorilor conectați în Admin Panel Next.js prin WebSocket-ul dedicat (\texttt{/ws/admin-chat}), iar răspunsurile acestora urmează calea inversă.
+\end{enumerate}
+Detaliile tehnice complete ale microserviciului de chat sunt prezentate în Capitolul 8.
+
+\subsection{Scenariul 5: Chat user-LLM (Ollama)}
+\begin{enumerate}
+    \item Utilizatorul deschide o conexiune WebSocket la Go Chat Service pe calea \texttt{/ws/ai-chat}.
+    \item La primirea unui mesaj, Go Chat Service analizează intenția: dacă se solicită asistență umană, sesiunea este marcată cu \texttt{escalated=true} și redirecționată către operator.
+    \item În caz contrar, se interoghează local API-ul Ollama (\textit{llama3.1:8b}), iar token-urile generate sunt trimise în timp real (\textit{streaming}) către client și apoi persistate.
+\end{enumerate}
+Detaliile tehnice complete ale microserviciului de chat sunt prezentate în Capitolul 8.
+
+\begin{figure}[!htbp]
+\centering
+\begin{tikzpicture}[
+    node distance=1.2cm and 1.8cm,
+    actor/.style={circle, draw=blue!80, fill=blue!5, minimum size=0.8cm, font=\scriptsize\bfseries, line width=1pt},
+    box/.style={rectangle, draw=purple!80, fill=purple!5, text width=2.6cm, align=center, minimum height=1.6cm, rounded corners, font=\scriptsize\bfseries, line width=1pt},
+    db/.style={cylinder, draw=red!80, fill=red!5, shape border rotate=90, text width=2.0cm, align=center, minimum height=1.6cm, font=\tiny\bfseries, line width=1pt},
+    arrow/.style={-{Stealth[scale=1.0]}, thick, draw=black!80},
+    dashed-arrow/.style={-{Stealth[scale=1.0]}, dashed, thick, draw=black!60}
+]
+
+    % Nodes with official logos included
+    \node[actor] (user) {User};
+    \node[box, right=of user] (go) {\includegraphics[width=0.45cm]{images/logos/go.png}\\Go Chat Service\\(WS Hub)};
+    \node[box, above right=of go, yshift=-0.5cm] (ollama) {\includegraphics[width=0.45cm]{images/logos/ollama.png}\\Ollama LLM\\(llama3.1:8b)};
+    \node[box, below right=of go, yshift=0.5cm] (admin) {\includegraphics[width=0.45cm]{images/logos/nextjs.png}\\Admin Panel\\(Next.js Client)};
+    \node[db, below=of go] (pg) {\includegraphics[width=0.45cm]{images/logos/postgresql.png}\\PostgreSQL};
+
+    % Flows
+    \draw[arrow] (user) -- node[above, font=\tiny\bfseries] {1. Mesaj (WS)} (go);
+    \draw[arrow] (go) -- node[right, font=\tiny\bfseries] {2. Persistă} (pg);
+    
+    % Intent Classifier decision
+    \node[draw, diamond, aspect=2, fill=yellow!15, right=of go, xshift=-0.2cm, yshift=1.4cm, font=\tiny\bfseries] (dec) {Intent?};
+    \draw[arrow] (go) -- (dec);
+    
+    \draw[arrow] (dec) -- node[above, font=\tiny\bfseries, sloped] {Normal (AI)} (ollama);
+    \draw[arrow] (dec) -- node[below, font=\tiny\bfseries, sloped] {Escalare (Admin)} (admin);
+    
+    % Return flows
+    \draw[dashed-arrow] (ollama) -- node[above, font=\tiny\bfseries, sloped] {Streaming tokens} (go);
+    \draw[dashed-arrow] (admin) -- node[below, font=\tiny\bfseries, sloped] {Răspuns manual} (go);
+    \draw[dashed-arrow] (go) -- node[below, font=\tiny\bfseries] {3. Răspuns (WS)} (user);
+
+\end{tikzpicture}
+\caption{Schema fluxurilor conversaționale (User-LLM și escalare User-Admin) în microserviciul de chat}
+\label{fig:flux_chat}
+\end{figure}
+
+\section{Strategie de deployment și CI/CD}
+
+Sistemul KickSneak utilizează Docker pentru un deployment local unificat. Un fișier \texttt{docker-compose.yml} configurează cele 12 servicii, iar scripturile de bootstrap (\texttt{setup.ps1} pentru Windows și \texttt{setup.sh} pentru Linux/macOS) automatizează instalarea dependențelor și asamblarea containerelor.
+
+Configurările de mediu sunt stocate într-un fișier \texttt{.env}. Cheile private Firebase Admin SDK sunt codificate Base64 și decodificate direct în memoria RAM a backend-ului pentru a preveni salvarea lor în istoricul Git.
+
+Arhitectura este compatibilă cu integrările CI/CD (GitHub Actions/Azure DevOps). Fiecare serviciu folosește un \texttt{Dockerfile} bazat pe build-uri multi-stage (Alpine runtime), facilitând testarea automată și publicarea imaginilor în registry.
+
+\begin{table}[htbp]
+\centering
+\small
+\begin{tabular}{llp{7cm}}
+\toprule
+\textbf{Componentă locală} & \textbf{Echivalent Azure Cloud} & \textbf{Justificare tehnică} \\
+\midrule
+Backend Core & Azure App Service / AKS & Scalare automată a API-urilor \\
+Next.js Admin & Azure App Service / Vercel & Suport nativ pentru serverless rendering \\
+PostgreSQL 16 & Azure DB for PostgreSQL & Bază de date administrată cu backup automat \\
+Redis 7 & Azure Cache for Redis & Performanțe ridicate pentru licitații \\
+Elasticsearch 8 & Elastic Cloud on Azure & Serviciu administrat de căutare \\
+Azurite (Blob/Table) & Azure Storage Account & Persistență reală de binare și date NoSQL \\
+Kotlin Functions & Azure Functions (Kotlin) & Execuție serverless la evenimente asincrone \\
+\bottomrule
+\end{tabular}
+\caption{Strategia de migrare a infrastructurii KickSneak în cloud-ul Azure}
+\label{tab:migrare_cloud}
+\end{table}
+
+\section{Persistență și Azure Storage}
+
+\textbf{PostgreSQL 16} reprezintă sursa tranzacțională unică a platformei. Gestionează datele esențiale ale aplicației: utilizatorii și rolurile lor, catalogul principal de produse, comenzile, tranzacțiile financiare și sesiunile de chat.
+
+\textbf{Redis 7} stochează în memorie datele volatile de înaltă frecvență. Gestionează licitațiile active pentru a suporta bid-uri concurente, păstrează token-urile JWT blocate (blacklisted) și servește drept cache pentru a reduce numărul de interogări pe PostgreSQL.
+
+\textbf{Elasticsearch 8} stochează documentele JSON optimizate pentru interogări text. Indexează elementele de catalog (titlu, descriere, brand, taguri) pentru a oferi căutări full-text și sugestii live extrem de rapide.
+
+\textbf{Azure Storage} (emulat prin Azurite) reține fișierele binare mari în Blob Storage (imagini de produse, fișiere din chat) și date nestructurate de volum mare în Table Storage (jurnalele de audit și istoricul securizat), degrevând baza relațională.

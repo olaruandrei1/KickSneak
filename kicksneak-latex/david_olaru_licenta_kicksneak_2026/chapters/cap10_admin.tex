@@ -1,0 +1,61 @@
+\chapter{Aplicație administrativă (Next.js + Prisma)}
+
+Managementul operării unei platforme de e-commerce complexe necesită instrumente administrative avansate pentru moderarea utilizatorilor, monitorizarea comenzilor, validarea produselor din catalog și preluarea sesiunilor de suport escalated. În loc să integrăm aceste funcționalități sensibile în cadrul aplicației frontend destinate clienților (fapt ce ar fi mărit bundle-ul și ar fi expus cod sensibil public), am ales să dezvoltăm o aplicație administrativă independentă. Aceasta este construită utilizând framework-ul React Next.js 14 (App Router) și Prisma ORM, conectându-se direct la PostgreSQL cu drepturi depline. În acest capitol sunt prezentate detaliile de design, securitate, fluxurile de date și interfața de administrare a sistemului.
+
+\section{Motivația alegerii Next.js + Prisma}
+
+Next.js SSR previne expunerea logicii administrative în bundle-ul client; Prisma oferă type safety end-to-end din schema DB. Rutele administrative și componentele de vizualizare sunt randate în întregime pe server, iar browser-ul primește documentul HTML gata structurat, fără cod JavaScript de administrare atașat. Aplicația administrativă se conectează la PostgreSQL utilizând conexiunea directă asociată rolului \texttt{ks\_admin}. Acest rol deține privilegii complete de citire și scriere pe toate tabelele bazei de date și ocolește în mod explicit politicile de securitate Row Level Security (\texttt{BYPASS RLS}), simplificând rapoartele din dashboard prin interogări directe.
+
+\section{Arhitectura aplicației administrative}
+
+Aplicația administrativă folosește structura modernă \textit{App Router} introdusă în Next.js 14. Directorul principal al aplicației (\texttt{app/}) este organizat pe baza paginilor rulate implicit pe server (\textit{React Server Components --- RSC}).
+
+Fluxul de acces este controlat prin fișierul de middleware (\texttt{middleware.ts}) aflat la rădăcina proiectului. Acesta interceptează toate cererile sosite pe rutele administrative protejate (sub calea \texttt{/app/*}). Middleware-ul extrage token-ul JWT din cookies-urile request-ului și îl validează server-side prin Firebase Admin SDK. Dacă token-ul lipsește, este expirat sau nu deține permisiunile de administrator, utilizatorul este redirecționat instantaneu către pagina de autentificare, blocând accesul înainte ca orice cod din pagină să fie executat pe server.
+
+Instanțierea clientului Prisma se face prin intermediul unui pattern singleton definit în fișierul \texttt{lib/prisma.ts}, prevenind deschiderea de conexiuni multiple către PostgreSQL la fiecare reîncărcare la cald în timpul dezvoltării:
+\begin{lstlisting}[language=TypeScript]
+const globalForPrisma = global as unknown as { prisma: PrismaClient };
+export const prisma = globalForPrisma.prisma || new PrismaClient();
+if (process.env.NODE_ENV !== 'production') globalForPrisma.prisma = prisma;
+\end{lstlisting}
+
+Rutele de API native (\texttt{app/api/*}) sunt utilizate exclusiv pentru gestionarea operațiunilor mutative trimise prin formulare și pentru a acționa ca un proxy securizat către serviciile backend externe.
+
+\section{Funcționalități administrative principale}
+
+Tabloul de bord principal (\texttt{Dashboard}) oferă administratorilor o imagine de ansamblu asupra performanței platformei în timp real, calculând pe server numărul de comenzi și veniturile prin Prisma pentru a asigura încărcări rapide sub 100ms.
+
+Secțiunea de \textbf{Management Catalog (CRUD)} permite vizualizarea și paginarea produselor, stocurilor și mărimilor active, precum și adăugarea de elemente noi, sincronizate asincron cu indexul Elasticsearch prin apeluri către backend-ul .NET.
+
+Panoul de \textbf{Gestiune Utilizatori} facilitează listarea conturilor înregistrate, blocarea utilizatorilor abuzivi (\texttt{is\_banned = true}) și validarea cererilor de seller prin actualizarea tabelelor locale și a claims-urilor Firebase.
+
+Secțiunea de \textbf{Sesiuni Escalated Chat} preia din PostgreSQL sesiunile marcate cu flag-ul de escaladare de către LLM din Go. Operatorul poate răspunde direct în chat-ul preluat prin intermediul unui API proxiat din Next.js către WebSocket-ul din Go.
+
+\section{Deployment și izolare}
+
+Imaginea Docker pentru aplicația Next.js este construită utilizând un proces optimizat multi-stage bazat pe modul \texttt{standalone} oferit nativ de framework:
+\begin{lstlisting}[language=Docker]
+# Stage 1: Build source
+FROM node:20-alpine AS builder
+WORKDIR /app
+COPY package*.json ./
+RUN npm ci
+COPY . .
+RUN npx prisma generate
+RUN npm run build
+
+# Stage 2: Final minimal image
+FROM node:20-alpine AS runner
+WORKDIR /app
+COPY --from=builder /app/.next/standalone ./
+COPY --from=builder /app/.next/static ./.next/static
+COPY --from=builder /app/public ./public
+EXPOSE 3001
+CMD ["node", "server.js"]
+\end{lstlisting}
+
+Utilizarea modului \texttt{standalone} compilează doar fișierele strict necesare rulării în producție, reducând dimensiunea imaginii Docker finale la mai puțin de 120 MB.
+
+Variabila de mediu \texttt{DATABASE\_URL} stocată securizat în configurarea containerului indică stringul de conectare cu drepturi administrative \texttt{ks\_admin}. La fiecare pornire a containerului, scriptul de entrypoint execută automat comanda \texttt{npx prisma migrate deploy}, asigurând că migrările schemei de bază de date sunt aplicate înainte de pornirea serverului.
+
+Aplicația administrativă rulează izolată pe portul 3001, complet independentă de frontend-ul utilizatorilor finali (portul 3000). Această separare fizică și de domenii prezintă o barieră importantă împotriva atacurilor XSS în aplicația publică, consolidând arhitectura multi-strat (*defense in depth*) a platformei KickSneak.

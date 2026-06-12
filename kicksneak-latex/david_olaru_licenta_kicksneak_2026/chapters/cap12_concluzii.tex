@@ -1,0 +1,42 @@
+\chapter{Concluzii și direcții viitoare}
+
+Dezvoltarea platformei KickSneak a reprezentat o oportunitate deosebită de a explora integrarea practică a unor paradigme și tehnologii software moderne în cadrul unui sistem distribuit complex. Pe parcursul proiectării și implementării, am abordat o gamă largă de provocări tehnice reale --- de la concurența ridicată pe tranzacții în timp real și securizarea granulară la nivel de date, până la antrenarea de rețele neuronale pentru recomandări și implementarea asistenței conversaționale cu modele mari de limbaj. În acest capitol final sunt prezentate concluziile generale ale lucrării, performanțele și rezultatele obținute, limitările asumate ale implementării curente și direcțiile viitoare de dezvoltare ale platformei.
+
+\section{Rezultate obținute}
+
+Rezultatul principal al acestei lucrări este o platformă marketplace de e-commerce complet funcțională, care integrează cu succes un număr semnificativ de module interconectate. Întregul sistem distribuit, compus din 8 servicii containerizate distincte (frontend React, admin Next.js, backend .NET, chat Go, recommender Python, baze de date PostgreSQL, cache Redis și index search Elasticsearch), poate fi pornit local printr-o singură comandă:
+\begin{lstlisting}[language=Bash]
+docker compose up --build
+\end{lstlisting}
+
+Pe parcursul dezvoltării, am validat mai multe decizii arhitecturale critice:
+\begin{itemize}
+    \item \textbf{Arhitectura poliglotă}: Am demonstrat eficiența utilizării a 6 limbaje de programare distincte (C\#, TypeScript, Go, Python, Java și Kotlin), fiecare fiind ales în mod justificat pentru caracteristicile sale de performanță (Go pentru conexiuni WebSocket concurente, Python pentru logica matematică a rețelei neuronale, C\# ca nucleu tranzacțional stabil și Next.js/React pentru interfețe).
+    \item \textbf{Securitate robustă la nivel de baze de date}: Am implementat un model hibrid format din Firebase Authentication corelat cu un sistem RBAC cu 6 roluri PostgreSQL și politici de Row Level Security (RLS) la nivel de tabel, asigurate prin switch dinamic de conexiune cu instrucțiuni \texttt{SET LOCAL ROLE}. Această structură oferă o protecție excelentă a datelor sensibile ale utilizatorilor.
+    \item \textbf{Performanță în timp real}: Sistemul de licitații implementează un pattern de tip \textit{Redis-first} cu control optimist al concurenței, garantând latențe de bidding sub-milisecundă și eliminând blocajele de scriere concurentă din PostgreSQL.
+    \item \textbf{Decuplare asincronă}: Utilizarea primitivelor de tip \texttt{Channel<T>} în ASP.NET Core a facilitat implementarea de servicii background persistente pentru sincronizarea indexului Elasticsearch și expedierea de notificări, decuplând complet timpul de răspuns HTTP de operațiunile lente de I/O de fundal.
+\end{itemize}
+
+Lucrarea acoperă pe deplin cerințele academice stabilite pentru o lucrare de absolvire, oferind în același timp o structură de cod conformă cu standardele din industria software contemporană, pregătită pentru scalare.
+
+\section{Limitări și provocări}
+
+În ciuda rezultatelor pozitive, implementarea curentă prezintă o serie de limitări din punct de vedere tehnic și operațional, care trebuie asumate cu onestitate academică:
+\begin{itemize}
+    \item \textbf{Date de antrenament sintetice}: Rețeaua neuronală NCF antrenată în PyTorch folosește date generate artificial prin scriptul de seed semi-sintetic. Metricile Hit Rate și NDCG obținute sunt ilustrative pentru funcționarea algoritmului, dar antrenarea pe un set de date real de comportament al utilizatorilor ar putea releva probleme de personalizare sau necesitatea ajustării hiperparametrilor.
+    \item \textbf{Latența LLM-ului local}: Rularea modelului \textit{llama3.1:8b} prin Ollama direct pe mașina de dezvoltare locală generează o latență de răspuns sesizabilă (timpul până la primul token fiind între 2 și 5 secunde, în funcție de încărcarea GPU-ului). În mediul de producție, acest comportament ar necesita servicii cloud dedicate sau API-uri externe comerciale.
+    \item \textbf{Bypass RLS la citiri în .NET}: Din considerente de performanță a query-urilor complexe pe catalog (unde join-urile multiple pe tabele mari ar fi fost grav încetinite de politicile RLS), rolul \texttt{ks\_owner} utilizat de Entity Framework Core ocolește RLS-ul la operațiunile de citire (\texttt{SELECT}), securitatea RLS fiind aplicată strict la scrieri. O securitate completă ar fi presupus activarea regulii \texttt{FORCE ROW LEVEL SECURITY}, cu prețul unei latențe sporite.
+    \item \textbf{Deployment exclusiv local}: Deși aplicațiile sunt containerizate prin Dockerfile-uri multi-stage, platforma rulează doar pe o singură mașină fizică în mediul local. Absența unui deployment activ în cloud (pe servicii comerciale precum Azure sau AWS) constituie o limitare operațională curentă.
+\end{itemize}
+
+\section{Direcții viitoare}
+
+Pentru a aduce platforma KickSneak la stadiul de produs de producție real, am stabilit următoarele direcții viitoare de dezvoltare:
+\begin{itemize}
+    \item \textbf{Migrarea completă în Cloud public}: Propunem deployment-ul containerelor în cloud utilizând servicii gestionate, cum ar fi Azure Container Apps sau Azure Kubernetes Service (AKS). Baza de date ar fi migrată către Azure Database for PostgreSQL, cache-ul către Azure Cache for Redis, iar stocarea Azurite ar fi înlocuită de un Azure Storage Account real.
+    \item \textbf{Dezvoltarea de aplicații mobile}: Având în vedere că toate endpoint-urile din backend sunt proiectate sub formă de servicii web REST API, o direcție prioritară este construirea de aplicații mobile pentru Android și iOS utilizând framework-uri hibride precum React Native sau Flutter, reutilizând integral logica de business existentă.
+    \item \textbf{Îmbunătățirea algoritmilor AI}: Rețeaua NCF poate fi extinsă pentru a include caracteristici suplimentare (\textit{features}), cum ar fi brandul preferat, mărimea utilizatorului sau interogările de search recente. De asemenea, se dorește implementarea unui pipeline de reantrenare online a modelului, care să actualizeze embeddings-urile în mod regulat pe baza noilor interacțiuni din baza de date.
+    \item \textbf{Securitate avansată și conformitate}: Integrarea de mecanisme de autentificare biometrică (\textit{Passkeys}) și autentificare cu doi factori (MFA) native din Firebase, precum și auditarea completă a plăților Stripe pentru obținerea certificării de securitate PCI-DSS în faza de producție.
+\end{itemize}
+ 
+În concluzie, proiectul a atins obiectivele stabilite și oferă o bază solidă, scalabilă și modulară, reprezentând o demonstrație practică reușită a modului în care pot fi integrate bunele practici tehnice contemporane pentru a construi un sistem software distribuit modern.

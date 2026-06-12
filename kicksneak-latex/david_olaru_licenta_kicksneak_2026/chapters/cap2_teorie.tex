@@ -1,0 +1,110 @@
+\chapter{Fundamente teoretice}
+
+\section{Arhitectura Clean Architecture}
+
+Arhitectura software reprezintă fundamentul pe care se clădește fiabilitatea, mentenabilitatea și evoluția în timp a oricărui sistem complex. În cadrul proiectării nucleului platformei KickSneak, s-a optat pentru utilizarea modelului de design \textit{Clean Architecture}, conceptualizat de Robert C. Martin (cunoscut în comunitate sub prezumția \textit{Uncle Bob}) în lucrarea sa fundamentală \cite{martin2017clean}.
+
+Principiul de bază al acestui tip de arhitectură este regula dependenței (\textit{Dependency Rule}), care stipulează că toate dependențele de cod trebuie să fie orientate exclusiv dinspre straturile exterioare (detaliile tehnice, cum ar fi bazele de date, framework-urile de UI sau integrările terțe) spre straturile interioare (conceptele de business, entitățile și cazurile de utilizare). Straturile interne nu cunosc nicio informație despre modul în care datele sunt persistate sau despre protocoalele de comunicare.
+
+În implementarea realizată în platforma KickSneak folosind framework-ul .NET 10, structura a fost organizată în următoarele cinci straturi concentrice:
+\begin{enumerate}
+    \item \textbf{Domain (Domeniu)}: Reprezintă nucleul sistemului și conține entități pure (\textit{Entities} cum ar fi \texttt{Product}, \texttt{Auction}, \texttt{Order}), obiecte valoare (\textit{Value Objects} de tipul \texttt{Address}), enumerări (\texttt{DbRole}) și excepții specifice domeniului, fiind scris în cod C\# pur.
+    \item \textbf{Application (Aplicație)}: Conține logica de business specifică aplicației și cazurile de utilizare, definind serviciile (\texttt{AuctionService}, \texttt{ProductService}), obiectele de transfer de date (\textit{DTOs}) și interfețele de abstractizare (\texttt{IUnitOfWork}, \texttt{IRepository}).
+    \item \textbf{Persistence (Persistență)}: Reprezintă implementarea concretă a persistenței datelor utilizând ORM-ul Entity Framework Core (EF Core), contextul bazei de date (\texttt{ApplicationDbContext}), configurările Fluent API și repozitoriile concrete.
+    \item \textbf{Infrastructure (Infrastructură)}: Gestionează conectivitatea cu toate serviciile externe și bibliotecile third-party, precum checkout-ul Stripe, clientul Elasticsearch, conexiunile Redis, Azure Blob Storage și Firebase Admin SDK.
+    \item \textbf{WebApi (Prezentare / API)}: Stratul cel mai exterior, care expune funcționalitățile sub formă de Minimal APIs în .NET 10, middleware-uri, Hub-uri SignalR și configurările de Dependency Injection (DI).
+\end{enumerate}
+
+Separarea strictă a straturilor oferă avantaje practice imediate. Decuplarea logicii de business de baza de date permite înlocuirea facilă a motorului de stocare (de exemplu, migrarea de la PostgreSQL la SQL Server) fără a modifica vreo linie de cod din stratul de aplicație. De asemenea, se previne apariția dependențelor circulare, deoarece compilatorul C\# va genera erori de compilare dacă o entitate din Domain ar încerca să referențieze un serviciu din Application.
+
+Arhitectura respectă principiile SOLID \cite{martin2017clean}: Single Responsibility Principle (SRP) prin delegarea fiecărui caz de utilizare unui handler dedicat (ex. \texttt{PlaceBidHandler}); Open/Closed Principle (OCP) prin extinderea funcționalităților prin noi servicii fără modificarea codului existent; Liskov Substitution Principle (LSP) prin substituirea repozitoriilor concrete cu abstracțiile lor; Interface Segregation Principle (ISP) prin utilizarea de interfețe mici și dedicate (ex. \texttt{IAuctionRepository}); și Dependency Inversion Principle (DIP) prin decuplarea modulelor de nivel înalt (Application) de cele de nivel inferior (Persistence/Infrastructure) prin intermediul abstracțiilor.
+
+O altă componentă critică este centralizarea tranzacțiilor printr-un model de tip Unit of Work (\texttt{IUnitOfWork}), care expune repozitoriile și se asigură că toate operațiunile de scriere din cadrul unui request sunt salvate într-o singură tranzacție atomică la nivel de bază de date. De asemenea, utilizarea interfețelor permite scrierea facilă de teste unitare, dependențele putând fi simulate (\textit{mock-uite}) cu biblioteci precum NSubstitute fără a necesita o bază de date reală sau servicii active în fundal. Din perspectivă teoretică, Clean Architecture reprezintă o evoluție și o sinteză a modelelor anterioare de organizare software, precum arhitectura stratificată clasică, \textit{Hexagonal Architecture} și \textit{Onion Architecture}.
+
+\section{Domain-Driven Design (DDD) --- concepte aplicate}
+
+Proiectarea orientată pe domeniu (\textit{Domain-Driven Design --- DDD}), introdusă de Eric Evans în lucrarea sa clasică \cite{evans2003ddd}, este o paradigmă software utilizată pentru a gestiona complexitatea sistemelor prin maparea strânsă a structurii codului la modelul de business real. În KickSneak, s-au extras și aplicat mai multe elemente fundamentale ale acestei teorii.
+
+Limbajul universal (\textit{Ubiquitous Language}) este aplicat cu rigurozitate: termenii utilizați în baza de date și în codul sursă reflectă fidel jargonul din industria de resale. Concepte precum \texttt{Auction}, \texttt{Bid}, \texttt{Listing}, \texttt{StockItem} și \texttt{Seller} înlocuiesc denumirile generice de baze de date.
+
+La nivelul modelării datelor, se face o distincție clară între entități (\textit{Entities}) și obiecte valoare (\textit{Value Objects}). Entitățile, cum ar fi clasa \texttt{Product}, sunt definite printr-o identitate unică care persistă pe tot parcursul ciclului de viață. Obiectele valoare, cum ar fi \texttt{Address}, sunt imutabile și se definesc exclusiv prin valorile atributelor lor, neavând nevoie de un ID unic în bază.
+
+Sistemul utilizează conceptul de agregate (\textit{Aggregates}) și rădăcini de agregat (\textit{Aggregate Roots}). Rădăcina de agregat garantează consistența tranzacțională a entităților asociate. De exemplu, clasa \texttt{Auction} este o rădăcină de agregat care încapsulează o listă de obiecte \texttt{Bid}. Orice adăugare sau modificare a unui bid nu se poate face direct pe tabela de bid-uri, ci trebuie să treacă prin metodele interne ale agregatului \texttt{Auction} (ex. \texttt{auction.PlaceBid(userId, amount)}), care validează regulile de business.
+
+Pentru decuplarea asincronă la nivel de proces în nucleul .NET, se utilizează primitivele de concurență \texttt{Channel<T>}. La modificarea unui produs, se publică un eveniment într-un \texttt{Channel<ElasticSyncEvent>} procesat asincron de un worker de background, iar evenimentele de sistem sunt scrise într-un \texttt{Channel<NotificationEvent>} și distribuite prin SignalR. Folosirea \texttt{Channel<T>} in-process elimină overhead-ul de rețea în stadiul curent de dezvoltare, lăsând arhitectura pregătită pentru integrarea ulterioară a unui broker extern (ex. RabbitMQ).
+
+\section{Microservicii vs. monolit modular --- abordare hibridă}
+
+Modelul de tip \textbf{monolit modular} presupune că toată logica rulează într-un singur proces divizat în module strict izolate, oferind simplitate de deploy și tranzacții ACID garantate nativ, având însă dezavantajul scalării uniforme obligatorii și a rigidității tehnologice. În schimb, arhitectura de \textbf{microservicii} rulează procese independente în containere separate, permițând scalabilitate granulară și izolare la erori, cu prețul unei complexități operaționale sporite și a necesității de a gestiona consistența eventuală.
+
+KickSneak propune o **abordare hibridă pragmatică** (\textit{Pragmatic Distributed Monolith}): nucleul tranzacțional al business-ului (produse, licitații, comenzi, checkout) este implementat ca un monolit modular în .NET 10, asigurând consistența ACID. În paralel, serviciile cu cerințe speciale rulează independent: microserviciul de chat (scris în Go, optim pentru WebSockets concurente cu goroutine-uri consumând doar ~2KB de memorie fiecare), modulul de recomandări AI (Python cu PyTorch pentru optimizările tensorilor) și panoul administrativ (Next.js/Prisma pentru securitate și port izolat). Comunicarea dintre servicii se bazează pe API-uri HTTP REST pentru interogări simple și conexiuni WebSocket/SignalR pentru fluxurile de date în timp real.
+
+\section{Row Level Security în PostgreSQL}
+
+Securitatea la nivel de rând (\textit{Row Level Security --- RLS}), introdusă nativ începând cu versiunea PostgreSQL 9.5 \cite{postgresql2026rls}, reprezintă un mecanism avansat de control al accesului la date. Spre deosebire de securitatea clasică aplicată în stratul de aplicație (unde un programator poate uita din greșeală să adauge clauza \texttt{WHERE user\_id = current\_user} într-o interogare), RLS impune politicile de filtrare direct în motorul bazei de date. Niciun query nu poate returna sau modifica înregistrări la care rolul conectat nu are drept de acces.
+
+Modelul de date al platformei KickSneak implementează un sistem cu 6 roluri PostgreSQL distincte:
+\begin{enumerate}
+    \item \texttt{ks\_guest}: Rol utilizat pentru vizitatorii neautentificați; are drepturi stricte de lectură (\texttt{SELECT}) doar pe tabelele din catalogul public de produse.
+    \item \texttt{ks\_user}: Rol atribuit cumpărătorilor autentificați; are drepturi de scriere și citire pe propriile comenzi, favorite și coș de cumpărături.
+    \item \texttt{ks\_seller}: Rol destinat vânzătorilor; moștenește permisiunile de \texttt{ks\_user} și adaugă acces la modificarea propriilor listări de produse și vizualizarea tranzacțiilor aferente.
+    \item \texttt{ks\_chat\_service}: Rol securizat alocat exclusiv microserviciului de chat în Go, limitat strict la tabelele de mesagerie și sesiuni de chat.
+    \item \texttt{ks\_admin}: Rol cu acces total pe toate tabelele bazei de date, utilizat de aplicația administrativă din Next.js.
+    \item \texttt{ks\_owner}: Rolul principal utilizat la runtime de conexiunea backend-ului .NET; acesta deține drepturile de creare tabele și are permisiunea de a schimba identitatea conexiunii curente prin instrucțiuni \texttt{SET ROLE}.
+\end{enumerate}
+
+Politicile RLS sunt activate explicit pe tabelele sensibile prin clauza \texttt{ALTER TABLE ... ENABLE ROW LEVEL SECURITY}. Pentru a stabili identitatea utilizatorului din aplicație în PostgreSQL, backend-ul execută în cadrul fiecărei tranzacții o instrucțiune SQL preliminară utilizând micro-ORM-ul Dapper:
+\begin{lstlisting}[language=SQL]
+SET LOCAL ROLE ks_user;
+SELECT set_config('app.current_user_id', @UserId, true);
+\end{lstlisting}
+
+Comanda \texttt{SET LOCAL} garantează că rolul stabilit este valabil strict pe durata tranzacției curente, prevenind astfel atacurile de tip "scurgere de rol" (\textit{role leakage}) între request-uri concurente. Politicile RLS din PostgreSQL sunt configurate să citească această setare locală prin funcția \texttt{current\_setting('app.current\_user\_id')}, realizând filtrarea dinamică a înregistrărilor.
+
+\section{Real-time communication --- WebSocket și SignalR}
+
+Protocoalele HTTP tradiționale funcționează pe modelul cerere-răspuns (\textit{request-response}), în care clientul inițiază tranzacția, iar serverul răspunde și închide conexiunea. Pentru funcționalități interactive precum licitațiile live sau chat-ul conversational, acest model este ineficient, necesitând tehnici costisitoare de \textit{polling}.
+
+Protocolul WebSocket, definit în specificația RFC 6455, stabilește o conexiune bidirecțională, persistentă și full-duplex peste un singur canal TCP. Odată finalizată strângerea de mână inițială (\textit{handshake-ul}) prin HTTP, comunicarea se realizează prin cadre de date cu overhead minim de rețea.
+
+În platforma KickSneak, comunicarea în timp real este structurată pe două tehnologii:
+\begin{itemize}
+    \item \textbf{SignalR (.NET)}: Reprezintă o abstractizare de nivel înalt peste protocolul WebSocket, oferind fallback-uri automate la Server-Sent Events (SSE) sau Long Polling în cazul în care clientul sau rețeaua nu suportă WebSockets. SignalR facilitează conceptul de grupuri, permițând gruparea utilizatorilor pe camere specifice (ex. grupul \texttt{auction-\{id\}}). Când un utilizator plasează un bid, serverul transmite noul preț direct grupului asociat licitației respective.
+    \item \textbf{WebSocket Nativ (Go)}: Utilizat în microserviciul de chat. S-a optat pentru WebSocket nativ datorită flexibilității maxime oferite în transmiterea răspunsurilor în flux (\textit{streaming}) de la modelul de limbaj Ollama, permițând afișarea textului caracter cu caracter pe client.
+\end{itemize}
+
+\section{Neural Collaborative Filtering --- fundamente matematice}
+
+Sistemul de recomandare AI din KickSneak se bază pe algoritmul \textit{Neural Collaborative Filtering} (NCF) \cite{he2017ncf}, care înlocuiește factorizarea matricială clasică cu o structură neuronală profundă capabilă să capteze interacțiuni non-liniare. Pentru utilizatorul $u \in U$ și produsul $i \in I$, sistemul învață reprezentări vectoriale dense (embeddings) $e_u, e_i \in \mathbb{R}^d$ (unde $d=32$) extrase prin:
+\begin{equation}
+e\_u = P^T v\_u^U \in \mathbb{R}^d
+\end{equation}
+\begin{equation}
+e\_i = Q^T v\_i^I \in \mathbb{R}^d
+\end{equation}
+unde $P$ și $Q$ sunt matricile de embeddings ale utilizatorilor și produselor, iar $v_u^U$ și $v_i^I$ sunt vectorii one-hot ai ID-urilor de intrare. Stratul Generalized Matrix Factorization (GMF) modelează interacțiunile liniare prin produsul element cu element (dot product):
+\begin{equation}
+\phi^{GMF} = e\_u \odot e\_i
+\end{equation}
+În paralel, Multi-Layer Perceptron (MLP) captează asocierile non-liniare prin concatenarea vectorilor de embedding și propagarea lor prin straturi liniare activate cu funcția ReLU:
+\begin{equation}
+\phi\_0^{MLP} = [e\_u; e\_i]
+\end{equation}
+\begin{equation}
+\phi\_1^{MLP} = a\_1(W\_1^T \phi\_0^{MLP} + b\_1)
+\end{equation}
+\begin{equation}
+\phi\_L^{MLP} = a\_L(W\_L^T \phi\_{L-1}^{MLP} + b\_L)
+\end{equation}
+unde $W_k$, $b_k$ și $a_k$ reprezintă ponderile, bias-ul și funcția de activare pentru stratul $k$ (structurat ca 64→32→16). Ieșirile din straturile GMF și MLP sunt combinate și trecute printr-o funcție de activare \textit{Sigmoid} pentru a calcula probabilitatea ca utilizatorul $u$ să interacționeze favorabil cu produsul $i$:
+\begin{equation}
+\hat{y}\_{ui} = \sigma(h^T [\phi^{GMF}; \phi^{MLP}])
+\end{equation}
+unde $\sigma(x) = \frac{1}{1 + e^{-x}}$ este funcția sigmoidă standard, iar $h$ este vectorul de predicție final. Deoarece sistemul utilizează feedback implicit, ponderile sunt optimizate prin algoritmul Adam minimizând funcția de pierdere Binary Cross-Entropy (BCE) pe setul de interacțiuni pozitive $Y$ și negative $Y^-$:
+\begin{equation}
+L = -\sum\_{(u,i) \in Y \cup Y^-} \left( y\_{ui} \log \hat{y}\_{ui} + (1 - y\_{ui}) \log (1 - \hat{y}\_{ui}) \right)
+\end{equation}
+
+\section{Tehnologii complementare}
+
+Pentru a facilita implementarea modelelor descrise, s-au utilizat o serie de tehnologii suplimentare suport. Elasticsearch acționează ca bază de date de căutare secundară, organizând produsele într-un index inversat bazat pe relevanță TF-IDF / BM25. Redis stochează stările licitațiilor în memorie sub formă de tabele hash pentru acces ultrarapid, oferind suport pentru tranzacții atomice prin comenzi de urmărire \texttt{WATCH}. Prometheus și Loki colectează datele de telemetrie, Prometheus preluând metricile expuse de serviciile .NET, iar Loki agregând logurile Docker în timp real, ambele fiind conectate ca surse de date în Grafana pentru vizualizare.

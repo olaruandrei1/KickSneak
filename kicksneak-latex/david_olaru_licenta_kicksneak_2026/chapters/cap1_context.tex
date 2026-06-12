@@ -1,0 +1,46 @@
+\chapter{Context și stadiul actual}
+
+\section{Piața de sale/resale sneakers și apparel}
+
+Comerțul electronic (\textit{e-commerce}) s-a consacrat drept structura fundamentală a distribuției de bunuri și servicii. Totuși, presiunea competitivă extremă din acest domeniu forțează o tranziție rapidă de la soluțiile tehnologice tradiționale către sisteme inteligente bazate pe inteligență artificială și procesare distribuită în timp real. Această tranziție se manifestă în mod vizibil în trei direcții principale:
+\begin{enumerate}
+    \item \textbf{Evoluția sistemelor de căutare}: Căutările bazate pe interogări SQL clasice direct în bazele de date relaționale au fost înlocuite de motoare de căutare dedicate de tipul Elasticsearch sau Algolia, evoluând spre soluții de căutare semantică (\textit{semantic search}) bazate pe reprezentări vectoriale (\textit{embeddings}).
+    \item \textbf{Personalizarea recomandărilor}: Recomandările simple bazate pe popularitatea generală au făcut loc rețelelor neuronale profunde. Modelele contemporane, precum filtrarea colaborativă neuronală (\textit{Neural Collaborative Filtering --- NCF}) \cite{he2017ncf}, analizează feedback-ul implicit pentru a prezice afinitatea utilizatorilor.
+    \item \textbf{Asistența conversațională avansată}: Chatbot-urile bazate pe reguli rigide sunt înlocuite rapid de asistenți conversaționali integrați cu modele mari de limbaj (\textit{LLMs}), capabili să interpreteze limbajul natural în timp real și să păstreze contextul discuției.
+\end{enumerate}
+
+\section{Probleme identificate pe piața existentă}
+
+În ciuda avansului tehnologic descris, o analiză detaliată a multor marketplace-uri și platforme de e-commerce existente relevă o serie de deficiențe tehnice recurente, care afectează negativ atât securitatea utilizatorilor, cât și calitatea interacțiunii acestora cu sistemul.
+
+O problemă frecventă este utilizarea căutării clasice direct în bazele de date relaționale prin interogări SQL rigide de tip `LIKE '\%...\%'`. Acestea sunt extrem de ineficiente pe volume mari de date, ducând la scanări complete de tabele și blocarea conexiunilor la baza de date, fără a oferi toleranță la greșeli de tipar (\textit{typo tolerance}) sau potriviri aproximative (\textit{fuzzy matching}).
+
+Absența unor modele reale de personalizare bazate pe învățarea automată (\textit{Machine Learning}) reprezintă o altă deficiență majoră. Majoritatea platformelor folosesc algoritmi bazați strict pe popularitatea globală a produselor, ceea ce duce la recomandări irelevante contextual din cauza lipsei reprezentărilor vectoriale ale utilizatorilor și produselor.
+
+Multe platforme comerciale promovează chatbot-uri rigide bazate pe arbori de decizie scriptați și potriviri de cuvinte cheie. Utilizatorul este constrâns să folosească formule lingvistice predefinite exacte pentru a obține o informație simplă, în lipsa unei înțelegeri semantice, a memoriei conversaționale sau a abilității de a genera răspunsuri fluide.
+
+În special pe platformele de resale care folosesc licitații sau oferte, transparența datelor este adesea deficitară. Utilizatorii nu au acces în timp real la un istoric complet al ofertelor depuse (\textit{bid history}), la evoluția prețurilor sau la actualizări privind statusul comenzilor lor, depinzând de refresh-uri manuale.
+
+O vulnerabilitate de securitate gravă o reprezintă stocarea locală a identității utilizatorilor în baza de date proprie, folosind adesea algoritmi de hashing depășiți (cum ar fi MD5 sau SHA1). Aceste sisteme nu oferă protecție împotriva atacurilor de tip brute-force, nu integrează autentificarea cu doi factori (2FA) și evită delegarea către provideri specializați precum Firebase Authentication \cite{firebase2026auth}.
+
+Multe implementări legacy folosesc procese de plată custom care încalcă normele PCI-DSS \cite{pci2026dss}, colectând sau salvând datele sensibile ale cardurilor direct în baza de date locală a aplicației pentru a efectua procesarea de plată, în loc să utilizeze tokenizarea oferită de procesoare certificate precum Stripe \cite{stripe2026api}.
+
+La nivel de infrastructură internă, platformele suferă din cauza structurilor monolitice rigide și a lipsei totale de observabilitate. Modificarea unei funcționalități mici necesită redeploy-ul întregului sistem, iar depanarea erorilor în producție este îngreunată de absența log-urilor centralizate, a metricilor în timp real și a tracing-ului distribuit.
+
+\section{Soluția propusă: KickSneak}
+
+Aplicația KickSneak a fost proiectată ca un răspuns direct și coerent la fiecare dintre problemele identificate mai sus, integrând bunele practici tehnice recunoscese la nivel industrial într-o arhitectură modulară distribuită.
+
+\begin{enumerate}
+    \item \textbf{Căutare rapidă și flexibilă}: Căutarea clasică SQL a fost înlocuită cu un motor Elasticsearch \cite{elasticsearch2026search}, sincronizat asincron din PostgreSQL printr-un pipeline bazat pe canale in-memory în .NET (`Channel<T>`).
+    \item \textbf{Interacțiune sub 100ms}: Căutarea live din frontend folosește o conexiune SignalR directă cu backend-ul, atingând un timp total de răspuns sub 100ms prin debouncing client-side și interogarea indexului Elasticsearch.
+    \item \textbf{Recomandări personalizate bazate pe AI}: Integrarea unei rețele neuronale custom Neural Collaborative Filtering (NCF) în PyTorch \cite{he2017ncf} antrenată pe feedback implicit, oferind sugestii relevante contextual.
+    \item \textbf{Asistent conversațional LLM local}: Serviciul de chat utilizează local modelul \textit{llama3.1:8b} prin Ollama \cite{ollama2026llm}, rulat pe conexiuni WebSocket în Go, și include un clasificator pentru escaladare la operator uman.
+    \item \textbf{Transparență totală în timp real}: Transmiterea instantanee a update-urilor de bidduri și a statusurilor comenzilor către clienți prin conexiuni persistente SignalR.
+    \item \textbf{Autentificare securizată federată}: Delegarea identității către Firebase Authentication \cite{firebase2026auth}, cu validare criptografică a token-urilor JWT la fiecare request și monitorizarea IP în Redis pentru detecția anomaliilor.
+    \item \textbf{Plăți securizate prin Stripe}: Utilizarea Stripe Checkout \cite{stripe2026api} pentru a preveni accesul serverelor KickSneak la datele cardurilor, tranzacțiile fiind confirmate asincron prin webhook-uri semnate criptografic.
+    \item \textbf{Observabilitate profesională}: Agregarea metricilor Prometheus și a log-urilor Loki în dashboard-uri Grafana utilizând identificatori de trace (`TraceId`) corelați.
+    \item \textbf{Arhitectură hibridă decuplată}: Nucleul tranzacțional implementat ca un monolit modular în .NET 10 (Clean Architecture), iar serviciile auxiliare rulate ca microservicii independente prin Docker Compose \cite{docker2026compose}.
+\end{enumerate}
+
+Sistemul KickSneak se diferențiază prin integrarea a 6 limbaje de programare (C\#, TypeScript, Go, Python, Java și Kotlin), utilizarea unui model hibrid de securitate în baza de date (RBAC + RLS activat în PostgreSQL \cite{postgresql2026rls}) forțat din backend și administrarea licitațiilor printr-un mecanism rapid de tip \textit{Redis-first} cu control optimist al concurenței \cite{redis2026watch}. Ca limitări asumate academic, sistemul rulează momentan local prin Docker Compose, iar setul de date de antrenare PyTorch este generat semi-sintetic local, constituind direcții viitoare de dezvoltare.

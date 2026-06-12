@@ -1,0 +1,53 @@
+\chapter{Introducere}
+
+\section{Motivația alegerii temei}
+
+Dezvoltarea unei platforme moderne de e-commerce de tip \textit{marketplace} ridică probleme tehnice deosebite, a căror rezolvare necesită aplicarea unor modele de proiectare și soluții arhitecturale de ultimă generație. Alegerea acestei teme este fundamentată de dorința de a explora integrarea unor concepte teoretice avansate --- precum microserviciile poliglote, securitatea granulară la nivel de bază de date și inteligența artificială aplicată --- într-un sistem unitar, robust și scalabil.
+
+Oportunitatea acestei lucrări este susținută de caracterul universal aplicabil al domeniului e-commerce, cea mai mare industrie digitală globală. Logica de implementare dezvoltată pentru un sistem de comerț online (managementul stocurilor, fluxul de achiziție, tranzacțiile securizate și cataloagele de produse) este flexibilă și direct transpozabilă către alte tipuri de platforme software, precum sisteme SaaS, platforme de distribuție de conținut sau piețe virtuale B2B.
+
+Un alt pilon motivațional constă în intensificarea competiției în zona algoritmică de recomandare și căutare a produselor. Lucrarea de față explorează ambele extreme ale acestui spectru tehnologic: căutarea clasică bazată pe relevanță textuală utilizând Elasticsearch \cite{elasticsearch2026search} și recomandările personalizate realizate prin rețele neuronale profunde de tipul Neural Collaborative Filtering (NCF) antrenate în PyTorch pe seturi de date de interacțiune implicită \cite{he2017ncf}.
+
+În cele din urmă, proiectul abordează provocările arhitecturale reale asociate unui sistem distribuit de producție: securitatea cibernetică (autentificare Firebase \cite{firebase2026auth}, RBAC și PostgreSQL RLS \cite{postgresql2026rls}), scalabilitatea (decoplare asincronă, modelul \textit{Redis-first} \cite{redis2026watch}) și observabilitatea (Prometheus, Loki și Grafana). Cuplarea concurenței ridicate la nivel de licitații necesită mecanisme de control optimist și orchestrarea joburilor asincrone prin Quartz.NET \cite{quartz2026jobs}.
+
+\section{Obiectivele lucrării}
+
+Obiectivul principal al acestei lucrări constă în proiectarea, implementarea și testarea unei platforme complexe de tip marketplace, complet funcționale end-to-end, care integrează un catalog extins, un motor de căutare hibrid, un modul de licitații în timp real, checkout Stripe, un asistent conversațional LLM local, recomandări NCF și un panou administrativ dedicat.
+
+Pentru realizarea acestui scop, au fost stabilite și îndeplinite următoarele obiective secundare:
+\begin{itemize}
+    \item \textbf{Aplicarea Clean Architecture și DDD}: Structurarea codului pe straturi decuplate și orientarea pe regulile specifice domeniului de business \cite{martin2017clean, evans2003ddd}.
+    \item \textbf{Demonstrarea scalabilității prin microservicii poliglote}: Separarea responsabilităților prin implementarea de microservicii în 6 limbaje diferite (.NET, TypeScript, Go, Python, Java și Kotlin).
+    \item \textbf{Implementarea unui sistem real de Machine Learning}: Antrenarea unei rețele neuronale profunde NCF în PyTorch pe feedback implicit \cite{he2017ncf}.
+    \item \textbf{Integrarea unui model de securitate multi-strat}: Corelarea token-urilor Firebase JWT cu reguli RLS și setarea dinamică a rolurilor PostgreSQL \cite{postgresql2026rls, firebase2026auth}.
+    \item \textbf{Construirea unui stack de observabilitate}: Monitorizarea stării resurselor și agregarea logurilor și metricilor în Grafana via Prometheus și Loki.
+    \item \textbf{Validarea sistemului prin teste automate}: Implementarea unei strategii de testare unitară și de integrare în backend-ul .NET cu xUnit și NSubstitute.
+\end{itemize}
+
+\section{Structura lucrării}
+
+Lucrarea de față este organizată în 12 capitole care ghidează cititorul prin aspectele teoretice, arhitecturale și practice ale proiectului:
+
+Capitolul 1 --- Context și stadiul actual --- analizează starea curentă a pieței de comerț electronic și definește soluția KickSneak ca răspuns direct la vulnerabilitățile platformelor existente.
+
+Capitolul 2 --- Fundamente teoretice --- prezintă Clean Architecture, principiile DDD, topologia microserviciilor poliglote, Row Level Security în PostgreSQL, protocolul WebSocket și bazele matematice NCF.
+
+Capitolul 3 --- Arhitectura sistemului --- descrie topologia fizică, stack-ul ales și fluxurile end-to-end de date pentru scenariile principale de business.
+
+Capitolul 4 --- Securitate aplicată --- detaliază middleware-ul de securitate, protecția headerelor, rate limiting-ul, Firebase Auth și aplicarea politicilor RLS.
+
+Capitolul 5 --- Backend .NET 10 --- descrie structura tehnică a nucleului, designul bazei de date, cache-ul licitațiilor în Redis, checkout-ul Stripe și hosted services.
+
+Capitolul 6 --- Interfața client (React) --- analizează structura Atomic Design, store-urile Zustand, stilizarea glassmorphism și optimizările UX.
+
+Capitolul 7 --- Microserviciul de chat (Go) --- descrie serverul WebSocket în Go, integrarea modelului Ollama și clasificatorul de intenții.
+
+Capitolul 8 --- Sistem de recomandare AI (Python + PyTorch) --- prezintă modelul NCF, antrenarea rețelei și expunerea serviciului prin Flask.
+
+Capitolul 9 --- Search, observabilitate și notificări --- analizează indexul Elasticsearch, instrumentele Prometheus-Loki-Grafana și microserviciul Kotlin de push notifications.
+
+Capitolul 10 --- Aplicație administrativă (Next.js) --- detaliază panoul de administrare securizat prin Next.js SSR și Prisma ORM.
+
+Capitolul 11 --- Testare --- prezintă implementarea testelor unitare și de integrare în backend.
+
+Capitolul 12 --- Concluzii și direcții viitoare --- sintetizează performanțele realizate și propune modalitățile de migrare în cloud.

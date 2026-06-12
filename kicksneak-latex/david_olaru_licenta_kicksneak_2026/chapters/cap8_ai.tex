@@ -1,0 +1,81 @@
+\chapter{Sistem de recomandare AI (Python + PyTorch)}
+
+Diferențierea pe piață a platformelor e-commerce moderne se realizează în mare parte prin relevanța recomandărilor oferite utilizatorilor. Pentru a depăși limitările sistemelor bazate pe popularitatea generală a produselor, am implementat în platforma KickSneak un modul de recomandări personalizate bazat pe inteligență artificială. Acesta rulează ca un microserviciu scris în Python, utilizând biblioteca PyTorch pentru definirea și antrenarea unei rețele neuronale de tipul \textit{Neural Collaborative Filtering} (NCF). În acest capitol sunt prezentate fundamentele teoretice ale algoritmului, arhitectura rețelei, pipeline-ul de date și integrarea cu nucleul tranzacțional al aplicației.
+
+\section{Motivația și alegerea algoritmului}
+
+Sistemele de e-commerce se confruntă frecvent cu absența datelor de feedback explicit, bazându-se pe feedback implicit (vizualizări, favorite, achiziții) \cite{implicit2008hu}. Algoritmii clasici precum SVD sau KNN folosesc produsul scalar, o funcție liniară care limitează capacitatea de a învăța interacțiuni complexe non-liniare. De aceea, am implementat modelul \textit{Neural Collaborative Filtering} (NCF) \cite{he2017ncf}, care înlocuiește produsul scalar cu o rețea neuronală profundă ce mapează utilizatorii și produsele într-un spațiu latent comun. Am ales biblioteca PyTorch pentru implementarea rețelei datorită modelului său de graf de calcul dinamic, a ușurinței de depanare și a compatibilității native cu instrumentele de prelucrare a datelor din ecosistemul Python (pandas, numpy, scikit-learn). Modulul AI este integrat în KickSneak sub forma unei secțiuni „Recomandate pentru tine" pe pagina principală și ca un filtru de reordonare a rezultatelor căutării, aducând pe primele poziții articolele cu scorul de afinitate cel mai mare pentru utilizatorul curent.
+
+\section{Arhitectura rețelei neuronale}
+
+Rețeaua neuronală NCF implementată primește ca intrare doi identificatori întregi: \texttt{user\_id} și \texttt{product\_id}. Aceștia sunt trecuți prin două straturi de embedding separate, care funcționează ca tabele de căutare a vectorilor latenți densi:
+\begin{itemize}
+    \item \textbf{User Embedding}: O matrice de dimensiune $N_{users} \times d$, unde $d = 64$ reprezintă dimensiunea spațiului latent ales.
+    \item \textbf{Product Embedding}: O matrice de dimensiune $N_{products} \times d$.
+\end{itemize}
+Dimensiunea latentă de 64 a fost aleasă pentru a asigura un echilibru optim între capacitatea de expresivitate a modelului și prevenirea supra-adaptării (\textit{overfitting}) pe setul de date disponibil.
+
+Vectorii rezultați din cele două straturi de embedding, $e_u$ și $e_i$, sunt concatenați într-un singur vector de 128 de dimensiuni. MLP-ul este structurat pe trei straturi: 128$\rightarrow$128 (\texttt{BatchNorm1d} + \texttt{ReLU} + \texttt{Dropout} 20\%), 128$\rightarrow$64 (\texttt{BatchNorm1d} + \texttt{ReLU} + \texttt{Dropout} 10\%) și 64$\rightarrow$1 (scor brut). Scorul brut este trecut printr-o funcție de activare \texttt{Sigmoid}, care maptează rezultatul în intervalul $[0, 1]$, reprezentând probabilitatea matematică ca utilizatorul să aibă o interacțiune pozitivă cu produsul evaluat.
+
+Funcția de pierdere utilizată este \textit{Binary Cross-Entropy} (BCE), definită ca:
+\begin{equation}
+L = - \frac{1}{N} \sum_{k=1}^{N} \left[ y_k \log(p_k) + (1 - y_k) \log(1 - p_k) \right]
+\end{equation}
+unde $y_k \in \{0, 1\}$ este eticheta reală de interacțiune, iar $p_k \in [0, 1]$ este probabilitatea prezisă de rețea. Optimizarea ponderilor se face prin algoritmul \textit{Adam} cu o rată de învățare $\eta = 0.001$ și o penalizare L2 (\texttt{weight\_decay}) de $10^{-5}$. Pentru a antrena modelul pe feedback implicit, se utilizează tehnica de \textit{negative sampling}: pentru fiecare interacțiune reală se generează în mod aleator 4 perechi negative (utilizator, produs cu care acesta nu a interacționat deloc), etichetate cu 0. Această rație de 1:4 asigură stabilitatea antrenării.
+
+\section{Pipeline-ul de date}
+
+Pipeline-ul de antrenare rulează asincron ca un script de fundal. Datele brute de interacțiune sunt extrase direct din PostgreSQL utilizând driverul \texttt{psycopg2} prin intermediul unui query de tip JOIN:
+\begin{lstlisting}[language=SQL]
+SELECT user_id, product_id, interaction_type FROM (
+  SELECT "UserId" AS user_id, "ProductId" AS product_id, 'order' AS interaction_type FROM orders
+  UNION ALL
+  SELECT "UserId", "ProductId", 'bid' FROM bids
+  UNION ALL
+  SELECT "UserId", "ProductId", 'favorite' FROM favorites
+) ALL_INTERACTIONS;
+\end{lstlisting}
+
+Rezultatele sunt încărcate în \texttt{pandas}, unde interacțiunile primesc ponderi diferite (vizualizare: 1, favorite: 2, bid: 3, comandă: 5) și sunt binarizate. Identificatorii GUID sunt convertiți în indici prin \texttt{LabelEncoder} din \texttt{scikit-learn}, salvat ulterior în fișiere pickle pentru inferență. Setul de date este împărțit 80/20 train/validation și încapsulat în PyTorch \texttt{Dataset} și \texttt{DataLoader} (batch size 512, shuffle).
+
+\section{Training și evaluare}
+
+Procesul de antrenare rulează pe o durată de 20 de epoci. La finalul fiecărei epoci, modelul este evaluat pe setul de validare. Am implementat o logică de \textit{early stopping} care monitorizează pierderea de validare: dacă aceasta nu înregistrează o scădere timp de 3 epoci consecutive, antrenarea este oprită prematur, fiind salvată cea mai bună stare a parametrilor în fișierul \texttt{ncf\_model.pth}.
+
+Evaluarea performanței sistemului folosește două metrici standard în sistemele de recomandare \cite{evaluating2011shani}:
+\begin{itemize}
+    \item \textbf{Hit Rate@10} (HR@10): Verifică dacă produsul pe care utilizatorul l-a achiziționat se regăsește printre primele 10 recomandări generate de model.
+    \item \textbf{Normalized Discounted Cumulative Gain@10} (NDCG@10): Evaluează calitatea poziționării recomandărilor relevante.
+\end{itemize}
+Pentru setul de date generat prin seed, am obținut valori ilustrative de $\text{HR@10} \approx 0.72$ și $\text{NDCG@10} \approx 0.48$. Deși rezultatele confirmă corectitudinea implementării arhitecturale, trebuie asumat că performanța pe un dataset real din producție ar fi diferită.
+
+\section{Servirea modelului via Flask}
+
+Modelul antrenat este servit printr-un API HTTP minimalist implementat cu framework-ul Flask. Fișierul de parametri \texttt{ncf\_model.pth} și obiectele de encodare sunt încărcate în memoria RAM o singură dată, la pornirea containerului Python, în cadrul unei instanțe singleton.
+
+Ruta principală de predicție este expusă la adresa \texttt{POST /api/recommend}. Corpul cererii conține identificatorul Firebase al utilizatorului și numărul maxim de recomandări solicitate (\texttt{top\_k}):
+\begin{lstlisting}[language=JSON]
+{
+  "user_id": "firebase_uid_exemplu",
+  "top_k": 10
+}
+\end{lstlisting}
+
+La primirea cererii, serviciul Flask urmează pașii:
+\begin{enumerate}
+    \item Convertește identificatorul Firebase în index; în caz de cont nou (cold start), returnează direct cele mai populare produse.
+    \item Generează un lot de perechi între indexul utilizatorului și toți indicii produselor active din catalog.
+    \item Rulează inferența (\texttt{model.eval()} sub contextul \texttt{torch.no\_grad()}), ordonează rezultatele descrescător după scor și returnează identificatorii JSON.
+\end{enumerate}
+
+Endpoint-ul de monitorizare \texttt{GET /api/health} returnează statusul intern al modelului, fiind utilizat de Docker pentru a valida starea de funcționare a serviciului.
+
+\section{Integrare cu backend-ul .NET și fallback}
+
+Integrarea cu nucleul platformei se realizează la nivel de server. Serviciul \texttt{RecommendationService} din backend-ul .NET apelează API-ul Flask prin intermediul unui client HTTP înregistrat în DI container cu o politică de timeout de 2 secunde.
+
+În cazul în care microserviciul Python este offline sau depășește limita de timp alocată din cauza supraîncărcării, backend-ul .NET aplică o strategie de degradare grațioasă (\textit{graceful degradation}), executând un query SQL de fallback direct în PostgreSQL:
+\begin{lstlisting}[language=SQL]
+SELECT "Id" FROM products ORDER BY "OrdersCount" DESC LIMIT @Limit;
+\end{lstlisting}
+Astfel, utilizatorul primește o listă stabilă cu cele mai populare produse ale momentului, asigurând continuitatea operării platformei.

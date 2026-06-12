@@ -1,0 +1,215 @@
+\chapter{Backend .NET 10}
+
+\section{Clean Architecture aplicată}
+
+Implementarea nucleului tranzacțional respectă organizarea Clean Architecture. Proiectul este structurat într-o soluție .NET (\texttt{KickSneak.sln}) cu cinci subproiecte distincte: \texttt{Domain} (entități pure), \texttt{Application} (cazuri de utilizare și abstracții), \texttt{Persistence} (EF Core și repozitorii), \texttt{Infrastructure} (Stripe, Redis, Firebase) și \texttt{WebApi} (Minimal APIs și DI). Inversarea dependențelor este realizată prin înregistrarea implementărilor concrete în containerul DI la runtime.
+
+Pentru configurări Strongly-Typed, setările din \texttt{appsettings.json} sunt mapate pe clase concrete C\# prin pattern-ul \textit{ConfigurableObjects}:
+\begin{lstlisting}[language={[sharp]C}]
+builder.Services.Configure<StripeSettings>(
+    builder.Configuration.GetSection(nameof(StripeSettings)));
+builder.Services.AddSingleton(sp => 
+    sp.GetRequiredService<IOptions<StripeSettings>>().Value);
+\end{lstlisting}
+
+Sistemul optimizează timpii de pornire prin injectarea leneșă (\texttt{Lazy<T>}), instanțiind dependențele complexe doar la prima interogare. Toate dependențele sunt injectate ca readonly prin constructori primari (\textit{Primary Constructors}), asigurând imutabilitatea referințelor.
+
+\section{Modelul de date --- Entități și relații}
+
+Modelul de date relațional din KickSneak este normalizat și structurat pe șase mari domenii funcționale:
+\begin{itemize}
+    \item \textbf{Catalog}: Entitatea centrală \texttt{Product} (preț, retail, flag-ul \texttt{IsAuction}) este legată de tabelele de atribute (\texttt{Brand}, \texttt{Category}, \texttt{Color}) și de stocurile fizice (\texttt{StockItem}, \texttt{Size}).
+    \item \textbf{Users \& Sellers}: \texttt{User} (identificat prin \texttt{FirebaseUid}) se află în relații cu \texttt{Address} și o relație opțională $0:1$ cu \texttt{Seller} (rating, stare verificare).
+    \item \textbf{Commerce}: Conține entitățile pentru fluxul de plată și checkout: \texttt{Cart}, \texttt{CartItem}, \texttt{Order}, \texttt{OrderItem}, \texttt{Payment} (Stripe) și \texttt{Offer}.
+    \item \textbf{Auctions}: Agregatul \texttt{Auction} controlează tranzacțiile de licitație, având o relație $1:N$ cu ofertele depuse (\texttt{Bid}) și regulile setate (\texttt{AutoBid}).
+    \item \textbf{Notifications \& Chat}: Gestionează logica de mesagerie prin entitățile \texttt{Notification}, \texttt{ChatSession} și \texttt{ChatMessage} (roluri: user/assistant/admin).
+    \item \textbf{Favorites \& Returns}: Tabelele de legătură \texttt{Favorite} și \texttt{Return} pentru gestionarea listei de dorințe și a retururilor.
+\end{itemize}
+
+Configurarea schemei PostgreSQL se face în stratul de Persistence prin Fluent API, utilizând denumiri PascalCase case-sensitive și indecși adecvați pe cheile străine.
+
+\section{RBAC și RLS --- implementare Unit of Work}
+
+Punctul central de coordonare a politicilor RLS este clasa \texttt{UnitOfWork}. Pentru a asigura atomicitatea operațiunilor de scriere multiple sub regulile de securitate active, se utilizează metoda \texttt{ExecuteInTransactionAsync}, care gestionează deschiderea tranzacției, aplicarea RLS, salvarea modificărilor și rollback-ul automat în caz de excepție:
+
+\begin{lstlisting}[language={[sharp]C}]
+public async Task ExecuteInTransactionAsync(Func<Task> action, CancellationToken ct = default)
+{
+    await using var transaction = await context.Database.BeginTransactionAsync(ct);
+
+    try
+    {
+        await ApplyRlsAsync(ct);
+
+        await action();
+
+        await context.SaveChangesAsync(ct);
+
+        await transaction.CommitAsync(ct);
+    }
+    catch
+    {
+        await transaction.RollbackAsync(ct);
+        throw;
+    }
+}
+\end{lstlisting}
+
+Metoda privată \texttt{ApplyRlsAsync(ct)} interoghează starea din \texttt{RlsContext} și determină rolul ce trebuie aplicat conexiunii printr-o structură switch bazată pe o listă albă:
+
+\begin{lstlisting}[language={[sharp]C}]
+private async Task ApplyRlsAsync(CancellationToken ct)
+{
+    if (rlsContext.Role == DbRole.Guest)
+        return;
+
+    var role = rlsContext.Role switch
+    {
+        DbRole.User => "ks_user",
+        DbRole.Seller => "ks_seller",
+        DbRole.Admin => "ks_admin",
+        _ => (string?)null
+    };
+
+    if (role is null) return;
+
+    var conn = context.Database.GetDbConnection();
+
+    if (conn.State != System.Data.ConnectionState.Open)
+        await conn.OpenAsync(ct);
+
+    await conn.ExecuteAsync(
+        $"SET LOCAL ROLE {role}; SELECT set_config('app.current_user_id', @UserId, true);",
+        new { UserId = rlsContext.UserId }
+    );
+}
+\end{lstlisting}
+
+Utilizarea instrucțiunii \texttt{SET LOCAL} garantează că rolul stabilit este valabil strict pe durata tranzacției, eliminând riscul scurgerii de privilegii în pool-ul de conexiuni bazei de date.
+
+\section{Sistemul de licitații --- Redis-first}
+
+Licitarea în timp real este implementată printr-un pattern de tip \textit{Redis-first} pentru a evita blocajele de tranzacții (\textit{deadlocks}) în PostgreSQL sub trafic intens. Starea licitațiilor este stocată în Redis prin Hash-uri (\texttt{auction:\{id\}} pentru starea curentă și \texttt{auction:\{id\}:autobids} pentru bidding automat), Liste (\texttt{auction:\{id\}:bids} pentru istoric) și un Sorted Set (\texttt{auctions:active} ordonat după data finalizării).
+
+Pentru a evita scrierile concurente eronate, plasarea unui bid folosește optimistic locking prin comenzile \texttt{WATCH}, \texttt{MULTI} și \texttt{EXEC}. Algoritmul detaliat de plasare a unui bid și auto-bidding recursiv este prezentat în Algoritmul \ref{alg:place_bid}.
+
+\begin{algorithm}[htbp]
+\DontPrintSemicolon
+\SetAlgoLined
+\KwIn{auctionId, userId, bidAmount}
+\KwOut{ServiceResult (Succes sau Eroare)}
+\BlankLine
+$key \leftarrow \text{"auction:"} + \text{auctionId}$\;
+\text{WATCH } $key$\;
+$currentBid \leftarrow \text{HGET } key \text{ "currentBid"}$\;
+$endsAt \leftarrow \text{HGET } key \text{ "endsAt"}$\;
+\If{$currentTime \ge endsAt$}{
+    \text{UNWATCH}\;
+    \Return{\text{Error("Licitația a expirat")}}\;
+}
+\If{$bidAmount \le currentBid$}{
+    \text{UNWATCH}\;
+    \Return{\text{Error("Suma introdusă este prea mică")}}\;
+}
+\text{MULTI}\;
+\text{HSET } $key$ \text{ "currentBid"} $bidAmount$\;
+\text{HSET } $key$ \text{ "currentBidderId"} $userId$\;
+\text{LPUSH } $key + ":bids"$ $bidAmount$\;
+$result \leftarrow \text{EXEC}$\;
+\If{$result \text{ is null}$}{
+    \Return{\text{PlaceBidAsync(auctionId, userId, bidAmount) } \textit{// Retry recursiv}}\;
+}
+\text{Publish } \text{BidPlacedEvent(auctionId, bidAmount, userId)} \text{ la SignalR AuctionsHub}\;
+\text{TriggerAutoBidChain(auctionId, bidAmount, userId)}\;
+\Return{\text{Success()}}\;
+\caption{Algoritmul de plasare bid cu control optimist al concurenței în Redis}
+\label{alg:place_bid}
+\end{algorithm}
+
+Sincronizarea datelor se face prin jobul Quartz.NET \texttt{AuctionSyncJob} (care scrie datele din Redis în PostgreSQL la fiecare 5 minute) și \texttt{AuctionCloseJob} (care finalizează licitația la expirarea timpului și generează comanda).
+
+\section{Integrare Stripe}
+
+Plățile sunt gestionate prin Stripe Checkout API pentru conformitate PCI-DSS. Serviciul \texttt{CheckoutService} inițializează sesiunea Stripe trimițând produsele, costurile și metadatele de identificare:
+\begin{lstlisting}[language={[sharp]C}]
+var options = new SessionCreateOptions
+{
+    PaymentMethodTypes = new List<string> { "card" },
+    LineItems = items,
+    Mode = "payment",
+    SuccessUrl = "https://kicksneak.ro/checkout/success?session_id={CHECKOUT_SESSION_ID}",
+    CancelUrl = "https://kicksneak.ro/checkout/cancel",
+    Metadata = new Dictionary<string, string>
+    {
+        { "OrderId", orderId.ToString() },
+        { "UserId", userId.ToString() }
+    }
+};
+var service = new SessionService();
+Session session = await service.CreateAsync(options);
+\end{lstlisting}
+
+Confirmarea se face asincron prin endpoint-ul de webhook \texttt{/webhooks/stripe}, unde se validează semnătura digitală a request-ului folosind \texttt{WebhookSecret}. Evenimentul \texttt{checkout.session.completed} modifică statusul comenzii în PostgreSQL ca fiind plătită (\texttt{Paid}) și trimite notificarea prin SignalR.
+
+\section{Minimal APIs și organizarea endpoint-urilor}
+
+Rutele API sunt organizate utilizând interfața \texttt{IEndpointGroup} pentru a menține curățenia în \texttt{Program.cs}. De exemplu, endpoint-urile de licitații sunt definite în \texttt{AuctionEndpoints.cs}:
+\begin{lstlisting}[language={[sharp]C}]
+public class AuctionEndpoints : IEndpointGroup
+{
+    public void Map(WebApplication app)
+    {
+        var group = app.MapGroup("/api/v1/auctions");
+        
+        group.MapGet("/", GetActiveAuctions).AllowAnonymous();
+        group.MapGet("/{id}", GetAuctionById).AllowAnonymous();
+        group.MapPost("/{id}/bid", PlaceBid).RequireAuthorization();
+        group.MapPost("/{id}/autobid", SetAutoBid).RequireAuthorization();
+    }
+}
+\end{lstlisting}
+
+La pornire, o metodă de extensie înregistrează automat toate implementările \texttt{IEndpointGroup} sub prefixul \texttt{/api/v1/}. Logica întoarce rezultate încapsulate în \texttt{ServiceResult<T>}, facilitând maparea pe status coduri HTTP standard.
+
+\section{Background Services --- IHostedService și Channels}
+
+Managementul sarcinilor asincrone de fundal este realizat prin servicii de fundal (\texttt{BackgroundService}) în corelație cu primitivele \texttt{Channel<T>}. Spre deosebire de o coadă simplă care necesită polling periodic, \texttt{Channel<T>} oferă un model de așteptare asincron neblocant (\texttt{ReadAllAsync()}), reducând consumul CPU la zero când canalul este gol.
+
+În platformă sunt active două servicii de fundal bazate pe acest pattern:
+\begin{enumerate}
+    \item \textbf{ElasticsearchSyncService}: Ascultă pe \texttt{Channel<ElasticSyncEvent>} pentru a propaga modificările produselor în indexul Elasticsearch în mod asincron.
+    \item \textbf{NotificationDispatchService}: Ascultă pe \texttt{Channel<NotificationEvent>} pentru a notifica utilizatorii în timp real prin SignalR.
+\end{enumerate}
+
+Algoritmul de execuție din interiorul worker-ului asincron de sincronizare Elasticsearch este detaliat în Algoritmul \ref{alg:sync_worker}.
+
+\begin{algorithm}[htbp]
+\DontPrintSemicolon
+\SetAlgoLined
+\KwIn{CancellationToken ct}
+\BlankLine
+\While{not ct.IsCancellationRequested}{
+    \Try{
+        \texttt{await foreach} (var evt in \_channel.Reader.ReadAllAsync(ct)){
+            productId $\leftarrow$ evt.ProductId\;
+            opType $\leftarrow$ evt.OperationType\;
+            \If{opType == OperationType.Upsert}{
+                product $\leftarrow$ await \_db.GetProductForIndexAsync(productId)\;
+                await \_elasticClient.IndexAsync(product, ct)\;
+            }
+            \If{opType == OperationType.Delete}{
+                await \_elasticClient.DeleteAsync(productId, ct)\;
+            }
+        }
+    }
+    \Catch{OperationCanceledException}{
+        \text{Break } \textit{// Shutdown graceful}\;
+    }
+    \Catch{Exception ex}{
+        \text{LogError("Eroare la indexare Elasticsearch", ex)}\;
+        \texttt{await Task.Delay(5000, ct)} \textit{// Așteptare înainte de reîncercare}\;
+    }
+}
+\caption{Metoda ExecuteAsync din worker-ul de sincronizare asincronă Elasticsearch}
+\label{alg:sync_worker}
+\end{algorithm}
