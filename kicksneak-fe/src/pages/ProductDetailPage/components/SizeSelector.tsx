@@ -4,7 +4,8 @@ import { FlashOn } from '@mui/icons-material';
 import type { SizeOption } from '../../../types/product';
 import styles from './SizeSelector.module.css';
 
-const SIZE_SYSTEMS = ['EU', 'US M', 'US W', 'UK', 'CM', 'KR'];
+const SIZE_SYSTEMS = ['EU', 'US', 'UK', 'CM', 'KR'] as const;
+type SizeSystem = typeof SIZE_SYSTEMS[number];
 
 interface SizeSelectorProps {
     sizes: SizeOption[];
@@ -19,13 +20,7 @@ export const SizeSelector = ({
     onSelect,
     pricePulse,
 }: SizeSelectorProps) => {
-    const [system, setSystem] = useState('EU');
-
-    const filtered = sizes.filter((s) => s.system === system);
-
-    const allPrice = filtered.reduce((min, s) =>
-        s.price !== null && s.price < (min ?? Infinity) ? s.price : min, null as number | null
-    );
+    const [system, setSystem] = useState<SizeSystem>('EU');
 
     return (
         <div className={styles.wrapper}>
@@ -42,20 +37,25 @@ export const SizeSelector = ({
             </div>
 
             <div className={styles.grid}>
-                {filtered.map((size) => (
-                    <button
-                        key={size.label}
-                        className={`${styles.sizeBtn} ${selected?.label === size.label ? styles.sizeBtnActive : ''} ${size.price === null ? styles.sizeBid : ''}`}
-                        onClick={() => onSelect(size)}
-                    >
-                        <span className={styles.sizeLabel}>{size.label.replace(system, '').trim()}</span>
-                        <div className={styles.sizePriceWrap}>
-                            <span className={`${styles.sizePrice} ${pricePulse === 'up' ? styles.pulseUp : ''} ${pricePulse === 'down' ? styles.pulseDown : ''}`}>
-                                {size.price !== null ? `$${size.price}` : 'BID'}
-                            </span>
-                        </div>
-                    </button>
-                ))}
+                {sizes.map((size) => {
+                    const sysKey = system.toLowerCase() as keyof SizeOption;
+                    const displayValue = size[sysKey] ? String(size[sysKey]) : size.label;
+
+                    return (
+                        <button
+                            key={size.sizeId || size.label}
+                            className={`${styles.sizeBtn} ${selected?.sizeId === size.sizeId || selected?.label === size.label ? styles.sizeBtnActive : ''} ${size.price === null ? styles.sizeBid : ''}`}
+                            onClick={() => onSelect(size)}
+                        >
+                            <span className={styles.sizeLabel}>{displayValue}</span>
+                            <div className={styles.sizePriceWrap}>
+                                <span className={`${styles.sizePrice} ${pricePulse === 'up' ? styles.pulseUp : ''} ${pricePulse === 'down' ? styles.pulseDown : ''}`}>
+                                    {size.price !== null ? `${size.price}` : 'BID'}
+                                </span>
+                            </div>
+                        </button>
+                    );
+                })}
             </div>
         </div>
     );

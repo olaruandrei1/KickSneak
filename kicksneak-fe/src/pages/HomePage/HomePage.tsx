@@ -17,9 +17,9 @@ interface CarouselData {
 }
 
 const CAROUSEL_ROUTES = [
-    { key: 'home_new', url: ApiRoutes.productsNew, cacheKey: 'home_new' },
-    { key: 'home_trending', url: ApiRoutes.productsTrending, cacheKey: 'home_trending' },
-    { key: 'home_recent', url: ApiRoutes.productsRecentlyViewed, cacheKey: 'home_recent' },
+    { key: 'home_new', title: 'New Arrivals', url: ApiRoutes.productsNew, cacheKey: 'home_new' },
+    { key: 'home_trending', title: 'Trending Kicks', url: ApiRoutes.productsTrending, cacheKey: 'home_trending' },
+    { key: 'home_recent', title: 'Recently Viewed', url: ApiRoutes.productsRecentlyViewed, cacheKey: 'home_recent' },
 ];
 
 export const HomePage = () => {
@@ -121,16 +121,17 @@ export const HomePage = () => {
                 </section>
 
                 <section className={styles.carousels}>
-                    {CAROUSEL_ROUTES.map(({ key }, i) => {
+                    {CAROUSEL_ROUTES.map(({ key, title }, i) => {
                         const data = carousels[key];
                         if (!data) return null;
+                        const items = Array.isArray(data) ? data : data.items ?? [];
                         return (
                             <CarouselSection
                                 key={key}
-                                title={data.title}
+                                title={data.title || title}
                                 sectionIndex={i}
                             >
-                                {data.items.map((item) => (
+                                {items.map((item) => (
                                     <ProductCard key={item.id} item={item} />
                                 ))}
                             </CarouselSection>
