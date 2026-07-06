@@ -205,7 +205,7 @@
     {
       "Id": "ffd29ffd-12b8-406d-9e11-4d43060c66cf",
       "ProductId": "9a7fb588-c775-4ea6-848f-2283d68f8b85",
-      "PhotoUrl": "https://picsum.photos/seed/puma-suede-classic-navy/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1551107696-a4b0c5a0d9a2?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": true,
       "DisplayOrder": 1,
       "IsDeleted": false,
@@ -217,7 +217,7 @@
     {
       "Id": "f98076ae-7ec8-47b3-91fe-d76399b59774",
       "ProductId": "9a7fb588-c775-4ea6-848f-2283d68f8b85",
-      "PhotoUrl": "https://picsum.photos/seed/puma-suede-classic-navy-2/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": false,
       "DisplayOrder": 2,
       "IsDeleted": false,
@@ -229,7 +229,7 @@
     {
       "Id": "25d5598a-27a3-41d6-9763-bbc9a8ee8dad",
       "ProductId": "a74ca4b2-66e1-4149-add3-140251279218",
-      "PhotoUrl": "https://picsum.photos/seed/puma-clyde-pink/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1542291026-7eec264c27ff?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": true,
       "DisplayOrder": 1,
       "IsDeleted": false,
@@ -241,7 +241,7 @@
     {
       "Id": "bf9c3e58-feae-46d2-9871-260a7dedfb2b",
       "ProductId": "a74ca4b2-66e1-4149-add3-140251279218",
-      "PhotoUrl": "https://picsum.photos/seed/puma-clyde-pink-2/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1608231387042-66d1773070a5?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": false,
       "DisplayOrder": 2,
       "IsDeleted": false,
@@ -253,7 +253,7 @@
     {
       "Id": "656dd216-d8fb-4bd3-81ab-5e98f96560d5",
       "ProductId": "fa2442cc-8db9-4c5b-b94b-3883b7a9e275",
-      "PhotoUrl": "https://picsum.photos/seed/puma-palermo-red/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1551107696-a4b0c5a0d9a2?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": true,
       "DisplayOrder": 1,
       "IsDeleted": false,
@@ -265,7 +265,7 @@
     {
       "Id": "bd733939-2ba1-4ec0-bff1-9cf73b811c46",
       "ProductId": "fa2442cc-8db9-4c5b-b94b-3883b7a9e275",
-      "PhotoUrl": "https://picsum.photos/seed/puma-palermo-red-2/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": false,
       "DisplayOrder": 2,
       "IsDeleted": false,
@@ -277,7 +277,7 @@
     {
       "Id": "184842ed-37cb-406d-ac09-20b229326b63",
       "ProductId": "82da463b-416c-4a84-8a6e-36e0961da7c6",
-      "PhotoUrl": "https://picsum.photos/seed/puma-ca-pro-classic-pink/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1542291026-7eec264c27ff?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": true,
       "DisplayOrder": 1,
       "IsDeleted": false,
@@ -289,7 +289,7 @@
     {
       "Id": "2982bab3-239d-4c36-9a3f-d6e4dc21b6d3",
       "ProductId": "82da463b-416c-4a84-8a6e-36e0961da7c6",
-      "PhotoUrl": "https://picsum.photos/seed/puma-ca-pro-classic-pink-2/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1608231387042-66d1773070a5?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": false,
       "DisplayOrder": 2,
       "IsDeleted": false,
@@ -301,7 +301,7 @@
     {
       "Id": "05acb175-55e7-4606-b730-ba9fb3f42517",
       "ProductId": "82da463b-416c-4a84-8a6e-36e0961da7c6",
-      "PhotoUrl": "https://picsum.photos/seed/puma-ca-pro-classic-pink-3/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1551107696-a4b0c5a0d9a2?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": false,
       "DisplayOrder": 3,
       "IsDeleted": false,
@@ -313,7 +313,7 @@
     {
       "Id": "5d277ce8-1054-4b6b-9bb7-fcbedf30e983",
       "ProductId": "ba754c39-7981-46bf-870b-9c770c360fc4",
-      "PhotoUrl": "https://picsum.photos/seed/puma-clyde-grey/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": true,
       "DisplayOrder": 1,
       "IsDeleted": false,
@@ -325,7 +325,7 @@
     {
       "Id": "f39cd97a-626e-4715-af00-539c7eb7d2e9",
       "ProductId": "ba754c39-7981-46bf-870b-9c770c360fc4",
-      "PhotoUrl": "https://picsum.photos/seed/puma-clyde-grey-2/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1542291026-7eec264c27ff?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": false,
       "DisplayOrder": 2,
       "IsDeleted": false,
@@ -337,7 +337,7 @@
     {
       "Id": "9c58635f-ebe3-4a8d-88a2-f18d4f24ff93",
       "ProductId": "ba754c39-7981-46bf-870b-9c770c360fc4",
-      "PhotoUrl": "https://picsum.photos/seed/puma-clyde-grey-3/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1608231387042-66d1773070a5?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": false,
       "DisplayOrder": 3,
       "IsDeleted": false,
@@ -349,7 +349,7 @@
     {
       "Id": "dff43a31-511a-4155-86d0-9ee332eb482a",
       "ProductId": "e5fe2b25-c42c-46c5-a73e-149dc02a367f",
-      "PhotoUrl": "https://picsum.photos/seed/puma-slipstream-red/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1551107696-a4b0c5a0d9a2?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": true,
       "DisplayOrder": 1,
       "IsDeleted": false,
@@ -361,7 +361,7 @@
     {
       "Id": "1bfafae0-d9b8-4be7-9993-1496804e0c4d",
       "ProductId": "e5fe2b25-c42c-46c5-a73e-149dc02a367f",
-      "PhotoUrl": "https://picsum.photos/seed/puma-slipstream-red-2/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": false,
       "DisplayOrder": 2,
       "IsDeleted": false,
@@ -373,7 +373,7 @@
     {
       "Id": "c738d21c-419f-4213-8fa7-8f3d18679235",
       "ProductId": "e5fe2b25-c42c-46c5-a73e-149dc02a367f",
-      "PhotoUrl": "https://picsum.photos/seed/puma-slipstream-red-3/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1542291026-7eec264c27ff?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": false,
       "DisplayOrder": 3,
       "IsDeleted": false,
@@ -385,7 +385,7 @@
     {
       "Id": "a62e467b-00f2-440c-ad63-b34142d38673",
       "ProductId": "06616275-5614-434e-a189-c41e8a34b237",
-      "PhotoUrl": "https://picsum.photos/seed/puma-ca-pro-classic-red/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1608231387042-66d1773070a5?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": true,
       "DisplayOrder": 1,
       "IsDeleted": false,
@@ -397,7 +397,7 @@
     {
       "Id": "fd7710b3-9232-4d0b-9bad-8074264fc5ef",
       "ProductId": "06616275-5614-434e-a189-c41e8a34b237",
-      "PhotoUrl": "https://picsum.photos/seed/puma-ca-pro-classic-red-2/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1551107696-a4b0c5a0d9a2?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": false,
       "DisplayOrder": 2,
       "IsDeleted": false,
@@ -409,7 +409,7 @@
     {
       "Id": "e1f29f15-f5bf-4f98-a73b-f1114cd18a5f",
       "ProductId": "62553285-cdf1-4993-b6d0-6b882daf2536",
-      "PhotoUrl": "https://picsum.photos/seed/puma-deviate-nitro-2-white/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": true,
       "DisplayOrder": 1,
       "IsDeleted": false,
@@ -421,7 +421,7 @@
     {
       "Id": "2c833302-dd4a-4196-b591-6acf8083f752",
       "ProductId": "62553285-cdf1-4993-b6d0-6b882daf2536",
-      "PhotoUrl": "https://picsum.photos/seed/puma-deviate-nitro-2-white-2/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1542291026-7eec264c27ff?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": false,
       "DisplayOrder": 2,
       "IsDeleted": false,
@@ -433,7 +433,7 @@
     {
       "Id": "b1a1da3b-3c9d-4f56-9db3-59ab49897800",
       "ProductId": "62553285-cdf1-4993-b6d0-6b882daf2536",
-      "PhotoUrl": "https://picsum.photos/seed/puma-deviate-nitro-2-white-3/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1608231387042-66d1773070a5?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": false,
       "DisplayOrder": 3,
       "IsDeleted": false,
@@ -445,7 +445,7 @@
     {
       "Id": "4a53a0aa-fb8a-4815-b2b5-a8a968f0b408",
       "ProductId": "07e6bf94-f197-4a76-a1e2-e2f0dd8cfbf1",
-      "PhotoUrl": "https://picsum.photos/seed/puma-velocity-nitro-3-grey/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1551107696-a4b0c5a0d9a2?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": true,
       "DisplayOrder": 1,
       "IsDeleted": false,
@@ -457,7 +457,7 @@
     {
       "Id": "f6241e8f-36b7-4239-a759-c13bae46b9db",
       "ProductId": "07e6bf94-f197-4a76-a1e2-e2f0dd8cfbf1",
-      "PhotoUrl": "https://picsum.photos/seed/puma-velocity-nitro-3-grey-2/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": false,
       "DisplayOrder": 2,
       "IsDeleted": false,
@@ -469,7 +469,7 @@
     {
       "Id": "91a33dcb-769c-49d7-b9b6-91def4852906",
       "ProductId": "c48e8544-4437-42a0-9a68-4712b97b0f2e",
-      "PhotoUrl": "https://picsum.photos/seed/puma-ca-pro-classic-blue/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1542291026-7eec264c27ff?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": true,
       "DisplayOrder": 1,
       "IsDeleted": false,
@@ -481,7 +481,7 @@
     {
       "Id": "2cb16075-5478-4d10-bf9e-d7354e2fcbf7",
       "ProductId": "c48e8544-4437-42a0-9a68-4712b97b0f2e",
-      "PhotoUrl": "https://picsum.photos/seed/puma-ca-pro-classic-blue-2/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1608231387042-66d1773070a5?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": false,
       "DisplayOrder": 2,
       "IsDeleted": false,

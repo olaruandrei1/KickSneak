@@ -205,7 +205,7 @@
     {
       "Id": "ee43c86a-b393-4c92-923a-1a05f943b62e",
       "ProductId": "9558fbb0-a445-4fca-9388-32ee7efcadfa",
-      "PhotoUrl": "https://picsum.photos/seed/nike-originals-superlite-hat-orange/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1551107696-a4b0c5a0d9a2?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": true,
       "DisplayOrder": 1,
       "IsDeleted": false,
@@ -217,7 +217,7 @@
     {
       "Id": "eaf2b482-9ed6-45c1-8140-1170842e2f28",
       "ProductId": "9558fbb0-a445-4fca-9388-32ee7efcadfa",
-      "PhotoUrl": "https://picsum.photos/seed/nike-originals-superlite-hat-orange-2/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": false,
       "DisplayOrder": 2,
       "IsDeleted": false,
@@ -229,7 +229,7 @@
     {
       "Id": "304adcc6-f278-4c7c-9c5a-39c9d874f037",
       "ProductId": "9558fbb0-a445-4fca-9388-32ee7efcadfa",
-      "PhotoUrl": "https://picsum.photos/seed/nike-originals-superlite-hat-orange-3/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1542291026-7eec264c27ff?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": false,
       "DisplayOrder": 3,
       "IsDeleted": false,
@@ -241,7 +241,7 @@
     {
       "Id": "f2047795-76bc-450d-91af-c6d1795fda5a",
       "ProductId": "d0f87724-e8a0-4d55-9a1c-d1f4acdf9f3c",
-      "PhotoUrl": "https://picsum.photos/seed/nike-stock-logo-bucket-hat-university-blue/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1608231387042-66d1773070a5?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": true,
       "DisplayOrder": 1,
       "IsDeleted": false,
@@ -253,7 +253,7 @@
     {
       "Id": "3744d8cd-0765-49ae-8e3f-5a4308b0b6ee",
       "ProductId": "d0f87724-e8a0-4d55-9a1c-d1f4acdf9f3c",
-      "PhotoUrl": "https://picsum.photos/seed/nike-stock-logo-bucket-hat-university-blue-2/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1551107696-a4b0c5a0d9a2?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": false,
       "DisplayOrder": 2,
       "IsDeleted": false,
@@ -265,7 +265,7 @@
     {
       "Id": "81b3998f-5f06-4332-bcfe-73fcd118c38f",
       "ProductId": "d0f87724-e8a0-4d55-9a1c-d1f4acdf9f3c",
-      "PhotoUrl": "https://picsum.photos/seed/nike-stock-logo-bucket-hat-university-blue-3/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": false,
       "DisplayOrder": 3,
       "IsDeleted": false,
@@ -277,7 +277,7 @@
     {
       "Id": "39391d19-39f6-490e-84fd-09233fc1e837",
       "ProductId": "06c5d202-e040-46b2-81d1-1945b8b4a2e6",
-      "PhotoUrl": "https://picsum.photos/seed/stussy-classic-trefoil-crew-socks-3-pack-university-blue/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1542291026-7eec264c27ff?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": true,
       "DisplayOrder": 1,
       "IsDeleted": false,
@@ -289,7 +289,7 @@
     {
       "Id": "064dd988-cb70-486b-8860-897d728b2c9b",
       "ProductId": "06c5d202-e040-46b2-81d1-1945b8b4a2e6",
-      "PhotoUrl": "https://picsum.photos/seed/stussy-classic-trefoil-crew-socks-3-pack-university-blue-2/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1608231387042-66d1773070a5?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": false,
       "DisplayOrder": 2,
       "IsDeleted": false,
@@ -301,7 +301,7 @@
     {
       "Id": "0a9f0fab-9f8d-42f5-ab24-b747d62ad8e0",
       "ProductId": "06c5d202-e040-46b2-81d1-1945b8b4a2e6",
-      "PhotoUrl": "https://picsum.photos/seed/stussy-classic-trefoil-crew-socks-3-pack-university-blue-3/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1551107696-a4b0c5a0d9a2?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": false,
       "DisplayOrder": 3,
       "IsDeleted": false,
@@ -313,7 +313,7 @@
     {
       "Id": "495f2cbf-9d3a-4caa-bc2f-e43d72566092",
       "ProductId": "c303d1e4-afd0-4c8e-9e62-944231aad8ba",
-      "PhotoUrl": "https://picsum.photos/seed/stussy-stock-logo-bucket-hat-black/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": true,
       "DisplayOrder": 1,
       "IsDeleted": false,
@@ -325,7 +325,7 @@
     {
       "Id": "8c31b1aa-78a1-4c91-ae40-27722c94f6d8",
       "ProductId": "c303d1e4-afd0-4c8e-9e62-944231aad8ba",
-      "PhotoUrl": "https://picsum.photos/seed/stussy-stock-logo-bucket-hat-black-2/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1542291026-7eec264c27ff?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": false,
       "DisplayOrder": 2,
       "IsDeleted": false,
@@ -337,7 +337,7 @@
     {
       "Id": "09cfaf91-0c19-4dd7-8d88-adc1399b3330",
       "ProductId": "c191471a-cdd6-459f-8ab2-93143f3a9559",
-      "PhotoUrl": "https://picsum.photos/seed/nike-heritage-hip-pack-blue/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1608231387042-66d1773070a5?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": true,
       "DisplayOrder": 1,
       "IsDeleted": false,
@@ -349,7 +349,7 @@
     {
       "Id": "cec92d33-a264-45bc-9bc1-2b69fbeb9093",
       "ProductId": "c191471a-cdd6-459f-8ab2-93143f3a9559",
-      "PhotoUrl": "https://picsum.photos/seed/nike-heritage-hip-pack-blue-2/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1551107696-a4b0c5a0d9a2?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": false,
       "DisplayOrder": 2,
       "IsDeleted": false,
@@ -361,7 +361,7 @@
     {
       "Id": "7abf89d7-1465-48c6-a338-b209a9e82d2c",
       "ProductId": "da90e680-7524-4f74-a139-3611c90a0933",
-      "PhotoUrl": "https://picsum.photos/seed/adidas-everyday-cushion-crew-socks-3-pack-grey/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": true,
       "DisplayOrder": 1,
       "IsDeleted": false,
@@ -373,7 +373,7 @@
     {
       "Id": "60f7bc77-dc52-4d79-8add-9bf77e9929cb",
       "ProductId": "da90e680-7524-4f74-a139-3611c90a0933",
-      "PhotoUrl": "https://picsum.photos/seed/adidas-everyday-cushion-crew-socks-3-pack-grey-2/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1542291026-7eec264c27ff?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": false,
       "DisplayOrder": 2,
       "IsDeleted": false,
@@ -385,7 +385,7 @@
     {
       "Id": "77236277-ab99-4d7c-bf80-4b79e171e579",
       "ProductId": "ddfdadd4-aa97-4628-a19b-a517b30c208e",
-      "PhotoUrl": "https://picsum.photos/seed/nike-everyday-cushion-crew-socks-3-pack-blue/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1608231387042-66d1773070a5?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": true,
       "DisplayOrder": 1,
       "IsDeleted": false,
@@ -397,7 +397,7 @@
     {
       "Id": "1a38a595-d00b-471e-9d8a-47c1aeb80553",
       "ProductId": "ddfdadd4-aa97-4628-a19b-a517b30c208e",
-      "PhotoUrl": "https://picsum.photos/seed/nike-everyday-cushion-crew-socks-3-pack-blue-2/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1551107696-a4b0c5a0d9a2?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": false,
       "DisplayOrder": 2,
       "IsDeleted": false,
@@ -409,7 +409,7 @@
     {
       "Id": "05b56b0a-c435-4a59-8bb1-d1e1d624f760",
       "ProductId": "ddfdadd4-aa97-4628-a19b-a517b30c208e",
-      "PhotoUrl": "https://picsum.photos/seed/nike-everyday-cushion-crew-socks-3-pack-blue-3/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": false,
       "DisplayOrder": 3,
       "IsDeleted": false,
@@ -421,7 +421,7 @@
     {
       "Id": "3b66f764-fc79-4c86-a534-0cd34149da49",
       "ProductId": "dd4572fa-7fc6-4444-9541-e591e6c3f89c",
-      "PhotoUrl": "https://picsum.photos/seed/nike-club-swoosh-cap-cream/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1542291026-7eec264c27ff?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": true,
       "DisplayOrder": 1,
       "IsDeleted": false,
@@ -433,7 +433,7 @@
     {
       "Id": "4ce21088-6ad6-43e5-abe6-252a20a93d8f",
       "ProductId": "dd4572fa-7fc6-4444-9541-e591e6c3f89c",
-      "PhotoUrl": "https://picsum.photos/seed/nike-club-swoosh-cap-cream-2/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1608231387042-66d1773070a5?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": false,
       "DisplayOrder": 2,
       "IsDeleted": false,
@@ -445,7 +445,7 @@
     {
       "Id": "8e9f7cf5-f416-4c07-b503-b54634d132b0",
       "ProductId": "dd4572fa-7fc6-4444-9541-e591e6c3f89c",
-      "PhotoUrl": "https://picsum.photos/seed/nike-club-swoosh-cap-cream-3/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1551107696-a4b0c5a0d9a2?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": false,
       "DisplayOrder": 3,
       "IsDeleted": false,
@@ -457,7 +457,7 @@
     {
       "Id": "11389527-3c13-493d-bfe6-26af9ef33b85",
       "ProductId": "5070b466-9781-4e64-bb23-50dd78e1f459",
-      "PhotoUrl": "https://picsum.photos/seed/stussy-classic-camp-cap-brown/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": true,
       "DisplayOrder": 1,
       "IsDeleted": false,
@@ -469,7 +469,7 @@
     {
       "Id": "d95b1f2f-7885-43b0-bd63-5e4b94147cd2",
       "ProductId": "5070b466-9781-4e64-bb23-50dd78e1f459",
-      "PhotoUrl": "https://picsum.photos/seed/stussy-classic-camp-cap-brown-2/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1542291026-7eec264c27ff?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": false,
       "DisplayOrder": 2,
       "IsDeleted": false,
@@ -481,7 +481,7 @@
     {
       "Id": "444571f4-3001-4e89-b952-10fdfe8d0b30",
       "ProductId": "a23adc88-a7f4-4fd8-b423-d14989e8e59d",
-      "PhotoUrl": "https://picsum.photos/seed/supreme-stock-logo-bucket-hat-bone/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1608231387042-66d1773070a5?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": true,
       "DisplayOrder": 1,
       "IsDeleted": false,
@@ -493,7 +493,7 @@
     {
       "Id": "b0c4a294-af60-401a-ba68-11269192fd4e",
       "ProductId": "a23adc88-a7f4-4fd8-b423-d14989e8e59d",
-      "PhotoUrl": "https://picsum.photos/seed/supreme-stock-logo-bucket-hat-bone-2/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1551107696-a4b0c5a0d9a2?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": false,
       "DisplayOrder": 2,
       "IsDeleted": false,
@@ -505,7 +505,7 @@
     {
       "Id": "60027dd9-f85f-48be-909f-2db61d00a4de",
       "ProductId": "a23adc88-a7f4-4fd8-b423-d14989e8e59d",
-      "PhotoUrl": "https://picsum.photos/seed/supreme-stock-logo-bucket-hat-bone-3/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": false,
       "DisplayOrder": 3,
       "IsDeleted": false,

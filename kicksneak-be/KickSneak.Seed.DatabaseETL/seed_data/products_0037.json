@@ -205,7 +205,7 @@
     {
       "Id": "b749e297-77c1-4438-82c3-4c62480e9404",
       "ProductId": "bcd8ca0c-7ae1-43bf-a982-68f738d864fb",
-      "PhotoUrl": "https://picsum.photos/seed/nike-air-max-plus-navy/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": true,
       "DisplayOrder": 1,
       "IsDeleted": false,
@@ -217,7 +217,7 @@
     {
       "Id": "8e0f1e21-cde7-4f51-8d6d-dddb771a25f3",
       "ProductId": "bcd8ca0c-7ae1-43bf-a982-68f738d864fb",
-      "PhotoUrl": "https://picsum.photos/seed/nike-air-max-plus-navy-2/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1542291026-7eec264c27ff?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": false,
       "DisplayOrder": 2,
       "IsDeleted": false,
@@ -229,7 +229,7 @@
     {
       "Id": "376d6b0f-184b-40c8-b8e0-330bb29500a3",
       "ProductId": "8516b687-4160-4044-8d19-4eb4c1c81054",
-      "PhotoUrl": "https://picsum.photos/seed/nike-blazer-mid-orange/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1608231387042-66d1773070a5?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": true,
       "DisplayOrder": 1,
       "IsDeleted": false,
@@ -241,7 +241,7 @@
     {
       "Id": "aa24c986-bc4c-4d00-ae77-916517ce0f52",
       "ProductId": "8516b687-4160-4044-8d19-4eb4c1c81054",
-      "PhotoUrl": "https://picsum.photos/seed/nike-blazer-mid-orange-2/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1551107696-a4b0c5a0d9a2?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": false,
       "DisplayOrder": 2,
       "IsDeleted": false,
@@ -253,7 +253,7 @@
     {
       "Id": "6dc0ca97-6eb0-44dc-9f79-455e2e8c2296",
       "ProductId": "8516b687-4160-4044-8d19-4eb4c1c81054",
-      "PhotoUrl": "https://picsum.photos/seed/nike-blazer-mid-orange-3/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": false,
       "DisplayOrder": 3,
       "IsDeleted": false,
@@ -265,7 +265,7 @@
     {
       "Id": "d056b000-dc4f-41b4-aafc-35ba56e516b7",
       "ProductId": "4492eec5-51cd-46ae-beca-2a953b598cc7",
-      "PhotoUrl": "https://picsum.photos/seed/nike-shox-r4-white/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1542291026-7eec264c27ff?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": true,
       "DisplayOrder": 1,
       "IsDeleted": false,
@@ -277,7 +277,7 @@
     {
       "Id": "af269b61-b90e-48e9-865d-4fc5dccbd688",
       "ProductId": "4492eec5-51cd-46ae-beca-2a953b598cc7",
-      "PhotoUrl": "https://picsum.photos/seed/nike-shox-r4-white-2/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1608231387042-66d1773070a5?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": false,
       "DisplayOrder": 2,
       "IsDeleted": false,
@@ -289,7 +289,7 @@
     {
       "Id": "856ec6c6-2436-4e90-88bc-12abe6ab34df",
       "ProductId": "01f24265-74a8-4990-a928-b9e1036f808d",
-      "PhotoUrl": "https://picsum.photos/seed/nike-air-max-90-grey/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1551107696-a4b0c5a0d9a2?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": true,
       "DisplayOrder": 1,
       "IsDeleted": false,
@@ -301,7 +301,7 @@
     {
       "Id": "3f5e115a-97c4-4f93-9c69-096a58569dcc",
       "ProductId": "01f24265-74a8-4990-a928-b9e1036f808d",
-      "PhotoUrl": "https://picsum.photos/seed/nike-air-max-90-grey-2/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": false,
       "DisplayOrder": 2,
       "IsDeleted": false,
@@ -313,7 +313,7 @@
     {
       "Id": "df2fab7c-9c8c-429a-b6ca-1a68fa5d2be7",
       "ProductId": "c96ec74f-deec-47a4-bc34-6f394bd7c017",
-      "PhotoUrl": "https://picsum.photos/seed/nike-p-6000-bred-blackred/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1542291026-7eec264c27ff?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": true,
       "DisplayOrder": 1,
       "IsDeleted": false,
@@ -325,7 +325,7 @@
     {
       "Id": "d4423f15-7ac9-4d15-98f3-95bc0bb39902",
       "ProductId": "c96ec74f-deec-47a4-bc34-6f394bd7c017",
-      "PhotoUrl": "https://picsum.photos/seed/nike-p-6000-bred-blackred-2/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1608231387042-66d1773070a5?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": false,
       "DisplayOrder": 2,
       "IsDeleted": false,
@@ -337,7 +337,7 @@
     {
       "Id": "88974cc7-5a5f-4d3e-8b91-52ac49aada1e",
       "ProductId": "ec9cb6d6-a767-4b7e-8e1e-7cc197c58337",
-      "PhotoUrl": "https://picsum.photos/seed/nike-air-max-95-orange/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1551107696-a4b0c5a0d9a2?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": true,
       "DisplayOrder": 1,
       "IsDeleted": false,
@@ -349,7 +349,7 @@
     {
       "Id": "470d7ebf-f52e-4f2e-bc38-7d6e52b79dd1",
       "ProductId": "ec9cb6d6-a767-4b7e-8e1e-7cc197c58337",
-      "PhotoUrl": "https://picsum.photos/seed/nike-air-max-95-orange-2/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": false,
       "DisplayOrder": 2,
       "IsDeleted": false,
@@ -361,7 +361,7 @@
     {
       "Id": "0747956e-09b5-4713-a152-cc652db88dd0",
       "ProductId": "ec9cb6d6-a767-4b7e-8e1e-7cc197c58337",
-      "PhotoUrl": "https://picsum.photos/seed/nike-air-max-95-orange-3/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1542291026-7eec264c27ff?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": false,
       "DisplayOrder": 3,
       "IsDeleted": false,
@@ -373,7 +373,7 @@
     {
       "Id": "14461d61-ff9d-415d-9437-2ae2c8b706f6",
       "ProductId": "b937d113-5922-4129-8018-088d8f8ced85",
-      "PhotoUrl": "https://picsum.photos/seed/nike-vomero-5-university-blue/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1608231387042-66d1773070a5?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": true,
       "DisplayOrder": 1,
       "IsDeleted": false,
@@ -385,7 +385,7 @@
     {
       "Id": "0e6748de-cfaf-479c-ab9d-2d3dbe57844a",
       "ProductId": "b937d113-5922-4129-8018-088d8f8ced85",
-      "PhotoUrl": "https://picsum.photos/seed/nike-vomero-5-university-blue-2/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1551107696-a4b0c5a0d9a2?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": false,
       "DisplayOrder": 2,
       "IsDeleted": false,
@@ -397,7 +397,7 @@
     {
       "Id": "04ee64d4-723f-4704-aba0-45ae2c9ce90a",
       "ProductId": "5c169036-0b63-4c79-9a45-a18a7026eefb",
-      "PhotoUrl": "https://picsum.photos/seed/nike-blazer-mid-yellow/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": true,
       "DisplayOrder": 1,
       "IsDeleted": false,
@@ -409,7 +409,7 @@
     {
       "Id": "a87a6241-2734-44a5-bc65-44085de22b01",
       "ProductId": "5c169036-0b63-4c79-9a45-a18a7026eefb",
-      "PhotoUrl": "https://picsum.photos/seed/nike-blazer-mid-yellow-2/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1542291026-7eec264c27ff?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": false,
       "DisplayOrder": 2,
       "IsDeleted": false,
@@ -421,7 +421,7 @@
     {
       "Id": "d7ab2eac-af85-4e46-b82f-c9e77ea52415",
       "ProductId": "5c169036-0b63-4c79-9a45-a18a7026eefb",
-      "PhotoUrl": "https://picsum.photos/seed/nike-blazer-mid-yellow-3/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1608231387042-66d1773070a5?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": false,
       "DisplayOrder": 3,
       "IsDeleted": false,
@@ -433,7 +433,7 @@
     {
       "Id": "6cea36aa-d886-4eb9-ad48-3e16adac3a54",
       "ProductId": "c2f41b34-33ef-449f-9f4e-e5f64a7af3a5",
-      "PhotoUrl": "https://picsum.photos/seed/nike-vomero-5-green/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1551107696-a4b0c5a0d9a2?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": true,
       "DisplayOrder": 1,
       "IsDeleted": false,
@@ -445,7 +445,7 @@
     {
       "Id": "6c368829-a9d2-412c-9ed4-ba84809eff41",
       "ProductId": "c2f41b34-33ef-449f-9f4e-e5f64a7af3a5",
-      "PhotoUrl": "https://picsum.photos/seed/nike-vomero-5-green-2/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": false,
       "DisplayOrder": 2,
       "IsDeleted": false,
@@ -457,7 +457,7 @@
     {
       "Id": "2c6fc41c-a9d7-44b3-a688-48dc04f8513e",
       "ProductId": "6bcc67b3-8687-413f-bedd-75a6fdc0d353",
-      "PhotoUrl": "https://picsum.photos/seed/nike-air-max-plus-blue/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1542291026-7eec264c27ff?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": true,
       "DisplayOrder": 1,
       "IsDeleted": false,
@@ -469,7 +469,7 @@
     {
       "Id": "684f5070-c3a6-4e1d-bcae-4d7696729dcc",
       "ProductId": "6bcc67b3-8687-413f-bedd-75a6fdc0d353",
-      "PhotoUrl": "https://picsum.photos/seed/nike-air-max-plus-blue-2/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1608231387042-66d1773070a5?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": false,
       "DisplayOrder": 2,
       "IsDeleted": false,
@@ -481,7 +481,7 @@
     {
       "Id": "941f1c2d-1350-47e5-97f5-ca9061eaab61",
       "ProductId": "6bcc67b3-8687-413f-bedd-75a6fdc0d353",
-      "PhotoUrl": "https://picsum.photos/seed/nike-air-max-plus-blue-3/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1551107696-a4b0c5a0d9a2?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": false,
       "DisplayOrder": 3,
       "IsDeleted": false,

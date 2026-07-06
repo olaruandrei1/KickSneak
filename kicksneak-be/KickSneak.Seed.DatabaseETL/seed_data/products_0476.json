@@ -205,7 +205,7 @@
     {
       "Id": "34246ce0-bace-4e9e-b13d-cc19273eb77d",
       "ProductId": "0a3aade8-014c-4505-a266-c79dd4581e98",
-      "PhotoUrl": "https://picsum.photos/seed/adidas-ozweego-white/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": true,
       "DisplayOrder": 1,
       "IsDeleted": false,
@@ -217,7 +217,7 @@
     {
       "Id": "aa1641c8-e9e8-4218-8015-957fa9f2c349",
       "ProductId": "0a3aade8-014c-4505-a266-c79dd4581e98",
-      "PhotoUrl": "https://picsum.photos/seed/adidas-ozweego-white-2/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1542291026-7eec264c27ff?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": false,
       "DisplayOrder": 2,
       "IsDeleted": false,
@@ -229,7 +229,7 @@
     {
       "Id": "3ba2bae9-2cbd-454d-a51f-5421c7c9dbea",
       "ProductId": "365b6713-06f9-4256-af4a-ab2fe4ef3998",
-      "PhotoUrl": "https://picsum.photos/seed/adidas-nizza-low-bone/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1608231387042-66d1773070a5?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": true,
       "DisplayOrder": 1,
       "IsDeleted": false,
@@ -241,7 +241,7 @@
     {
       "Id": "b372c3d9-6643-46d6-8c35-0668c4f0d8a5",
       "ProductId": "365b6713-06f9-4256-af4a-ab2fe4ef3998",
-      "PhotoUrl": "https://picsum.photos/seed/adidas-nizza-low-bone-2/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1551107696-a4b0c5a0d9a2?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": false,
       "DisplayOrder": 2,
       "IsDeleted": false,
@@ -253,7 +253,7 @@
     {
       "Id": "cd12439a-dba9-41b6-bb31-d9669e72821f",
       "ProductId": "365b6713-06f9-4256-af4a-ab2fe4ef3998",
-      "PhotoUrl": "https://picsum.photos/seed/adidas-nizza-low-bone-3/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": false,
       "DisplayOrder": 3,
       "IsDeleted": false,
@@ -265,7 +265,7 @@
     {
       "Id": "6c16ad4a-7302-45e2-8ff9-b1f3b3b7a935",
       "ProductId": "99296503-a3c1-473d-8abe-720e548d82de",
-      "PhotoUrl": "https://picsum.photos/seed/adidas-stan-smith-black/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1542291026-7eec264c27ff?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": true,
       "DisplayOrder": 1,
       "IsDeleted": false,
@@ -277,7 +277,7 @@
     {
       "Id": "61046e8a-0544-4a96-bb1e-705592861987",
       "ProductId": "99296503-a3c1-473d-8abe-720e548d82de",
-      "PhotoUrl": "https://picsum.photos/seed/adidas-stan-smith-black-2/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1608231387042-66d1773070a5?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": false,
       "DisplayOrder": 2,
       "IsDeleted": false,
@@ -289,7 +289,7 @@
     {
       "Id": "3c7d458a-32a1-444f-9cad-76cc5836d626",
       "ProductId": "760c28b2-6325-458b-a3ef-5a5f14225c50",
-      "PhotoUrl": "https://picsum.photos/seed/adidas-campus-00s-purple/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1551107696-a4b0c5a0d9a2?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": true,
       "DisplayOrder": 1,
       "IsDeleted": false,
@@ -301,7 +301,7 @@
     {
       "Id": "9a31a6db-f8a4-48cc-9d6b-c54af839ab08",
       "ProductId": "760c28b2-6325-458b-a3ef-5a5f14225c50",
-      "PhotoUrl": "https://picsum.photos/seed/adidas-campus-00s-purple-2/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": false,
       "DisplayOrder": 2,
       "IsDeleted": false,
@@ -313,7 +313,7 @@
     {
       "Id": "fbd76c35-27b1-4e69-b6d7-3e8387505d8a",
       "ProductId": "f2c16314-3ae8-4539-93aa-eff2942af673",
-      "PhotoUrl": "https://picsum.photos/seed/adidas-ozelia-yellow/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1542291026-7eec264c27ff?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": true,
       "DisplayOrder": 1,
       "IsDeleted": false,
@@ -325,7 +325,7 @@
     {
       "Id": "8711f4af-9c32-45e3-8bc7-078ea0d44afc",
       "ProductId": "f2c16314-3ae8-4539-93aa-eff2942af673",
-      "PhotoUrl": "https://picsum.photos/seed/adidas-ozelia-yellow-2/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1608231387042-66d1773070a5?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": false,
       "DisplayOrder": 2,
       "IsDeleted": false,
@@ -337,7 +337,7 @@
     {
       "Id": "ff91bf5b-4cc5-4f1e-a6d8-963251505494",
       "ProductId": "4e319dd1-254e-425c-a315-74b179b86eeb",
-      "PhotoUrl": "https://picsum.photos/seed/adidas-sl-72-grey/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1551107696-a4b0c5a0d9a2?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": true,
       "DisplayOrder": 1,
       "IsDeleted": false,
@@ -349,7 +349,7 @@
     {
       "Id": "fa4a4775-61ec-4ccc-9323-e2a9c05200e3",
       "ProductId": "4e319dd1-254e-425c-a315-74b179b86eeb",
-      "PhotoUrl": "https://picsum.photos/seed/adidas-sl-72-grey-2/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": false,
       "DisplayOrder": 2,
       "IsDeleted": false,
@@ -361,7 +361,7 @@
     {
       "Id": "08a5dd69-3a03-4953-85f7-e1ab47885ecd",
       "ProductId": "03572afe-4712-4073-97fe-991e3a3e0e31",
-      "PhotoUrl": "https://picsum.photos/seed/adidas-retropy-f2-grey/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1542291026-7eec264c27ff?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": true,
       "DisplayOrder": 1,
       "IsDeleted": false,
@@ -373,7 +373,7 @@
     {
       "Id": "5f49354c-ba5d-427f-b19e-272a316d90ea",
       "ProductId": "03572afe-4712-4073-97fe-991e3a3e0e31",
-      "PhotoUrl": "https://picsum.photos/seed/adidas-retropy-f2-grey-2/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1608231387042-66d1773070a5?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": false,
       "DisplayOrder": 2,
       "IsDeleted": false,
@@ -385,7 +385,7 @@
     {
       "Id": "baad5375-b7e1-4e70-a868-0d138863f76d",
       "ProductId": "d02a8251-b630-4629-90d3-2216ecda63d5",
-      "PhotoUrl": "https://picsum.photos/seed/adidas-stan-smith-bred-blackred/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1551107696-a4b0c5a0d9a2?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": true,
       "DisplayOrder": 1,
       "IsDeleted": false,
@@ -397,7 +397,7 @@
     {
       "Id": "e58b6011-3a44-4f76-ac43-35f20b82b1f9",
       "ProductId": "d02a8251-b630-4629-90d3-2216ecda63d5",
-      "PhotoUrl": "https://picsum.photos/seed/adidas-stan-smith-bred-blackred-2/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": false,
       "DisplayOrder": 2,
       "IsDeleted": false,
@@ -409,7 +409,7 @@
     {
       "Id": "a3a9666c-43ad-4ee6-91b2-edf10ee74751",
       "ProductId": "c5cbc2f0-16e5-4520-bd6c-3746dfa5b306",
-      "PhotoUrl": "https://picsum.photos/seed/adidas-terrex-free-hiker-20-white/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1542291026-7eec264c27ff?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": true,
       "DisplayOrder": 1,
       "IsDeleted": false,
@@ -421,7 +421,7 @@
     {
       "Id": "cc1493c4-6c5b-47a3-8d18-16d7c348334b",
       "ProductId": "c5cbc2f0-16e5-4520-bd6c-3746dfa5b306",
-      "PhotoUrl": "https://picsum.photos/seed/adidas-terrex-free-hiker-20-white-2/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1608231387042-66d1773070a5?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": false,
       "DisplayOrder": 2,
       "IsDeleted": false,
@@ -433,7 +433,7 @@
     {
       "Id": "90264d38-1aaa-4121-a0e1-617514b9521a",
       "ProductId": "bf9e6a21-5e4e-499a-b0c7-9dd9b342fc67",
-      "PhotoUrl": "https://picsum.photos/seed/adidas-nizza-low-cream/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1551107696-a4b0c5a0d9a2?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": true,
       "DisplayOrder": 1,
       "IsDeleted": false,
@@ -445,7 +445,7 @@
     {
       "Id": "20909447-34c0-47ba-87fc-6f64fd43299c",
       "ProductId": "bf9e6a21-5e4e-499a-b0c7-9dd9b342fc67",
-      "PhotoUrl": "https://picsum.photos/seed/adidas-nizza-low-cream-2/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": false,
       "DisplayOrder": 2,
       "IsDeleted": false,
@@ -457,7 +457,7 @@
     {
       "Id": "603a81e1-6204-4cf5-8dcc-877cf66b63a4",
       "ProductId": "bf9e6a21-5e4e-499a-b0c7-9dd9b342fc67",
-      "PhotoUrl": "https://picsum.photos/seed/adidas-nizza-low-cream-3/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1542291026-7eec264c27ff?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": false,
       "DisplayOrder": 3,
       "IsDeleted": false,

@@ -3,6 +3,7 @@ import type { CartItem } from '../types/product';
 import { localStorageService } from '../services/localStorageService';
 import { httpClient } from '../services/axiosService';
 import { ApiRoutes } from '../services/apiRoutes';
+import { useNotificationStore } from './notificationStore';
 
 interface CartState {
     items: CartItem[];
@@ -34,6 +35,7 @@ export const useCartStore = create<CartState>((set, get) => ({
             });
             localStorageService.set('cart_items', res.data.items);
             set({ items: res.data.items });
+            useNotificationStore.getState().addNew({ id: Date.now().toString(), type: 'system', title: 'Error', message: 'Failed to update cart.', href: '/cart', read: false, createdAt: new Date().toISOString() });
         } catch {
             localStorageService.set('cart_items', get().items);
         }
@@ -48,6 +50,7 @@ export const useCartStore = create<CartState>((set, get) => ({
             const res = await httpClient.delete<{ items: CartItem[] }>(ApiRoutes.cartRemove(id));
             localStorageService.set('cart_items', res.data.items);
             set({ items: res.data.items });
+            useNotificationStore.getState().addNew({ id: Date.now().toString(), type: 'system', title: 'Error', message: 'Failed to update cart.', href: '/cart', read: false, createdAt: new Date().toISOString() });
         } catch {
             localStorageService.set('cart_items', get().items);
         }

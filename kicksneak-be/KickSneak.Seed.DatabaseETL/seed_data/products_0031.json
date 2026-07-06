@@ -205,7 +205,7 @@
     {
       "Id": "04dafb75-101c-4e46-9893-33b1e57d7e8c",
       "ProductId": "de3f4fb9-06ec-49b1-ab84-05aa724c95d9",
-      "PhotoUrl": "https://picsum.photos/seed/nike-pegasus-40-green/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": true,
       "DisplayOrder": 1,
       "IsDeleted": false,
@@ -217,7 +217,7 @@
     {
       "Id": "c212ca6d-679e-4979-a921-ad5ec462d6d8",
       "ProductId": "de3f4fb9-06ec-49b1-ab84-05aa724c95d9",
-      "PhotoUrl": "https://picsum.photos/seed/nike-pegasus-40-green-2/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1542291026-7eec264c27ff?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": false,
       "DisplayOrder": 2,
       "IsDeleted": false,
@@ -229,7 +229,7 @@
     {
       "Id": "d8db8de2-7094-4600-84d1-8edf38b99ba8",
       "ProductId": "de3f4fb9-06ec-49b1-ab84-05aa724c95d9",
-      "PhotoUrl": "https://picsum.photos/seed/nike-pegasus-40-green-3/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1608231387042-66d1773070a5?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": false,
       "DisplayOrder": 3,
       "IsDeleted": false,
@@ -241,7 +241,7 @@
     {
       "Id": "5365f33b-2b41-4343-8598-a9a034a9d114",
       "ProductId": "c3f6d301-5337-40a7-9642-d708697e1a7a",
-      "PhotoUrl": "https://picsum.photos/seed/nike-air-force-1-blue/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1551107696-a4b0c5a0d9a2?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": true,
       "DisplayOrder": 1,
       "IsDeleted": false,
@@ -253,7 +253,7 @@
     {
       "Id": "a7ada1f9-859d-4dc0-a469-cf79875ef7d8",
       "ProductId": "c3f6d301-5337-40a7-9642-d708697e1a7a",
-      "PhotoUrl": "https://picsum.photos/seed/nike-air-force-1-blue-2/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": false,
       "DisplayOrder": 2,
       "IsDeleted": false,
@@ -265,7 +265,7 @@
     {
       "Id": "766f2ca5-a56b-45f7-8855-220ef8efb1c7",
       "ProductId": "c3f6d301-5337-40a7-9642-d708697e1a7a",
-      "PhotoUrl": "https://picsum.photos/seed/nike-air-force-1-blue-3/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1542291026-7eec264c27ff?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": false,
       "DisplayOrder": 3,
       "IsDeleted": false,
@@ -277,7 +277,7 @@
     {
       "Id": "551fb7ac-0af7-470e-88d6-310509687750",
       "ProductId": "cc5d6cba-2c58-4e6f-a30c-4d83d575e5e1",
-      "PhotoUrl": "https://picsum.photos/seed/nike-pegasus-40-black/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1608231387042-66d1773070a5?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": true,
       "DisplayOrder": 1,
       "IsDeleted": false,
@@ -289,7 +289,7 @@
     {
       "Id": "a5080953-de1d-4471-8d0a-1fb8ee596c32",
       "ProductId": "cc5d6cba-2c58-4e6f-a30c-4d83d575e5e1",
-      "PhotoUrl": "https://picsum.photos/seed/nike-pegasus-40-black-2/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1551107696-a4b0c5a0d9a2?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": false,
       "DisplayOrder": 2,
       "IsDeleted": false,
@@ -301,7 +301,7 @@
     {
       "Id": "7689e99e-5f21-43fd-b741-a79e411b0cce",
       "ProductId": "cc5d6cba-2c58-4e6f-a30c-4d83d575e5e1",
-      "PhotoUrl": "https://picsum.photos/seed/nike-pegasus-40-black-3/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": false,
       "DisplayOrder": 3,
       "IsDeleted": false,
@@ -313,7 +313,7 @@
     {
       "Id": "057817b1-ac83-4050-9db1-2dfe954db84c",
       "ProductId": "cf680ffd-5848-4069-80c3-c192c8244f0c",
-      "PhotoUrl": "https://picsum.photos/seed/nike-sb-dunk-low-bred-blackred/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1542291026-7eec264c27ff?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": true,
       "DisplayOrder": 1,
       "IsDeleted": false,
@@ -325,7 +325,7 @@
     {
       "Id": "87fd759b-5ea2-43ca-85c2-299f7fd3b662",
       "ProductId": "cf680ffd-5848-4069-80c3-c192c8244f0c",
-      "PhotoUrl": "https://picsum.photos/seed/nike-sb-dunk-low-bred-blackred-2/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1608231387042-66d1773070a5?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": false,
       "DisplayOrder": 2,
       "IsDeleted": false,
@@ -337,7 +337,7 @@
     {
       "Id": "ac3b1ede-e7b8-4a8e-88fa-78a42c0c2fed",
       "ProductId": "cf680ffd-5848-4069-80c3-c192c8244f0c",
-      "PhotoUrl": "https://picsum.photos/seed/nike-sb-dunk-low-bred-blackred-3/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1551107696-a4b0c5a0d9a2?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": false,
       "DisplayOrder": 3,
       "IsDeleted": false,
@@ -349,7 +349,7 @@
     {
       "Id": "0cf64ba3-7ea6-4719-848f-fb9e878e7430",
       "ProductId": "435509c1-3e4f-4af8-9b36-c1fc31ea9b56",
-      "PhotoUrl": "https://picsum.photos/seed/nike-dunk-high-sail/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": true,
       "DisplayOrder": 1,
       "IsDeleted": false,
@@ -361,7 +361,7 @@
     {
       "Id": "8aba0f60-b23f-436f-b693-8693f1f49442",
       "ProductId": "435509c1-3e4f-4af8-9b36-c1fc31ea9b56",
-      "PhotoUrl": "https://picsum.photos/seed/nike-dunk-high-sail-2/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1542291026-7eec264c27ff?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": false,
       "DisplayOrder": 2,
       "IsDeleted": false,
@@ -373,7 +373,7 @@
     {
       "Id": "87d79b68-1134-47cc-8cf3-693704c02e26",
       "ProductId": "435509c1-3e4f-4af8-9b36-c1fc31ea9b56",
-      "PhotoUrl": "https://picsum.photos/seed/nike-dunk-high-sail-3/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1608231387042-66d1773070a5?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": false,
       "DisplayOrder": 3,
       "IsDeleted": false,
@@ -385,7 +385,7 @@
     {
       "Id": "79a8d0b3-bb0f-4d5e-a110-7827c05a0d70",
       "ProductId": "0832214a-c2a9-42fb-bb88-66e54ca41771",
-      "PhotoUrl": "https://picsum.photos/seed/nike-dunk-low-brown/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1551107696-a4b0c5a0d9a2?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": true,
       "DisplayOrder": 1,
       "IsDeleted": false,
@@ -397,7 +397,7 @@
     {
       "Id": "27ba981b-c6ad-49d3-93c9-2f414cdca4d8",
       "ProductId": "0832214a-c2a9-42fb-bb88-66e54ca41771",
-      "PhotoUrl": "https://picsum.photos/seed/nike-dunk-low-brown-2/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": false,
       "DisplayOrder": 2,
       "IsDeleted": false,
@@ -409,7 +409,7 @@
     {
       "Id": "87296853-14c0-4dda-a622-ab84be36578b",
       "ProductId": "bac416b9-71cf-4bf5-b48a-a3a07e380225",
-      "PhotoUrl": "https://picsum.photos/seed/nike-shox-r4-brown/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1542291026-7eec264c27ff?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": true,
       "DisplayOrder": 1,
       "IsDeleted": false,
@@ -421,7 +421,7 @@
     {
       "Id": "a6944067-39de-4650-8e04-55b011f59108",
       "ProductId": "bac416b9-71cf-4bf5-b48a-a3a07e380225",
-      "PhotoUrl": "https://picsum.photos/seed/nike-shox-r4-brown-2/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1608231387042-66d1773070a5?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": false,
       "DisplayOrder": 2,
       "IsDeleted": false,
@@ -433,7 +433,7 @@
     {
       "Id": "1042d012-4a5e-46d2-a66c-3ac47d3fc998",
       "ProductId": "4dea9182-7fd9-4744-b0aa-38ef0b6e7e42",
-      "PhotoUrl": "https://picsum.photos/seed/nike-air-max-95-beige/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1551107696-a4b0c5a0d9a2?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": true,
       "DisplayOrder": 1,
       "IsDeleted": false,
@@ -445,7 +445,7 @@
     {
       "Id": "698fa414-a877-4ae3-8078-5a043fe978fb",
       "ProductId": "4dea9182-7fd9-4744-b0aa-38ef0b6e7e42",
-      "PhotoUrl": "https://picsum.photos/seed/nike-air-max-95-beige-2/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": false,
       "DisplayOrder": 2,
       "IsDeleted": false,
@@ -457,7 +457,7 @@
     {
       "Id": "850988d7-2666-4cf7-9c32-7d757b3a1d1d",
       "ProductId": "e9cc2bf3-1eff-45b4-8040-2aa7028d1bcc",
-      "PhotoUrl": "https://picsum.photos/seed/nike-air-force-1-bone/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1542291026-7eec264c27ff?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": true,
       "DisplayOrder": 1,
       "IsDeleted": false,
@@ -469,7 +469,7 @@
     {
       "Id": "567e0e72-fffc-4f59-a8b3-ed0cc0f95d60",
       "ProductId": "e9cc2bf3-1eff-45b4-8040-2aa7028d1bcc",
-      "PhotoUrl": "https://picsum.photos/seed/nike-air-force-1-bone-2/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1608231387042-66d1773070a5?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": false,
       "DisplayOrder": 2,
       "IsDeleted": false,
@@ -481,7 +481,7 @@
     {
       "Id": "65728006-bb08-430a-8ac6-2079c90a03a9",
       "ProductId": "91559a87-cb82-4f38-8567-dd7dccb95d3e",
-      "PhotoUrl": "https://picsum.photos/seed/nike-sb-dunk-low-university-blue/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1551107696-a4b0c5a0d9a2?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": true,
       "DisplayOrder": 1,
       "IsDeleted": false,
@@ -493,7 +493,7 @@
     {
       "Id": "dd150c24-87a6-4579-8d55-f83f2e67a9ac",
       "ProductId": "91559a87-cb82-4f38-8567-dd7dccb95d3e",
-      "PhotoUrl": "https://picsum.photos/seed/nike-sb-dunk-low-university-blue-2/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": false,
       "DisplayOrder": 2,
       "IsDeleted": false,

@@ -205,7 +205,7 @@
     {
       "Id": "bce8e25b-dbd6-474d-ba9e-1f7d80073ce0",
       "ProductId": "072b8d59-9d1e-4d77-ab3d-68c39c4ea99a",
-      "PhotoUrl": "https://picsum.photos/seed/adidas-campus-00s-orange/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1608231387042-66d1773070a5?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": true,
       "DisplayOrder": 1,
       "IsDeleted": false,
@@ -217,7 +217,7 @@
     {
       "Id": "879ad65b-a8df-4938-9bef-197f43444b75",
       "ProductId": "072b8d59-9d1e-4d77-ab3d-68c39c4ea99a",
-      "PhotoUrl": "https://picsum.photos/seed/adidas-campus-00s-orange-2/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1551107696-a4b0c5a0d9a2?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": false,
       "DisplayOrder": 2,
       "IsDeleted": false,
@@ -229,7 +229,7 @@
     {
       "Id": "84b7efb2-c547-4267-9917-e79c2d498b2a",
       "ProductId": "35d7f067-bfab-4eea-a97c-ce37d8377fe4",
-      "PhotoUrl": "https://picsum.photos/seed/adidas-gazelle-blue/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": true,
       "DisplayOrder": 1,
       "IsDeleted": false,
@@ -241,7 +241,7 @@
     {
       "Id": "5b6e30e8-3ad1-40ea-8186-4b4c380d15fb",
       "ProductId": "35d7f067-bfab-4eea-a97c-ce37d8377fe4",
-      "PhotoUrl": "https://picsum.photos/seed/adidas-gazelle-blue-2/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1542291026-7eec264c27ff?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": false,
       "DisplayOrder": 2,
       "IsDeleted": false,
@@ -253,7 +253,7 @@
     {
       "Id": "40a19175-de4c-406f-b57a-de722172b429",
       "ProductId": "f89c23bf-1d52-4c7c-8049-a5460b1b9266",
-      "PhotoUrl": "https://picsum.photos/seed/adidas-ultraboost-light-red/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1608231387042-66d1773070a5?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": true,
       "DisplayOrder": 1,
       "IsDeleted": false,
@@ -265,7 +265,7 @@
     {
       "Id": "dcf8670c-0079-4bf6-8612-b4251871f290",
       "ProductId": "f89c23bf-1d52-4c7c-8049-a5460b1b9266",
-      "PhotoUrl": "https://picsum.photos/seed/adidas-ultraboost-light-red-2/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1551107696-a4b0c5a0d9a2?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": false,
       "DisplayOrder": 2,
       "IsDeleted": false,
@@ -277,7 +277,7 @@
     {
       "Id": "aa4aae51-c721-4c58-bdac-61b453ed856f",
       "ProductId": "f89c23bf-1d52-4c7c-8049-a5460b1b9266",
-      "PhotoUrl": "https://picsum.photos/seed/adidas-ultraboost-light-red-3/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": false,
       "DisplayOrder": 3,
       "IsDeleted": false,
@@ -289,7 +289,7 @@
     {
       "Id": "28f66da8-cc13-4dbf-86ed-4bc58ae056c5",
       "ProductId": "841e62a7-7992-40e5-a8ad-7cd4ec7d592c",
-      "PhotoUrl": "https://picsum.photos/seed/adidas-sl-72-beige/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1542291026-7eec264c27ff?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": true,
       "DisplayOrder": 1,
       "IsDeleted": false,
@@ -301,7 +301,7 @@
     {
       "Id": "6730dd1e-03c7-4f30-8633-b6df87d5eec7",
       "ProductId": "841e62a7-7992-40e5-a8ad-7cd4ec7d592c",
-      "PhotoUrl": "https://picsum.photos/seed/adidas-sl-72-beige-2/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1608231387042-66d1773070a5?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": false,
       "DisplayOrder": 2,
       "IsDeleted": false,
@@ -313,7 +313,7 @@
     {
       "Id": "bc926c56-4982-447b-bcf3-c1a97be3e727",
       "ProductId": "841e62a7-7992-40e5-a8ad-7cd4ec7d592c",
-      "PhotoUrl": "https://picsum.photos/seed/adidas-sl-72-beige-3/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1551107696-a4b0c5a0d9a2?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": false,
       "DisplayOrder": 3,
       "IsDeleted": false,
@@ -325,7 +325,7 @@
     {
       "Id": "66f0ae19-5d3b-41ed-8a8d-e38a34d86d48",
       "ProductId": "4b2f9b55-e182-410b-958e-d6f3ae022302",
-      "PhotoUrl": "https://picsum.photos/seed/adidas-handball-spezial-olive/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": true,
       "DisplayOrder": 1,
       "IsDeleted": false,
@@ -337,7 +337,7 @@
     {
       "Id": "63be7bff-9cd2-4e46-a63a-3a9e95136ef1",
       "ProductId": "4b2f9b55-e182-410b-958e-d6f3ae022302",
-      "PhotoUrl": "https://picsum.photos/seed/adidas-handball-spezial-olive-2/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1542291026-7eec264c27ff?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": false,
       "DisplayOrder": 2,
       "IsDeleted": false,
@@ -349,7 +349,7 @@
     {
       "Id": "9b41047c-1a6b-4ef2-b6ac-ba8a87acaf7d",
       "ProductId": "f1e927b7-00b6-48bb-9e16-7fc907553ee6",
-      "PhotoUrl": "https://picsum.photos/seed/adidas-nmdr1-green/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1608231387042-66d1773070a5?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": true,
       "DisplayOrder": 1,
       "IsDeleted": false,
@@ -361,7 +361,7 @@
     {
       "Id": "0a6d91d7-922a-4f69-9661-9b7929b3494d",
       "ProductId": "f1e927b7-00b6-48bb-9e16-7fc907553ee6",
-      "PhotoUrl": "https://picsum.photos/seed/adidas-nmdr1-green-2/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1551107696-a4b0c5a0d9a2?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": false,
       "DisplayOrder": 2,
       "IsDeleted": false,
@@ -373,7 +373,7 @@
     {
       "Id": "d8e7e077-38ca-4119-9e39-21463af0eb6d",
       "ProductId": "f1e927b7-00b6-48bb-9e16-7fc907553ee6",
-      "PhotoUrl": "https://picsum.photos/seed/adidas-nmdr1-green-3/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": false,
       "DisplayOrder": 3,
       "IsDeleted": false,
@@ -385,7 +385,7 @@
     {
       "Id": "4d5d5a47-7483-490d-aac6-45bff3012780",
       "ProductId": "ec748f91-72c3-4e53-a13c-f84cb8bfcb0f",
-      "PhotoUrl": "https://picsum.photos/seed/adidas-ultraboost-light-white/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1542291026-7eec264c27ff?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": true,
       "DisplayOrder": 1,
       "IsDeleted": false,
@@ -397,7 +397,7 @@
     {
       "Id": "3d232dd0-f2b8-4256-8ff2-e87230ab77e8",
       "ProductId": "ec748f91-72c3-4e53-a13c-f84cb8bfcb0f",
-      "PhotoUrl": "https://picsum.photos/seed/adidas-ultraboost-light-white-2/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1608231387042-66d1773070a5?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": false,
       "DisplayOrder": 2,
       "IsDeleted": false,
@@ -409,7 +409,7 @@
     {
       "Id": "96850d7e-cf0b-4a82-8781-a8a4b372c6f5",
       "ProductId": "8d7481ab-d53a-4429-9320-971cbbefc9b6",
-      "PhotoUrl": "https://picsum.photos/seed/adidas-nmdr1-sail/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1551107696-a4b0c5a0d9a2?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": true,
       "DisplayOrder": 1,
       "IsDeleted": false,
@@ -421,7 +421,7 @@
     {
       "Id": "7599978a-e06e-42d5-8b1f-75a16939c08f",
       "ProductId": "8d7481ab-d53a-4429-9320-971cbbefc9b6",
-      "PhotoUrl": "https://picsum.photos/seed/adidas-nmdr1-sail-2/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": false,
       "DisplayOrder": 2,
       "IsDeleted": false,
@@ -433,7 +433,7 @@
     {
       "Id": "b416913f-b8a0-45d0-89fd-da40436ee151",
       "ProductId": "8d7481ab-d53a-4429-9320-971cbbefc9b6",
-      "PhotoUrl": "https://picsum.photos/seed/adidas-nmdr1-sail-3/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1542291026-7eec264c27ff?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": false,
       "DisplayOrder": 3,
       "IsDeleted": false,
@@ -445,7 +445,7 @@
     {
       "Id": "cacfad1a-dd72-4851-9ab3-4de62c56be9a",
       "ProductId": "1c52aeff-b3da-407d-b838-c57d41f63763",
-      "PhotoUrl": "https://picsum.photos/seed/adidas-campus-00s-green/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1608231387042-66d1773070a5?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": true,
       "DisplayOrder": 1,
       "IsDeleted": false,
@@ -457,7 +457,7 @@
     {
       "Id": "df7b20e1-b355-41b4-82e1-b6d92b3218fd",
       "ProductId": "1c52aeff-b3da-407d-b838-c57d41f63763",
-      "PhotoUrl": "https://picsum.photos/seed/adidas-campus-00s-green-2/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1551107696-a4b0c5a0d9a2?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": false,
       "DisplayOrder": 2,
       "IsDeleted": false,
@@ -469,7 +469,7 @@
     {
       "Id": "f6f01287-bc0f-41e8-8317-1aaa363cf428",
       "ProductId": "1c52aeff-b3da-407d-b838-c57d41f63763",
-      "PhotoUrl": "https://picsum.photos/seed/adidas-campus-00s-green-3/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": false,
       "DisplayOrder": 3,
       "IsDeleted": false,
@@ -481,7 +481,7 @@
     {
       "Id": "d95d0788-c0ae-4c7d-934e-96914adbdf80",
       "ProductId": "6da4b558-e499-49e4-999a-e614670be514",
-      "PhotoUrl": "https://picsum.photos/seed/adidas-nmdr1-beige/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1542291026-7eec264c27ff?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": true,
       "DisplayOrder": 1,
       "IsDeleted": false,
@@ -493,7 +493,7 @@
     {
       "Id": "d8234812-b4f8-4afc-9a76-a11785b6e045",
       "ProductId": "6da4b558-e499-49e4-999a-e614670be514",
-      "PhotoUrl": "https://picsum.photos/seed/adidas-nmdr1-beige-2/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1608231387042-66d1773070a5?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": false,
       "DisplayOrder": 2,
       "IsDeleted": false,
@@ -505,7 +505,7 @@
     {
       "Id": "ae075d35-a463-44a3-b9fc-271616969c0b",
       "ProductId": "6da4b558-e499-49e4-999a-e614670be514",
-      "PhotoUrl": "https://picsum.photos/seed/adidas-nmdr1-beige-3/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1551107696-a4b0c5a0d9a2?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": false,
       "DisplayOrder": 3,
       "IsDeleted": false,

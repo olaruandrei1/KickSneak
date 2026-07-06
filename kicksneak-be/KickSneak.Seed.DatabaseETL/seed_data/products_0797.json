@@ -205,7 +205,7 @@
     {
       "Id": "2b74480f-80de-49d4-9141-5146d53d5448",
       "ProductId": "cddcaa1e-ba9a-4f69-96ab-bd17ac933766",
-      "PhotoUrl": "https://picsum.photos/seed/nike-react-vision-pink/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1542291026-7eec264c27ff?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": true,
       "DisplayOrder": 1,
       "IsDeleted": false,
@@ -217,7 +217,7 @@
     {
       "Id": "5039de5f-3387-4d0a-8178-cdb07651eeb1",
       "ProductId": "cddcaa1e-ba9a-4f69-96ab-bd17ac933766",
-      "PhotoUrl": "https://picsum.photos/seed/nike-react-vision-pink-2/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1608231387042-66d1773070a5?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": false,
       "DisplayOrder": 2,
       "IsDeleted": false,
@@ -229,7 +229,7 @@
     {
       "Id": "383687bb-0934-41d1-a5f4-3ed86d33d198",
       "ProductId": "7681ce2e-ad29-4524-a977-4a67e01dd815",
-      "PhotoUrl": "https://picsum.photos/seed/nike-air-max-plus-purple/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1551107696-a4b0c5a0d9a2?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": true,
       "DisplayOrder": 1,
       "IsDeleted": false,
@@ -241,7 +241,7 @@
     {
       "Id": "ddb6532f-6c2e-4ed6-a833-ba31179d4862",
       "ProductId": "7681ce2e-ad29-4524-a977-4a67e01dd815",
-      "PhotoUrl": "https://picsum.photos/seed/nike-air-max-plus-purple-2/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": false,
       "DisplayOrder": 2,
       "IsDeleted": false,
@@ -253,7 +253,7 @@
     {
       "Id": "69eae1c5-a93a-4081-bd42-e28f28257ce7",
       "ProductId": "adb0e653-857f-429d-a039-85738bc54a5c",
-      "PhotoUrl": "https://picsum.photos/seed/nike-acg-mountain-fly-low-cream/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1542291026-7eec264c27ff?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": true,
       "DisplayOrder": 1,
       "IsDeleted": false,
@@ -265,7 +265,7 @@
     {
       "Id": "cecb4a23-41f4-4112-afd1-a1d6f36d990f",
       "ProductId": "adb0e653-857f-429d-a039-85738bc54a5c",
-      "PhotoUrl": "https://picsum.photos/seed/nike-acg-mountain-fly-low-cream-2/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1608231387042-66d1773070a5?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": false,
       "DisplayOrder": 2,
       "IsDeleted": false,
@@ -277,7 +277,7 @@
     {
       "Id": "2d46c22c-2fae-44ce-b243-c74247916491",
       "ProductId": "a7681a30-6334-4454-96ad-bf7194a5559f",
-      "PhotoUrl": "https://picsum.photos/seed/nike-air-force-1-brown/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1551107696-a4b0c5a0d9a2?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": true,
       "DisplayOrder": 1,
       "IsDeleted": false,
@@ -289,7 +289,7 @@
     {
       "Id": "516e5d91-47e8-4678-82f2-dcef0790ce47",
       "ProductId": "a7681a30-6334-4454-96ad-bf7194a5559f",
-      "PhotoUrl": "https://picsum.photos/seed/nike-air-force-1-brown-2/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": false,
       "DisplayOrder": 2,
       "IsDeleted": false,
@@ -301,7 +301,7 @@
     {
       "Id": "19e38cdd-b71a-4dd1-be16-bebc3536346a",
       "ProductId": "a7681a30-6334-4454-96ad-bf7194a5559f",
-      "PhotoUrl": "https://picsum.photos/seed/nike-air-force-1-brown-3/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1542291026-7eec264c27ff?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": false,
       "DisplayOrder": 3,
       "IsDeleted": false,
@@ -313,7 +313,7 @@
     {
       "Id": "fa2ddb4f-f583-474a-a258-b130a966f83d",
       "ProductId": "c01ce0b2-4ea6-4fd4-afe1-eb575f8b5e74",
-      "PhotoUrl": "https://picsum.photos/seed/nike-sb-force-58-cream/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1608231387042-66d1773070a5?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": true,
       "DisplayOrder": 1,
       "IsDeleted": false,
@@ -325,7 +325,7 @@
     {
       "Id": "c47f628b-6d4d-48c7-8d03-98a9ac7bf4db",
       "ProductId": "c01ce0b2-4ea6-4fd4-afe1-eb575f8b5e74",
-      "PhotoUrl": "https://picsum.photos/seed/nike-sb-force-58-cream-2/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1551107696-a4b0c5a0d9a2?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": false,
       "DisplayOrder": 2,
       "IsDeleted": false,
@@ -337,7 +337,7 @@
     {
       "Id": "e2a39a52-66b2-42cb-8a80-468404dca78f",
       "ProductId": "78355c1a-a4f3-4ce4-bb03-a013d6231ada",
-      "PhotoUrl": "https://picsum.photos/seed/nike-air-max-dn-yellow/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": true,
       "DisplayOrder": 1,
       "IsDeleted": false,
@@ -349,7 +349,7 @@
     {
       "Id": "e04d55be-20e7-4334-ac6e-8f49cd0c8dcc",
       "ProductId": "78355c1a-a4f3-4ce4-bb03-a013d6231ada",
-      "PhotoUrl": "https://picsum.photos/seed/nike-air-max-dn-yellow-2/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1542291026-7eec264c27ff?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": false,
       "DisplayOrder": 2,
       "IsDeleted": false,
@@ -361,7 +361,7 @@
     {
       "Id": "f6aa7817-b214-4872-9a08-d508b33de18b",
       "ProductId": "d3890b3f-adc4-46e4-811f-948a6d610ddd",
-      "PhotoUrl": "https://picsum.photos/seed/nike-dunk-low-beige/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1608231387042-66d1773070a5?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": true,
       "DisplayOrder": 1,
       "IsDeleted": false,
@@ -373,7 +373,7 @@
     {
       "Id": "f0eff07b-72c6-439e-9d6f-b1c86cd2df44",
       "ProductId": "d3890b3f-adc4-46e4-811f-948a6d610ddd",
-      "PhotoUrl": "https://picsum.photos/seed/nike-dunk-low-beige-2/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1551107696-a4b0c5a0d9a2?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": false,
       "DisplayOrder": 2,
       "IsDeleted": false,
@@ -385,7 +385,7 @@
     {
       "Id": "fbe05855-0c94-4822-9092-7210559e8bb9",
       "ProductId": "de9c98c6-71ac-4250-bf61-3d7a9d8d4af8",
-      "PhotoUrl": "https://picsum.photos/seed/nike-air-max-97-grey/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": true,
       "DisplayOrder": 1,
       "IsDeleted": false,
@@ -397,7 +397,7 @@
     {
       "Id": "d8e61c29-c57c-43bb-ac45-ae2de6e8650a",
       "ProductId": "de9c98c6-71ac-4250-bf61-3d7a9d8d4af8",
-      "PhotoUrl": "https://picsum.photos/seed/nike-air-max-97-grey-2/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1542291026-7eec264c27ff?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": false,
       "DisplayOrder": 2,
       "IsDeleted": false,
@@ -409,7 +409,7 @@
     {
       "Id": "42dba6b2-a8a3-462d-b3bc-65ae304a1dec",
       "ProductId": "b3ea7900-ac9d-404f-badb-eca7dd7dc01e",
-      "PhotoUrl": "https://picsum.photos/seed/nike-invincible-run-3-grey/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1608231387042-66d1773070a5?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": true,
       "DisplayOrder": 1,
       "IsDeleted": false,
@@ -421,7 +421,7 @@
     {
       "Id": "4c8824e8-22d6-4182-9b45-931a77e692a9",
       "ProductId": "b3ea7900-ac9d-404f-badb-eca7dd7dc01e",
-      "PhotoUrl": "https://picsum.photos/seed/nike-invincible-run-3-grey-2/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1551107696-a4b0c5a0d9a2?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": false,
       "DisplayOrder": 2,
       "IsDeleted": false,
@@ -433,7 +433,7 @@
     {
       "Id": "fe44dbf4-9cbe-44e1-a6b0-0b60e4f1f478",
       "ProductId": "3807f936-8e21-41d6-8c6c-c1f6ec5ea14e",
-      "PhotoUrl": "https://picsum.photos/seed/nike-air-max-dn-university-blue/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": true,
       "DisplayOrder": 1,
       "IsDeleted": false,
@@ -445,7 +445,7 @@
     {
       "Id": "c057c213-9747-41a5-9356-fb5f72a90cc6",
       "ProductId": "3807f936-8e21-41d6-8c6c-c1f6ec5ea14e",
-      "PhotoUrl": "https://picsum.photos/seed/nike-air-max-dn-university-blue-2/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1542291026-7eec264c27ff?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": false,
       "DisplayOrder": 2,
       "IsDeleted": false,

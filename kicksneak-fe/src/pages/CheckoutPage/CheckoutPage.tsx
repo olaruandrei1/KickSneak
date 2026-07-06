@@ -4,6 +4,7 @@ import { TextField, MenuItem, Stepper, Step, StepLabel, Radio, CircularProgress 
 import { Home, Business, Add, Lock } from '@mui/icons-material';
 import { useCartStore } from '../../store/cartStore';
 import { useAuthStore } from '../../store/authStore';
+import { useNotificationStore } from '../../store/notificationStore';
 import { httpClient } from '../../services/axiosService';
 import { ApiRoutes } from '../../services/apiRoutes';
 import { GlassCard } from '../ProfilePage/components/sections/GlassCard';
@@ -110,6 +111,7 @@ const CheckoutPage = () => {
                 } : null,
             });
             window.location.href = res.data.url;
+            useNotificationStore.getState().addNew({ id: Date.now().toString(), type: 'system', title: 'Error', message: 'Failed to place order. Please try again.', href: '/checkout', read: false, createdAt: new Date().toISOString() });
         } catch {
             setPlacing(false);
         }
