@@ -49,7 +49,12 @@ export const ProductDetailPage = () => {
         setLoading(true);
         httpClient.get<ProductDetail>(ApiRoutes.productDetail(id ?? ''))
             .then((res) => {
-                setProduct(res.data);
+                const data = res.data;
+                setProduct(data);
+                if (data.preferredSizeId) {
+                    const pref = data.sizes.find(s => s.sizeId === data.preferredSizeId);
+                    if (pref) setSelectedSize(pref);
+                }
                 recentlyViewedService.add(
                     {
                         id: res.data.id,
@@ -101,13 +106,13 @@ export const ProductDetailPage = () => {
         setTimeout(() => setAddedAnim(null), 900);
     };
 
-    const handleAddToCart = () => {
-    if (!product) return;
+    const handleAddToCart = (): boolean => {
+    if (!product) return false;
     if (!selectedSize) {
         setSizeError(true);
         setTimeout(() => setSizeError(false), 2000);
         document.querySelector('.sizeBlock')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        return;
+        return false;
     }
     setSizeError(false);
     addItem({
@@ -122,6 +127,7 @@ export const ProductDetailPage = () => {
         productId: product.id,
     });
     triggerAddAnim('cart');
+    return true;
 };
 
     const handleFavorite = () => {
@@ -138,8 +144,10 @@ export const ProductDetailPage = () => {
     };
 
     const handleBuyNow = () => {
-        handleAddToCart();
-        navigate('/checkout');
+        const added = handleAddToCart();
+        if (added) {
+            navigate('/checkout');
+        }
     };
 
     if (loading) return <Spinner fullPage size="lg" />;

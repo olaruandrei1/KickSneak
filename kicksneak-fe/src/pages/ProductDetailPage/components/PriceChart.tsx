@@ -29,8 +29,21 @@ export const PriceChart = ({ data, currentPrice }: PriceChartProps) => {
     const gridColor = isDark ? 'rgba(176,228,204,0.08)' : 'rgba(114,134,211,0.12)';
     const textColor = isDark ? '#408A71' : '#8EA7E9';
 
-    const min = Math.min(...data.map((d) => d.price));
-    const max = Math.max(...data.map((d) => d.price));
+    const min = data && data.length > 0 ? Math.min(...data.map((d) => d.price)) : 0;
+    const max = data && data.length > 0 ? Math.max(...data.map((d) => d.price)) : 0;
+
+    if (!data || data.length === 0) {
+        return (
+            <div className={styles.wrapper}>
+                <div className={styles.header}>
+                    <span className={styles.label}>Price History</span>
+                </div>
+                <div style={{ padding: '4rem 1rem', textAlign: 'center', color: 'var(--color-text-muted)', fontFamily: 'var(--font-body)' }}>
+                    Not enough data yet
+                </div>
+            </div>
+        );
+    }
 
     return (
         <div className={styles.wrapper}>

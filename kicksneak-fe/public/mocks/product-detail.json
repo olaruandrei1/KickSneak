@@ -82,214 +82,136 @@
     ],
     "sizes": [
         {
-            "system": "EU",
-            "label": "EU 40",
+            "sizeId": "sz-40",
+            "label": "US 7 / EU 40 / UK 6.5",
+            "us": "7",
+            "eu": "40",
+            "uk": "6.5",
+            "cm": "25",
+            "kr": "250",
             "price": 333,
-            "xpressShip": true
+            "available": true
         },
         {
-            "system": "EU",
-            "label": "EU 40.5",
+            "sizeId": "sz-40.5",
+            "label": "US 7.5 / EU 40.5 / UK 7",
+            "us": "7.5",
+            "eu": "40.5",
+            "uk": "7",
+            "cm": "25.5",
+            "kr": "255",
             "price": 332,
-            "xpressShip": false
+            "available": false
         },
         {
-            "system": "EU",
-            "label": "EU 41",
+            "sizeId": "sz-41",
+            "label": "US 8 / EU 41 / UK 7.5",
+            "us": "8",
+            "eu": "41",
+            "uk": "7.5",
+            "cm": "26",
+            "kr": "260",
             "price": 302,
-            "xpressShip": true
+            "available": true
         },
         {
-            "system": "EU",
-            "label": "EU 42",
+            "sizeId": "sz-42",
+            "label": "US 8.5 / EU 42 / UK 8",
+            "us": "8.5",
+            "eu": "42",
+            "uk": "8",
+            "cm": "26.5",
+            "kr": "265",
             "price": 258,
-            "xpressShip": true
+            "available": true
         },
         {
-            "system": "EU",
-            "label": "EU 42.5",
+            "sizeId": "sz-42.5",
+            "label": "US 9 / EU 42.5 / UK 8.5",
+            "us": "9",
+            "eu": "42.5",
+            "uk": "8.5",
+            "cm": "27",
+            "kr": "270",
             "price": 277,
-            "xpressShip": false
+            "available": true
         },
         {
-            "system": "EU",
-            "label": "EU 43",
+            "sizeId": "sz-43",
+            "label": "US 9.5 / EU 43 / UK 9",
+            "us": "9.5",
+            "eu": "43",
+            "uk": "9",
+            "cm": "27.5",
+            "kr": "275",
             "price": 277,
-            "xpressShip": true
+            "available": true
         },
         {
-            "system": "EU",
-            "label": "EU 44",
+            "sizeId": "sz-44",
+            "label": "US 10 / EU 44 / UK 9.5",
+            "us": "10",
+            "eu": "44",
+            "uk": "9.5",
+            "cm": "28",
+            "kr": "280",
             "price": 259,
-            "xpressShip": false
+            "available": false
         },
         {
-            "system": "EU",
-            "label": "EU 44.5",
+            "sizeId": "sz-44.5",
+            "label": "US 10.5 / EU 44.5 / UK 10",
+            "us": "10.5",
+            "eu": "44.5",
+            "uk": "10",
+            "cm": "28.5",
+            "kr": "285",
             "price": 268,
-            "xpressShip": true
+            "available": true
         },
         {
-            "system": "EU",
-            "label": "EU 45",
+            "sizeId": "sz-45",
+            "label": "US 11 / EU 45 / UK 10.5",
+            "us": "11",
+            "eu": "45",
+            "uk": "10.5",
+            "cm": "29",
+            "kr": "290",
             "price": 259,
-            "xpressShip": false
+            "available": true
         },
         {
-            "system": "EU",
-            "label": "EU 45.5",
+            "sizeId": "sz-45.5",
+            "label": "US 11.5 / EU 45.5 / UK 11",
+            "us": "11.5",
+            "eu": "45.5",
+            "uk": "11",
+            "cm": "29.5",
+            "kr": "295",
             "price": 304,
-            "xpressShip": true
+            "available": true
         },
         {
-            "system": "EU",
-            "label": "EU 46",
+            "sizeId": "sz-46",
+            "label": "US 12 / EU 46 / UK 11.5",
+            "us": "12",
+            "eu": "46",
+            "uk": "11.5",
+            "cm": "30",
+            "kr": "300",
             "price": 280,
-            "xpressShip": false
+            "available": false
         },
         {
-            "system": "EU",
-            "label": "EU 47",
+            "sizeId": "sz-47",
+            "label": "US 12.5 / EU 47 / UK 12",
+            "us": "12.5",
+            "eu": "47",
+            "uk": "12",
+            "cm": "30.5",
+            "kr": "305",
             "price": 230,
-            "xpressShip": true
-        },
-        {
-            "system": "EU",
-            "label": "EU 47.5",
-            "price": 255,
-            "xpressShip": false
-        },
-        {
-            "system": "EU",
-            "label": "EU 48",
-            "price": null,
-            "xpressShip": false
-        },
-        {
-            "system": "EU",
-            "label": "EU 48.5",
-            "price": 271,
-            "xpressShip": true
-        },
-        {
-            "system": "US M",
-            "label": "US M 6",
-            "price": 333,
-            "xpressShip": true
-        },
-        {
-            "system": "US M",
-            "label": "US M 6.5",
-            "price": 302,
-            "xpressShip": false
-        },
-        {
-            "system": "US M",
-            "label": "US M 7",
-            "price": 258,
-            "xpressShip": true
-        },
-        {
-            "system": "US M",
-            "label": "US M 7.5",
-            "price": 277,
-            "xpressShip": true
-        },
-        {
-            "system": "US M",
-            "label": "US M 8",
-            "price": 277,
-            "xpressShip": false
-        },
-        {
-            "system": "US M",
-            "label": "US M 8.5",
-            "price": 259,
-            "xpressShip": true
-        },
-        {
-            "system": "US M",
-            "label": "US M 9",
-            "price": 268,
-            "xpressShip": false
-        },
-        {
-            "system": "US M",
-            "label": "US M 9.5",
-            "price": 259,
-            "xpressShip": true
-        },
-        {
-            "system": "US M",
-            "label": "US M 10",
-            "price": 304,
-            "xpressShip": false
-        },
-        {
-            "system": "US M",
-            "label": "US M 10.5",
-            "price": 280,
-            "xpressShip": true
-        },
-        {
-            "system": "US M",
-            "label": "US M 11",
-            "price": 230,
-            "xpressShip": false
-        },
-        {
-            "system": "US M",
-            "label": "US M 12",
-            "price": null,
-            "xpressShip": false
-        },
-        {
-            "system": "UK",
-            "label": "UK 5.5",
-            "price": 333,
-            "xpressShip": true
-        },
-        {
-            "system": "UK",
-            "label": "UK 6",
-            "price": 302,
-            "xpressShip": false
-        },
-        {
-            "system": "UK",
-            "label": "UK 6.5",
-            "price": 258,
-            "xpressShip": true
-        },
-        {
-            "system": "UK",
-            "label": "UK 7",
-            "price": 277,
-            "xpressShip": true
-        },
-        {
-            "system": "UK",
-            "label": "UK 8",
-            "price": 259,
-            "xpressShip": false
-        },
-        {
-            "system": "UK",
-            "label": "UK 9",
-            "price": 268,
-            "xpressShip": true
-        },
-        {
-            "system": "UK",
-            "label": "UK 10",
-            "price": 280,
-            "xpressShip": false
-        },
-        {
-            "system": "UK",
-            "label": "UK 11",
-            "price": 230,
-            "xpressShip": true
+            "available": true
         }
     ],
     "priceHistory": [
@@ -457,5 +379,6 @@
         "numberOfSales": 2534,
         "pricePremium": "20%",
         "avgSalePrice": 291
-    }
+    },
+    "preferredSizeId": "sz-42.5"
 }
