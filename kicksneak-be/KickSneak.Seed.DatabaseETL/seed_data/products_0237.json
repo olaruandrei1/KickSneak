@@ -205,7 +205,7 @@
     {
       "Id": "147cf2a7-4999-41b6-98f5-233d6cb805ef",
       "ProductId": "4c694724-1db1-4fe1-8302-4e558e194c95",
-      "PhotoUrl": "https://picsum.photos/seed/puma-rs-x-yellow/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1608231387042-66d1773070a5?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": true,
       "DisplayOrder": 1,
       "IsDeleted": false,
@@ -217,7 +217,7 @@
     {
       "Id": "5c335011-ba55-4f98-9978-ad74262d8b0d",
       "ProductId": "4c694724-1db1-4fe1-8302-4e558e194c95",
-      "PhotoUrl": "https://picsum.photos/seed/puma-rs-x-yellow-2/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1551107696-a4b0c5a0d9a2?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": false,
       "DisplayOrder": 2,
       "IsDeleted": false,
@@ -229,7 +229,7 @@
     {
       "Id": "cd43dffa-aa64-494f-b8b5-2777c957a533",
       "ProductId": "4ebd2523-2c1a-4ee6-bbd8-68c6f75c6bf8",
-      "PhotoUrl": "https://picsum.photos/seed/puma-suede-classic-orange/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": true,
       "DisplayOrder": 1,
       "IsDeleted": false,
@@ -241,7 +241,7 @@
     {
       "Id": "1eafeb03-57a9-4d19-afd4-5dc821e55f95",
       "ProductId": "4ebd2523-2c1a-4ee6-bbd8-68c6f75c6bf8",
-      "PhotoUrl": "https://picsum.photos/seed/puma-suede-classic-orange-2/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1542291026-7eec264c27ff?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": false,
       "DisplayOrder": 2,
       "IsDeleted": false,
@@ -253,7 +253,7 @@
     {
       "Id": "fed89dc8-8c8a-43cc-b12f-ff470fb95dd3",
       "ProductId": "4ebd2523-2c1a-4ee6-bbd8-68c6f75c6bf8",
-      "PhotoUrl": "https://picsum.photos/seed/puma-suede-classic-orange-3/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1608231387042-66d1773070a5?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": false,
       "DisplayOrder": 3,
       "IsDeleted": false,
@@ -265,7 +265,7 @@
     {
       "Id": "93445883-3dca-459b-a7fe-d8254f1e2f27",
       "ProductId": "0891cc2b-5a7c-49fd-8542-4dff3b2c5750",
-      "PhotoUrl": "https://picsum.photos/seed/puma-rs-x-purple/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1551107696-a4b0c5a0d9a2?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": true,
       "DisplayOrder": 1,
       "IsDeleted": false,
@@ -277,7 +277,7 @@
     {
       "Id": "a4238b9b-7d7c-432c-bd1f-19738420fef6",
       "ProductId": "0891cc2b-5a7c-49fd-8542-4dff3b2c5750",
-      "PhotoUrl": "https://picsum.photos/seed/puma-rs-x-purple-2/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": false,
       "DisplayOrder": 2,
       "IsDeleted": false,
@@ -289,7 +289,7 @@
     {
       "Id": "7e9446d5-73a5-404b-9050-d9a59c74c09e",
       "ProductId": "d48192aa-b0f2-4616-8128-6df9a2cc0ea0",
-      "PhotoUrl": "https://picsum.photos/seed/puma-palermo-purple/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1542291026-7eec264c27ff?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": true,
       "DisplayOrder": 1,
       "IsDeleted": false,
@@ -301,7 +301,7 @@
     {
       "Id": "7f611125-b4c8-4670-8c3c-582cc54ee8ad",
       "ProductId": "d48192aa-b0f2-4616-8128-6df9a2cc0ea0",
-      "PhotoUrl": "https://picsum.photos/seed/puma-palermo-purple-2/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1608231387042-66d1773070a5?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": false,
       "DisplayOrder": 2,
       "IsDeleted": false,
@@ -313,7 +313,7 @@
     {
       "Id": "ae711519-00c8-4475-b249-b6f0d33802b9",
       "ProductId": "5853addc-79d6-44de-a146-0bd48054260a",
-      "PhotoUrl": "https://picsum.photos/seed/puma-suede-classic-red/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1551107696-a4b0c5a0d9a2?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": true,
       "DisplayOrder": 1,
       "IsDeleted": false,
@@ -325,7 +325,7 @@
     {
       "Id": "f8995012-a772-47ab-b517-b6a9dbdf8948",
       "ProductId": "5853addc-79d6-44de-a146-0bd48054260a",
-      "PhotoUrl": "https://picsum.photos/seed/puma-suede-classic-red-2/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": false,
       "DisplayOrder": 2,
       "IsDeleted": false,
@@ -337,7 +337,7 @@
     {
       "Id": "6b6e4018-2bd9-4c0a-b92a-8e0ff50a9d31",
       "ProductId": "5853addc-79d6-44de-a146-0bd48054260a",
-      "PhotoUrl": "https://picsum.photos/seed/puma-suede-classic-red-3/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1542291026-7eec264c27ff?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": false,
       "DisplayOrder": 3,
       "IsDeleted": false,
@@ -349,7 +349,7 @@
     {
       "Id": "bb5656ed-6c7c-4dfa-8237-49ee4d01b5f0",
       "ProductId": "d5999fec-ed00-4f41-8919-2d1b8eaaf7a1",
-      "PhotoUrl": "https://picsum.photos/seed/puma-suede-classic-beige/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1608231387042-66d1773070a5?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": true,
       "DisplayOrder": 1,
       "IsDeleted": false,
@@ -361,7 +361,7 @@
     {
       "Id": "47ebf4ba-59c3-4d27-bedf-e763a6fcb7c0",
       "ProductId": "d5999fec-ed00-4f41-8919-2d1b8eaaf7a1",
-      "PhotoUrl": "https://picsum.photos/seed/puma-suede-classic-beige-2/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1551107696-a4b0c5a0d9a2?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": false,
       "DisplayOrder": 2,
       "IsDeleted": false,
@@ -373,7 +373,7 @@
     {
       "Id": "c3dfa6b0-6df9-4046-ab21-b847eaf20d39",
       "ProductId": "8b996639-61de-414f-92d3-650163e3d2a8",
-      "PhotoUrl": "https://picsum.photos/seed/puma-suede-classic-cream/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": true,
       "DisplayOrder": 1,
       "IsDeleted": false,
@@ -385,7 +385,7 @@
     {
       "Id": "573f0ece-e603-45f4-abb6-db33bd282afd",
       "ProductId": "8b996639-61de-414f-92d3-650163e3d2a8",
-      "PhotoUrl": "https://picsum.photos/seed/puma-suede-classic-cream-2/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1542291026-7eec264c27ff?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": false,
       "DisplayOrder": 2,
       "IsDeleted": false,
@@ -397,7 +397,7 @@
     {
       "Id": "468037e8-fa42-4e56-a77f-12ed6f4ea1f1",
       "ProductId": "4525242a-a5e9-4111-b757-74ed7d1a5063",
-      "PhotoUrl": "https://picsum.photos/seed/puma-rs-x-black/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1608231387042-66d1773070a5?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": true,
       "DisplayOrder": 1,
       "IsDeleted": false,
@@ -409,7 +409,7 @@
     {
       "Id": "193d0128-50fa-4cd1-b2c6-ff6e2bfc154a",
       "ProductId": "4525242a-a5e9-4111-b757-74ed7d1a5063",
-      "PhotoUrl": "https://picsum.photos/seed/puma-rs-x-black-2/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1551107696-a4b0c5a0d9a2?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": false,
       "DisplayOrder": 2,
       "IsDeleted": false,
@@ -421,7 +421,7 @@
     {
       "Id": "59c7de74-2389-422b-990a-052727fb71d0",
       "ProductId": "4525242a-a5e9-4111-b757-74ed7d1a5063",
-      "PhotoUrl": "https://picsum.photos/seed/puma-rs-x-black-3/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": false,
       "DisplayOrder": 3,
       "IsDeleted": false,
@@ -433,7 +433,7 @@
     {
       "Id": "0855f418-d94b-4710-85e7-287ff9663fa3",
       "ProductId": "389d7b26-c15a-4991-9711-bb87316b2d5f",
-      "PhotoUrl": "https://picsum.photos/seed/puma-suede-classic-pink/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1542291026-7eec264c27ff?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": true,
       "DisplayOrder": 1,
       "IsDeleted": false,
@@ -445,7 +445,7 @@
     {
       "Id": "d43f4704-d6d0-49ac-b97b-52fc357319cd",
       "ProductId": "389d7b26-c15a-4991-9711-bb87316b2d5f",
-      "PhotoUrl": "https://picsum.photos/seed/puma-suede-classic-pink-2/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1608231387042-66d1773070a5?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": false,
       "DisplayOrder": 2,
       "IsDeleted": false,
@@ -457,7 +457,7 @@
     {
       "Id": "45b9086d-b43c-4334-b159-7df8f0fbaa43",
       "ProductId": "389d7b26-c15a-4991-9711-bb87316b2d5f",
-      "PhotoUrl": "https://picsum.photos/seed/puma-suede-classic-pink-3/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1551107696-a4b0c5a0d9a2?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": false,
       "DisplayOrder": 3,
       "IsDeleted": false,
@@ -469,7 +469,7 @@
     {
       "Id": "6463525f-2ca1-4bd8-8ac2-9cf30a507659",
       "ProductId": "820fe9c9-e74f-4ca6-aeda-ba6ddbd7e9e8",
-      "PhotoUrl": "https://picsum.photos/seed/puma-palermo-black/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": true,
       "DisplayOrder": 1,
       "IsDeleted": false,
@@ -481,7 +481,7 @@
     {
       "Id": "0e6eb69a-903b-43c0-b5ea-5875ebd6cd0a",
       "ProductId": "820fe9c9-e74f-4ca6-aeda-ba6ddbd7e9e8",
-      "PhotoUrl": "https://picsum.photos/seed/puma-palermo-black-2/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1542291026-7eec264c27ff?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": false,
       "DisplayOrder": 2,
       "IsDeleted": false,

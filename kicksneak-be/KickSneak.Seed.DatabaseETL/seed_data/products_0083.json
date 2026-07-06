@@ -205,7 +205,7 @@
     {
       "Id": "3cae6a09-6a7e-40b7-b538-43a25ca764bb",
       "ProductId": "a181e332-9570-49ed-9fc2-81780ffa3f40",
-      "PhotoUrl": "https://picsum.photos/seed/adidas-gazelle-pink/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1551107696-a4b0c5a0d9a2?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": true,
       "DisplayOrder": 1,
       "IsDeleted": false,
@@ -217,7 +217,7 @@
     {
       "Id": "fb45fb15-d7f4-4dc5-8a73-cc7aa346a49f",
       "ProductId": "a181e332-9570-49ed-9fc2-81780ffa3f40",
-      "PhotoUrl": "https://picsum.photos/seed/adidas-gazelle-pink-2/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": false,
       "DisplayOrder": 2,
       "IsDeleted": false,
@@ -229,7 +229,7 @@
     {
       "Id": "fe59e408-db0e-4ba1-ab5b-961d8375851f",
       "ProductId": "b2105868-43e7-4267-8f4a-bc2b444ba373",
-      "PhotoUrl": "https://picsum.photos/seed/adidas-nmdr1-bone/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1542291026-7eec264c27ff?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": true,
       "DisplayOrder": 1,
       "IsDeleted": false,
@@ -241,7 +241,7 @@
     {
       "Id": "901cd723-d391-42cf-bd12-40954e6e9ff6",
       "ProductId": "b2105868-43e7-4267-8f4a-bc2b444ba373",
-      "PhotoUrl": "https://picsum.photos/seed/adidas-nmdr1-bone-2/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1608231387042-66d1773070a5?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": false,
       "DisplayOrder": 2,
       "IsDeleted": false,
@@ -253,7 +253,7 @@
     {
       "Id": "c9ecb2e8-b798-4794-9c7b-7efdd48fafb4",
       "ProductId": "b2105868-43e7-4267-8f4a-bc2b444ba373",
-      "PhotoUrl": "https://picsum.photos/seed/adidas-nmdr1-bone-3/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1551107696-a4b0c5a0d9a2?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": false,
       "DisplayOrder": 3,
       "IsDeleted": false,
@@ -265,7 +265,7 @@
     {
       "Id": "6353e040-5f8d-48c2-9078-08adf073562b",
       "ProductId": "123707d1-7042-41d4-ac4a-75bf59bfe842",
-      "PhotoUrl": "https://picsum.photos/seed/adidas-forum-low-red/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": true,
       "DisplayOrder": 1,
       "IsDeleted": false,
@@ -277,7 +277,7 @@
     {
       "Id": "a6adb20e-ac15-4766-8c44-b4d3a8bca1a5",
       "ProductId": "123707d1-7042-41d4-ac4a-75bf59bfe842",
-      "PhotoUrl": "https://picsum.photos/seed/adidas-forum-low-red-2/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1542291026-7eec264c27ff?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": false,
       "DisplayOrder": 2,
       "IsDeleted": false,
@@ -289,7 +289,7 @@
     {
       "Id": "16d2e631-a3f4-4d66-b02c-0a3b63b8c1c9",
       "ProductId": "7d3693d0-d65d-4a8c-a20b-83e8586d64de",
-      "PhotoUrl": "https://picsum.photos/seed/adidas-response-cl-purple/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1608231387042-66d1773070a5?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": true,
       "DisplayOrder": 1,
       "IsDeleted": false,
@@ -301,7 +301,7 @@
     {
       "Id": "e49e949d-7c11-4f0a-934f-4e243234979e",
       "ProductId": "7d3693d0-d65d-4a8c-a20b-83e8586d64de",
-      "PhotoUrl": "https://picsum.photos/seed/adidas-response-cl-purple-2/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1551107696-a4b0c5a0d9a2?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": false,
       "DisplayOrder": 2,
       "IsDeleted": false,
@@ -313,7 +313,7 @@
     {
       "Id": "d236ddd4-38ef-466a-8403-5a6c91d6c791",
       "ProductId": "26348f0d-64fb-42e1-9735-1e3cc50c085e",
-      "PhotoUrl": "https://picsum.photos/seed/adidas-gazelle-white/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": true,
       "DisplayOrder": 1,
       "IsDeleted": false,
@@ -325,7 +325,7 @@
     {
       "Id": "f34091fc-01a3-4025-9bb6-9bbeb4f60acc",
       "ProductId": "26348f0d-64fb-42e1-9735-1e3cc50c085e",
-      "PhotoUrl": "https://picsum.photos/seed/adidas-gazelle-white-2/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1542291026-7eec264c27ff?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": false,
       "DisplayOrder": 2,
       "IsDeleted": false,
@@ -337,7 +337,7 @@
     {
       "Id": "05139e4b-00c5-4519-9a0f-562084fae548",
       "ProductId": "e2bcc797-d0e5-4be9-bf26-67214b257873",
-      "PhotoUrl": "https://picsum.photos/seed/adidas-sl-72-olive/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1608231387042-66d1773070a5?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": true,
       "DisplayOrder": 1,
       "IsDeleted": false,
@@ -349,7 +349,7 @@
     {
       "Id": "33f0fd9a-e398-4256-8d81-17d6b0d271d5",
       "ProductId": "e2bcc797-d0e5-4be9-bf26-67214b257873",
-      "PhotoUrl": "https://picsum.photos/seed/adidas-sl-72-olive-2/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1551107696-a4b0c5a0d9a2?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": false,
       "DisplayOrder": 2,
       "IsDeleted": false,
@@ -361,7 +361,7 @@
     {
       "Id": "c0c1e49e-8cef-4831-ab41-8c7dfb88304b",
       "ProductId": "f9b3cb97-ea9b-4bce-ab65-cc3981c1050a",
-      "PhotoUrl": "https://picsum.photos/seed/adidas-campus-00s-orange/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": true,
       "DisplayOrder": 1,
       "IsDeleted": false,
@@ -373,7 +373,7 @@
     {
       "Id": "b4633878-3bd3-4fa6-aba3-ae6f4305f9de",
       "ProductId": "f9b3cb97-ea9b-4bce-ab65-cc3981c1050a",
-      "PhotoUrl": "https://picsum.photos/seed/adidas-campus-00s-orange-2/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1542291026-7eec264c27ff?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": false,
       "DisplayOrder": 2,
       "IsDeleted": false,
@@ -385,7 +385,7 @@
     {
       "Id": "631bce50-acc6-462c-84b2-d76897ba4491",
       "ProductId": "f9b3cb97-ea9b-4bce-ab65-cc3981c1050a",
-      "PhotoUrl": "https://picsum.photos/seed/adidas-campus-00s-orange-3/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1608231387042-66d1773070a5?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": false,
       "DisplayOrder": 3,
       "IsDeleted": false,
@@ -397,7 +397,7 @@
     {
       "Id": "107f8dfd-63a7-4016-82e9-bf311bd88a0c",
       "ProductId": "e8e4eabd-f006-4f29-b326-b2c72a6f51a5",
-      "PhotoUrl": "https://picsum.photos/seed/adidas-response-cl-yellow/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1551107696-a4b0c5a0d9a2?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": true,
       "DisplayOrder": 1,
       "IsDeleted": false,
@@ -409,7 +409,7 @@
     {
       "Id": "a4272cb6-a7f1-4f0b-9111-695edfb3cc01",
       "ProductId": "e8e4eabd-f006-4f29-b326-b2c72a6f51a5",
-      "PhotoUrl": "https://picsum.photos/seed/adidas-response-cl-yellow-2/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": false,
       "DisplayOrder": 2,
       "IsDeleted": false,
@@ -421,7 +421,7 @@
     {
       "Id": "e7fd5dea-ed75-4ccf-abc8-4dbda426fa11",
       "ProductId": "e8e4eabd-f006-4f29-b326-b2c72a6f51a5",
-      "PhotoUrl": "https://picsum.photos/seed/adidas-response-cl-yellow-3/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1542291026-7eec264c27ff?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": false,
       "DisplayOrder": 3,
       "IsDeleted": false,
@@ -433,7 +433,7 @@
     {
       "Id": "641a9fda-a711-444d-a322-558f8b62bc27",
       "ProductId": "60db8315-b9ff-4e4e-9ca6-c3650a429324",
-      "PhotoUrl": "https://picsum.photos/seed/adidas-stan-smith-university-blue/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1608231387042-66d1773070a5?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": true,
       "DisplayOrder": 1,
       "IsDeleted": false,
@@ -445,7 +445,7 @@
     {
       "Id": "77681855-2766-42e8-ae15-a3adbaec4f5f",
       "ProductId": "60db8315-b9ff-4e4e-9ca6-c3650a429324",
-      "PhotoUrl": "https://picsum.photos/seed/adidas-stan-smith-university-blue-2/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1551107696-a4b0c5a0d9a2?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": false,
       "DisplayOrder": 2,
       "IsDeleted": false,
@@ -457,7 +457,7 @@
     {
       "Id": "b1b4266e-1a37-47da-8f86-fa0d766ff68c",
       "ProductId": "60db8315-b9ff-4e4e-9ca6-c3650a429324",
-      "PhotoUrl": "https://picsum.photos/seed/adidas-stan-smith-university-blue-3/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": false,
       "DisplayOrder": 3,
       "IsDeleted": false,
@@ -469,7 +469,7 @@
     {
       "Id": "20cecb7a-7a32-4740-add1-c3d41e83cd5f",
       "ProductId": "e1f08ef2-c83f-4765-b2f1-b8a14d1c786f",
-      "PhotoUrl": "https://picsum.photos/seed/adidas-samba-og-black/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1542291026-7eec264c27ff?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": true,
       "DisplayOrder": 1,
       "IsDeleted": false,
@@ -481,7 +481,7 @@
     {
       "Id": "40f579c4-974a-4104-b40c-7affe7e19f76",
       "ProductId": "e1f08ef2-c83f-4765-b2f1-b8a14d1c786f",
-      "PhotoUrl": "https://picsum.photos/seed/adidas-samba-og-black-2/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1608231387042-66d1773070a5?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": false,
       "DisplayOrder": 2,
       "IsDeleted": false,
@@ -493,7 +493,7 @@
     {
       "Id": "f34bb0af-34f7-4282-b9bd-7aec3d13e75c",
       "ProductId": "e1f08ef2-c83f-4765-b2f1-b8a14d1c786f",
-      "PhotoUrl": "https://picsum.photos/seed/adidas-samba-og-black-3/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1551107696-a4b0c5a0d9a2?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": false,
       "DisplayOrder": 3,
       "IsDeleted": false,

@@ -205,7 +205,7 @@
     {
       "Id": "d6a6951d-7dcd-4191-9a40-34602e5679c2",
       "ProductId": "1db0ddfd-53bf-4fc2-9087-afdd04695690",
-      "PhotoUrl": "https://picsum.photos/seed/nike-cortez-grey/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1542291026-7eec264c27ff?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": true,
       "DisplayOrder": 1,
       "IsDeleted": false,
@@ -217,7 +217,7 @@
     {
       "Id": "bb97cfc9-a92d-44fc-a942-5af7cdaed472",
       "ProductId": "1db0ddfd-53bf-4fc2-9087-afdd04695690",
-      "PhotoUrl": "https://picsum.photos/seed/nike-cortez-grey-2/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1608231387042-66d1773070a5?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": false,
       "DisplayOrder": 2,
       "IsDeleted": false,
@@ -229,7 +229,7 @@
     {
       "Id": "277f7d9a-d2f3-47ae-aa75-30c8db2a8a88",
       "ProductId": "1db0ddfd-53bf-4fc2-9087-afdd04695690",
-      "PhotoUrl": "https://picsum.photos/seed/nike-cortez-grey-3/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1551107696-a4b0c5a0d9a2?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": false,
       "DisplayOrder": 3,
       "IsDeleted": false,
@@ -241,7 +241,7 @@
     {
       "Id": "eefe4eb0-c6ba-4cde-926f-e98f0fc59518",
       "ProductId": "a9cfb40f-739b-4d1f-ac45-d1477b163b35",
-      "PhotoUrl": "https://picsum.photos/seed/nike-sb-dunk-low-blue/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": true,
       "DisplayOrder": 1,
       "IsDeleted": false,
@@ -253,7 +253,7 @@
     {
       "Id": "bb2f1b64-5eb9-467a-8f4e-ed5235fee7fe",
       "ProductId": "a9cfb40f-739b-4d1f-ac45-d1477b163b35",
-      "PhotoUrl": "https://picsum.photos/seed/nike-sb-dunk-low-blue-2/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1542291026-7eec264c27ff?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": false,
       "DisplayOrder": 2,
       "IsDeleted": false,
@@ -265,7 +265,7 @@
     {
       "Id": "de9867ea-6e8a-471b-b7d9-bfd218ad37a3",
       "ProductId": "5bb5bf2c-5b06-450c-99ec-af5bb717f124",
-      "PhotoUrl": "https://picsum.photos/seed/nike-air-huarache-yellow/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1608231387042-66d1773070a5?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": true,
       "DisplayOrder": 1,
       "IsDeleted": false,
@@ -277,7 +277,7 @@
     {
       "Id": "1cd685bf-9fc0-4e05-8d0d-b4920c50b1c8",
       "ProductId": "5bb5bf2c-5b06-450c-99ec-af5bb717f124",
-      "PhotoUrl": "https://picsum.photos/seed/nike-air-huarache-yellow-2/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1551107696-a4b0c5a0d9a2?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": false,
       "DisplayOrder": 2,
       "IsDeleted": false,
@@ -289,7 +289,7 @@
     {
       "Id": "e0053cce-db58-410d-8560-22a2c0f8410d",
       "ProductId": "35d440ee-fbfd-4b79-891f-9776cd8ea696",
-      "PhotoUrl": "https://picsum.photos/seed/nike-cortez-bred-blackred/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": true,
       "DisplayOrder": 1,
       "IsDeleted": false,
@@ -301,7 +301,7 @@
     {
       "Id": "221a84d8-e3a6-421f-8dff-454c0c58f0c2",
       "ProductId": "35d440ee-fbfd-4b79-891f-9776cd8ea696",
-      "PhotoUrl": "https://picsum.photos/seed/nike-cortez-bred-blackred-2/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1542291026-7eec264c27ff?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": false,
       "DisplayOrder": 2,
       "IsDeleted": false,
@@ -313,7 +313,7 @@
     {
       "Id": "e42e9563-e1d3-474c-8cf3-38fb1d666282",
       "ProductId": "527ac161-3562-4a89-8aa1-50e9c2363414",
-      "PhotoUrl": "https://picsum.photos/seed/nike-sb-force-58-white/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1608231387042-66d1773070a5?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": true,
       "DisplayOrder": 1,
       "IsDeleted": false,
@@ -325,7 +325,7 @@
     {
       "Id": "c11a0938-3347-4f01-ad32-ae4ddb23277d",
       "ProductId": "527ac161-3562-4a89-8aa1-50e9c2363414",
-      "PhotoUrl": "https://picsum.photos/seed/nike-sb-force-58-white-2/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1551107696-a4b0c5a0d9a2?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": false,
       "DisplayOrder": 2,
       "IsDeleted": false,
@@ -337,7 +337,7 @@
     {
       "Id": "e272fdc4-e15c-4173-97ba-8f197c204951",
       "ProductId": "9efa9aec-df62-4f2b-88cb-44ed7fac0ba4",
-      "PhotoUrl": "https://picsum.photos/seed/nike-air-max-97-yellow/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": true,
       "DisplayOrder": 1,
       "IsDeleted": false,
@@ -349,7 +349,7 @@
     {
       "Id": "5181d87f-6a5b-4b7d-86ab-b26ca905b53a",
       "ProductId": "9efa9aec-df62-4f2b-88cb-44ed7fac0ba4",
-      "PhotoUrl": "https://picsum.photos/seed/nike-air-max-97-yellow-2/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1542291026-7eec264c27ff?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": false,
       "DisplayOrder": 2,
       "IsDeleted": false,
@@ -361,7 +361,7 @@
     {
       "Id": "77107af0-dcdc-406d-9364-545cd90706bc",
       "ProductId": "1dfd2ebe-8936-42a6-be03-21870a0d6f1d",
-      "PhotoUrl": "https://picsum.photos/seed/nike-invincible-run-3-yellow/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1608231387042-66d1773070a5?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": true,
       "DisplayOrder": 1,
       "IsDeleted": false,
@@ -373,7 +373,7 @@
     {
       "Id": "50bf22dd-6b57-4c48-9e88-0ecbeb09ee86",
       "ProductId": "1dfd2ebe-8936-42a6-be03-21870a0d6f1d",
-      "PhotoUrl": "https://picsum.photos/seed/nike-invincible-run-3-yellow-2/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1551107696-a4b0c5a0d9a2?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": false,
       "DisplayOrder": 2,
       "IsDeleted": false,
@@ -385,7 +385,7 @@
     {
       "Id": "58c8e850-0ea2-43d6-af22-47e47c608170",
       "ProductId": "1dfd2ebe-8936-42a6-be03-21870a0d6f1d",
-      "PhotoUrl": "https://picsum.photos/seed/nike-invincible-run-3-yellow-3/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": false,
       "DisplayOrder": 3,
       "IsDeleted": false,
@@ -397,7 +397,7 @@
     {
       "Id": "596cbfff-9e3d-4af1-a07f-1a417b1e0a68",
       "ProductId": "8119b812-a464-45d3-8cd4-7f11194e7a1a",
-      "PhotoUrl": "https://picsum.photos/seed/nike-dunk-low-navy/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1542291026-7eec264c27ff?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": true,
       "DisplayOrder": 1,
       "IsDeleted": false,
@@ -409,7 +409,7 @@
     {
       "Id": "6ce92c37-468d-4ebf-b1b5-10829f18db36",
       "ProductId": "8119b812-a464-45d3-8cd4-7f11194e7a1a",
-      "PhotoUrl": "https://picsum.photos/seed/nike-dunk-low-navy-2/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1608231387042-66d1773070a5?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": false,
       "DisplayOrder": 2,
       "IsDeleted": false,
@@ -421,7 +421,7 @@
     {
       "Id": "8e22e18b-6e14-4af1-8508-6ecdaab7a26a",
       "ProductId": "b11b480b-77b8-48c4-95d7-c665d3b6e6c8",
-      "PhotoUrl": "https://picsum.photos/seed/nike-acg-mountain-fly-low-navy/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1551107696-a4b0c5a0d9a2?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": true,
       "DisplayOrder": 1,
       "IsDeleted": false,
@@ -433,7 +433,7 @@
     {
       "Id": "b6b20d89-deca-47de-9578-45ef633669fb",
       "ProductId": "b11b480b-77b8-48c4-95d7-c665d3b6e6c8",
-      "PhotoUrl": "https://picsum.photos/seed/nike-acg-mountain-fly-low-navy-2/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": false,
       "DisplayOrder": 2,
       "IsDeleted": false,
@@ -445,7 +445,7 @@
     {
       "Id": "be14ff26-4323-4ea5-80af-252a3682482d",
       "ProductId": "0353c906-eb08-440a-bbe5-e72143c8a28f",
-      "PhotoUrl": "https://picsum.photos/seed/nike-vomero-5-red/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1542291026-7eec264c27ff?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": true,
       "DisplayOrder": 1,
       "IsDeleted": false,
@@ -457,7 +457,7 @@
     {
       "Id": "586a2d01-a98e-4607-aebb-8826b62dc51e",
       "ProductId": "0353c906-eb08-440a-bbe5-e72143c8a28f",
-      "PhotoUrl": "https://picsum.photos/seed/nike-vomero-5-red-2/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1608231387042-66d1773070a5?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": false,
       "DisplayOrder": 2,
       "IsDeleted": false,

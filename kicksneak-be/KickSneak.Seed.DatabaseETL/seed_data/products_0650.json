@@ -205,7 +205,7 @@
     {
       "Id": "36bd9fe1-c585-4d7e-99cf-bc889de5bb52",
       "ProductId": "52ec5d07-d6e2-4c2c-ad58-6b4b0422ab77",
-      "PhotoUrl": "https://picsum.photos/seed/nike-air-monarch-iv-black/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1608231387042-66d1773070a5?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": true,
       "DisplayOrder": 1,
       "IsDeleted": false,
@@ -217,7 +217,7 @@
     {
       "Id": "218285df-1eae-4bf2-9f42-b8fbca42142d",
       "ProductId": "52ec5d07-d6e2-4c2c-ad58-6b4b0422ab77",
-      "PhotoUrl": "https://picsum.photos/seed/nike-air-monarch-iv-black-2/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1551107696-a4b0c5a0d9a2?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": false,
       "DisplayOrder": 2,
       "IsDeleted": false,
@@ -229,7 +229,7 @@
     {
       "Id": "698ea548-7fc0-44de-a480-ccc459c34ab9",
       "ProductId": "038caa1d-2a08-4069-b713-32a839b6aeac",
-      "PhotoUrl": "https://picsum.photos/seed/nike-air-max-95-sail/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": true,
       "DisplayOrder": 1,
       "IsDeleted": false,
@@ -241,7 +241,7 @@
     {
       "Id": "8f692812-7143-48f3-aa5f-e7646f59af0d",
       "ProductId": "038caa1d-2a08-4069-b713-32a839b6aeac",
-      "PhotoUrl": "https://picsum.photos/seed/nike-air-max-95-sail-2/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1542291026-7eec264c27ff?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": false,
       "DisplayOrder": 2,
       "IsDeleted": false,
@@ -253,7 +253,7 @@
     {
       "Id": "b2edb8c9-7db4-47fa-a3c7-597e393d837a",
       "ProductId": "038caa1d-2a08-4069-b713-32a839b6aeac",
-      "PhotoUrl": "https://picsum.photos/seed/nike-air-max-95-sail-3/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1608231387042-66d1773070a5?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": false,
       "DisplayOrder": 3,
       "IsDeleted": false,
@@ -265,7 +265,7 @@
     {
       "Id": "e19d85a0-fac5-4ab1-9189-947a44e76688",
       "ProductId": "b92d7dba-5587-4c30-b1b1-ebf91de66f00",
-      "PhotoUrl": "https://picsum.photos/seed/nike-air-max-plus-green/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1551107696-a4b0c5a0d9a2?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": true,
       "DisplayOrder": 1,
       "IsDeleted": false,
@@ -277,7 +277,7 @@
     {
       "Id": "5dd3b37e-bee7-4475-8dfd-65bc145aae60",
       "ProductId": "b92d7dba-5587-4c30-b1b1-ebf91de66f00",
-      "PhotoUrl": "https://picsum.photos/seed/nike-air-max-plus-green-2/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": false,
       "DisplayOrder": 2,
       "IsDeleted": false,
@@ -289,7 +289,7 @@
     {
       "Id": "786fd14b-da82-4e2c-b622-b76b929146c4",
       "ProductId": "e86f4aed-4903-442b-8b0d-6d617974b487",
-      "PhotoUrl": "https://picsum.photos/seed/nike-air-monarch-iv-brown/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1542291026-7eec264c27ff?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": true,
       "DisplayOrder": 1,
       "IsDeleted": false,
@@ -301,7 +301,7 @@
     {
       "Id": "8c03ccab-9850-406c-adaa-84ee75108743",
       "ProductId": "e86f4aed-4903-442b-8b0d-6d617974b487",
-      "PhotoUrl": "https://picsum.photos/seed/nike-air-monarch-iv-brown-2/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1608231387042-66d1773070a5?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": false,
       "DisplayOrder": 2,
       "IsDeleted": false,
@@ -313,7 +313,7 @@
     {
       "Id": "a77bd84d-d740-448f-be32-16a12bfad99d",
       "ProductId": "3b6b6105-622f-4af3-8996-30d0bc29e810",
-      "PhotoUrl": "https://picsum.photos/seed/nike-killshot-2-orange/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1551107696-a4b0c5a0d9a2?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": true,
       "DisplayOrder": 1,
       "IsDeleted": false,
@@ -325,7 +325,7 @@
     {
       "Id": "5482b94b-74dc-4c68-a8fc-a68ddd162724",
       "ProductId": "3b6b6105-622f-4af3-8996-30d0bc29e810",
-      "PhotoUrl": "https://picsum.photos/seed/nike-killshot-2-orange-2/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": false,
       "DisplayOrder": 2,
       "IsDeleted": false,
@@ -337,7 +337,7 @@
     {
       "Id": "ea34fcfe-4464-4936-8311-e2b171c456c0",
       "ProductId": "3b6b6105-622f-4af3-8996-30d0bc29e810",
-      "PhotoUrl": "https://picsum.photos/seed/nike-killshot-2-orange-3/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1542291026-7eec264c27ff?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": false,
       "DisplayOrder": 3,
       "IsDeleted": false,
@@ -349,7 +349,7 @@
     {
       "Id": "6ba6b1de-51cd-4abb-83c8-b24ca6becccf",
       "ProductId": "e94d7f1b-d7e8-4708-ab54-b3724dad1a9e",
-      "PhotoUrl": "https://picsum.photos/seed/nike-vomero-5-sail/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1608231387042-66d1773070a5?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": true,
       "DisplayOrder": 1,
       "IsDeleted": false,
@@ -361,7 +361,7 @@
     {
       "Id": "cfce28b4-b40d-46d5-869c-baaf55b4b0d3",
       "ProductId": "e94d7f1b-d7e8-4708-ab54-b3724dad1a9e",
-      "PhotoUrl": "https://picsum.photos/seed/nike-vomero-5-sail-2/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1551107696-a4b0c5a0d9a2?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": false,
       "DisplayOrder": 2,
       "IsDeleted": false,
@@ -373,7 +373,7 @@
     {
       "Id": "727b023c-8b04-4d3a-b8d8-fc852ab10696",
       "ProductId": "e94d7f1b-d7e8-4708-ab54-b3724dad1a9e",
-      "PhotoUrl": "https://picsum.photos/seed/nike-vomero-5-sail-3/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": false,
       "DisplayOrder": 3,
       "IsDeleted": false,
@@ -385,7 +385,7 @@
     {
       "Id": "ed24341e-e363-40ea-b4c8-4106a3816ff4",
       "ProductId": "8a570a5d-d6ad-4be4-87f5-e0df77978808",
-      "PhotoUrl": "https://picsum.photos/seed/nike-p-6000-brown/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1542291026-7eec264c27ff?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": true,
       "DisplayOrder": 1,
       "IsDeleted": false,
@@ -397,7 +397,7 @@
     {
       "Id": "4efe1b0a-7533-4043-b80b-bac983dcfcfc",
       "ProductId": "8a570a5d-d6ad-4be4-87f5-e0df77978808",
-      "PhotoUrl": "https://picsum.photos/seed/nike-p-6000-brown-2/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1608231387042-66d1773070a5?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": false,
       "DisplayOrder": 2,
       "IsDeleted": false,
@@ -409,7 +409,7 @@
     {
       "Id": "8fe0ef4d-e96a-4529-b2b5-ea221f7b00dd",
       "ProductId": "d5e46846-86d9-46a3-9b57-878e8a12d339",
-      "PhotoUrl": "https://picsum.photos/seed/nike-blazer-mid-sail/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1551107696-a4b0c5a0d9a2?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": true,
       "DisplayOrder": 1,
       "IsDeleted": false,
@@ -421,7 +421,7 @@
     {
       "Id": "b487b93f-508d-40dc-824b-ad9120e5cec7",
       "ProductId": "d5e46846-86d9-46a3-9b57-878e8a12d339",
-      "PhotoUrl": "https://picsum.photos/seed/nike-blazer-mid-sail-2/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": false,
       "DisplayOrder": 2,
       "IsDeleted": false,
@@ -433,7 +433,7 @@
     {
       "Id": "e920b28e-ebd6-4e7f-8c08-d7f0e416aef1",
       "ProductId": "d5e46846-86d9-46a3-9b57-878e8a12d339",
-      "PhotoUrl": "https://picsum.photos/seed/nike-blazer-mid-sail-3/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1542291026-7eec264c27ff?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": false,
       "DisplayOrder": 3,
       "IsDeleted": false,
@@ -445,7 +445,7 @@
     {
       "Id": "20b124c2-f10a-409a-8f90-d8ea3764251a",
       "ProductId": "ab77fd22-2c56-4d95-b55f-9a4aeb7f6cc7",
-      "PhotoUrl": "https://picsum.photos/seed/nike-acg-mountain-fly-low-sail/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1608231387042-66d1773070a5?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": true,
       "DisplayOrder": 1,
       "IsDeleted": false,
@@ -457,7 +457,7 @@
     {
       "Id": "43f37e9b-de8d-479f-851b-60a535b9efac",
       "ProductId": "ab77fd22-2c56-4d95-b55f-9a4aeb7f6cc7",
-      "PhotoUrl": "https://picsum.photos/seed/nike-acg-mountain-fly-low-sail-2/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1551107696-a4b0c5a0d9a2?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": false,
       "DisplayOrder": 2,
       "IsDeleted": false,
@@ -469,7 +469,7 @@
     {
       "Id": "8e678f3d-d1fb-4286-b0fd-a3fca76ae4f4",
       "ProductId": "d47a396f-19bd-4384-96c4-9a4dc3b1cb47",
-      "PhotoUrl": "https://picsum.photos/seed/nike-acg-mountain-fly-low-multi-color/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": true,
       "DisplayOrder": 1,
       "IsDeleted": false,
@@ -481,7 +481,7 @@
     {
       "Id": "5b0b7ca2-b745-47c9-827f-0c997d635577",
       "ProductId": "d47a396f-19bd-4384-96c4-9a4dc3b1cb47",
-      "PhotoUrl": "https://picsum.photos/seed/nike-acg-mountain-fly-low-multi-color-2/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1542291026-7eec264c27ff?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": false,
       "DisplayOrder": 2,
       "IsDeleted": false,

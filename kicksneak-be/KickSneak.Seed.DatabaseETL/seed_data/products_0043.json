@@ -205,7 +205,7 @@
     {
       "Id": "630aa5eb-97e5-4437-894e-615cbda3044f",
       "ProductId": "590a11e6-9114-4f6a-9320-cfee71b0b44e",
-      "PhotoUrl": "https://picsum.photos/seed/nike-p-6000-cream/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1608231387042-66d1773070a5?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": true,
       "DisplayOrder": 1,
       "IsDeleted": false,
@@ -217,7 +217,7 @@
     {
       "Id": "776b54b1-5fba-47cb-8ef7-a045b7628815",
       "ProductId": "590a11e6-9114-4f6a-9320-cfee71b0b44e",
-      "PhotoUrl": "https://picsum.photos/seed/nike-p-6000-cream-2/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1551107696-a4b0c5a0d9a2?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": false,
       "DisplayOrder": 2,
       "IsDeleted": false,
@@ -229,7 +229,7 @@
     {
       "Id": "7f64f193-0a6b-4b10-8b19-8563c71a9c12",
       "ProductId": "82f74327-c674-482f-84ac-4a4bdfa276a6",
-      "PhotoUrl": "https://picsum.photos/seed/nike-dunk-high-purple/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": true,
       "DisplayOrder": 1,
       "IsDeleted": false,
@@ -241,7 +241,7 @@
     {
       "Id": "c34152ef-2e92-4b97-989e-25fe59243056",
       "ProductId": "82f74327-c674-482f-84ac-4a4bdfa276a6",
-      "PhotoUrl": "https://picsum.photos/seed/nike-dunk-high-purple-2/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1542291026-7eec264c27ff?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": false,
       "DisplayOrder": 2,
       "IsDeleted": false,
@@ -253,7 +253,7 @@
     {
       "Id": "e5e3e6c9-1add-4834-b5dd-afdee1cc57b9",
       "ProductId": "82f74327-c674-482f-84ac-4a4bdfa276a6",
-      "PhotoUrl": "https://picsum.photos/seed/nike-dunk-high-purple-3/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1608231387042-66d1773070a5?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": false,
       "DisplayOrder": 3,
       "IsDeleted": false,
@@ -265,7 +265,7 @@
     {
       "Id": "605a7a22-98a7-40f7-96f4-0a12fce0621e",
       "ProductId": "61f1b67e-608e-4875-a412-f14c1f73daf5",
-      "PhotoUrl": "https://picsum.photos/seed/nike-air-force-1-university-blue/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1551107696-a4b0c5a0d9a2?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": true,
       "DisplayOrder": 1,
       "IsDeleted": false,
@@ -277,7 +277,7 @@
     {
       "Id": "59b2e1c6-ecc7-4951-9075-3d8fbb26c6f6",
       "ProductId": "61f1b67e-608e-4875-a412-f14c1f73daf5",
-      "PhotoUrl": "https://picsum.photos/seed/nike-air-force-1-university-blue-2/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": false,
       "DisplayOrder": 2,
       "IsDeleted": false,
@@ -289,7 +289,7 @@
     {
       "Id": "0680b9aa-aef0-4310-b5a0-a686876b2667",
       "ProductId": "5c4e0805-d3f1-40c8-8cff-432f3f92cd7e",
-      "PhotoUrl": "https://picsum.photos/seed/nike-air-max-90-pink/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1542291026-7eec264c27ff?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": true,
       "DisplayOrder": 1,
       "IsDeleted": false,
@@ -301,7 +301,7 @@
     {
       "Id": "068886e8-19ab-4638-9f98-c2184f98090a",
       "ProductId": "5c4e0805-d3f1-40c8-8cff-432f3f92cd7e",
-      "PhotoUrl": "https://picsum.photos/seed/nike-air-max-90-pink-2/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1608231387042-66d1773070a5?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": false,
       "DisplayOrder": 2,
       "IsDeleted": false,
@@ -313,7 +313,7 @@
     {
       "Id": "7e4933ab-cab8-4f7e-8ed7-2a23f6604fa3",
       "ProductId": "bdc5a30a-eb2b-43cb-8926-15ad8e470c53",
-      "PhotoUrl": "https://picsum.photos/seed/nike-shox-r4-beige/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1551107696-a4b0c5a0d9a2?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": true,
       "DisplayOrder": 1,
       "IsDeleted": false,
@@ -325,7 +325,7 @@
     {
       "Id": "6cc107da-7f7d-4592-a8c2-1b10646054a5",
       "ProductId": "bdc5a30a-eb2b-43cb-8926-15ad8e470c53",
-      "PhotoUrl": "https://picsum.photos/seed/nike-shox-r4-beige-2/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": false,
       "DisplayOrder": 2,
       "IsDeleted": false,
@@ -337,7 +337,7 @@
     {
       "Id": "ad1dd201-0950-41a6-9da0-2048e8ee8df6",
       "ProductId": "bdc5a30a-eb2b-43cb-8926-15ad8e470c53",
-      "PhotoUrl": "https://picsum.photos/seed/nike-shox-r4-beige-3/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1542291026-7eec264c27ff?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": false,
       "DisplayOrder": 3,
       "IsDeleted": false,
@@ -349,7 +349,7 @@
     {
       "Id": "573ab9ee-015f-4631-b912-238a0a4e1147",
       "ProductId": "ef9b55c7-ced0-483f-b4ab-8ad1b936f057",
-      "PhotoUrl": "https://picsum.photos/seed/nike-blazer-mid-red/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1608231387042-66d1773070a5?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": true,
       "DisplayOrder": 1,
       "IsDeleted": false,
@@ -361,7 +361,7 @@
     {
       "Id": "0ffa1e3e-240e-402b-8b67-759c2e38fa5d",
       "ProductId": "ef9b55c7-ced0-483f-b4ab-8ad1b936f057",
-      "PhotoUrl": "https://picsum.photos/seed/nike-blazer-mid-red-2/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1551107696-a4b0c5a0d9a2?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": false,
       "DisplayOrder": 2,
       "IsDeleted": false,
@@ -373,7 +373,7 @@
     {
       "Id": "10382701-ffcb-4a44-a0f7-1782d8b7ffa4",
       "ProductId": "ef229e8c-8e70-4318-a364-0efdc8e42a2b",
-      "PhotoUrl": "https://picsum.photos/seed/nike-dunk-low-yellow/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": true,
       "DisplayOrder": 1,
       "IsDeleted": false,
@@ -385,7 +385,7 @@
     {
       "Id": "8c1e6846-d84a-40d7-aafc-23b6444e6a87",
       "ProductId": "ef229e8c-8e70-4318-a364-0efdc8e42a2b",
-      "PhotoUrl": "https://picsum.photos/seed/nike-dunk-low-yellow-2/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1542291026-7eec264c27ff?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": false,
       "DisplayOrder": 2,
       "IsDeleted": false,
@@ -397,7 +397,7 @@
     {
       "Id": "8d4183b2-f178-48ba-a50f-f117a6d9216e",
       "ProductId": "ef229e8c-8e70-4318-a364-0efdc8e42a2b",
-      "PhotoUrl": "https://picsum.photos/seed/nike-dunk-low-yellow-3/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1608231387042-66d1773070a5?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": false,
       "DisplayOrder": 3,
       "IsDeleted": false,
@@ -409,7 +409,7 @@
     {
       "Id": "6542fa80-4591-482d-807a-1f24d28ba1b8",
       "ProductId": "db8c53b1-202e-478e-964f-1117f553112c",
-      "PhotoUrl": "https://picsum.photos/seed/nike-shox-r4-olive/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1551107696-a4b0c5a0d9a2?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": true,
       "DisplayOrder": 1,
       "IsDeleted": false,
@@ -421,7 +421,7 @@
     {
       "Id": "7662b3bf-9a99-484e-b035-1c98322f0966",
       "ProductId": "db8c53b1-202e-478e-964f-1117f553112c",
-      "PhotoUrl": "https://picsum.photos/seed/nike-shox-r4-olive-2/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": false,
       "DisplayOrder": 2,
       "IsDeleted": false,
@@ -433,7 +433,7 @@
     {
       "Id": "fb970117-c9e1-4c71-a73c-cd48159f6ea8",
       "ProductId": "db8c53b1-202e-478e-964f-1117f553112c",
-      "PhotoUrl": "https://picsum.photos/seed/nike-shox-r4-olive-3/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1542291026-7eec264c27ff?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": false,
       "DisplayOrder": 3,
       "IsDeleted": false,
@@ -445,7 +445,7 @@
     {
       "Id": "4a203db3-a567-455e-bc36-a0c296f7afe2",
       "ProductId": "4e9185ba-79b3-4684-95cb-555f8099c463",
-      "PhotoUrl": "https://picsum.photos/seed/nike-dunk-low-grey/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1608231387042-66d1773070a5?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": true,
       "DisplayOrder": 1,
       "IsDeleted": false,
@@ -457,7 +457,7 @@
     {
       "Id": "446d1982-8453-40c3-92d6-7f8cd1dc33f8",
       "ProductId": "4e9185ba-79b3-4684-95cb-555f8099c463",
-      "PhotoUrl": "https://picsum.photos/seed/nike-dunk-low-grey-2/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1551107696-a4b0c5a0d9a2?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": false,
       "DisplayOrder": 2,
       "IsDeleted": false,
@@ -469,7 +469,7 @@
     {
       "Id": "3c5fae04-21a1-4234-be59-3ea14c7bb905",
       "ProductId": "5f9bec1f-0eec-4f56-80a4-99323c0e4398",
-      "PhotoUrl": "https://picsum.photos/seed/nike-air-force-1-olive/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": true,
       "DisplayOrder": 1,
       "IsDeleted": false,
@@ -481,7 +481,7 @@
     {
       "Id": "e9feb95b-fb55-4d22-8d31-285f7f0acbf9",
       "ProductId": "5f9bec1f-0eec-4f56-80a4-99323c0e4398",
-      "PhotoUrl": "https://picsum.photos/seed/nike-air-force-1-olive-2/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1542291026-7eec264c27ff?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": false,
       "DisplayOrder": 2,
       "IsDeleted": false,

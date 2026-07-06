@@ -205,7 +205,7 @@
     {
       "Id": "950bfab2-fc98-430b-ad0d-902359b8121d",
       "ProductId": "52251c5b-0421-488a-b972-6ffbbcdd52e7",
-      "PhotoUrl": "https://picsum.photos/seed/air-jordan-air-jordan-14-retro-pink/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": true,
       "DisplayOrder": 1,
       "IsDeleted": false,
@@ -217,7 +217,7 @@
     {
       "Id": "1fac066c-99fa-4a79-a81e-c2368908df62",
       "ProductId": "52251c5b-0421-488a-b972-6ffbbcdd52e7",
-      "PhotoUrl": "https://picsum.photos/seed/air-jordan-air-jordan-14-retro-pink-2/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1542291026-7eec264c27ff?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": false,
       "DisplayOrder": 2,
       "IsDeleted": false,
@@ -229,7 +229,7 @@
     {
       "Id": "d8147f5a-c50f-4a8c-98c4-c493b51c5dfe",
       "ProductId": "52251c5b-0421-488a-b972-6ffbbcdd52e7",
-      "PhotoUrl": "https://picsum.photos/seed/air-jordan-air-jordan-14-retro-pink-3/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1608231387042-66d1773070a5?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": false,
       "DisplayOrder": 3,
       "IsDeleted": false,
@@ -241,7 +241,7 @@
     {
       "Id": "253031b2-b4d4-4ab4-a90e-9b9c7d669ff2",
       "ProductId": "9ef8c64b-f933-451c-9a79-5e86d1fabb6d",
-      "PhotoUrl": "https://picsum.photos/seed/air-jordan-air-jordan-4-retro-beige/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1551107696-a4b0c5a0d9a2?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": true,
       "DisplayOrder": 1,
       "IsDeleted": false,
@@ -253,7 +253,7 @@
     {
       "Id": "f8bf575e-522e-4767-90e9-332d4a115ce0",
       "ProductId": "9ef8c64b-f933-451c-9a79-5e86d1fabb6d",
-      "PhotoUrl": "https://picsum.photos/seed/air-jordan-air-jordan-4-retro-beige-2/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": false,
       "DisplayOrder": 2,
       "IsDeleted": false,
@@ -265,7 +265,7 @@
     {
       "Id": "5bf09fb5-6e29-4556-88d6-d9ad7ac0de9f",
       "ProductId": "9ef8c64b-f933-451c-9a79-5e86d1fabb6d",
-      "PhotoUrl": "https://picsum.photos/seed/air-jordan-air-jordan-4-retro-beige-3/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1542291026-7eec264c27ff?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": false,
       "DisplayOrder": 3,
       "IsDeleted": false,
@@ -277,7 +277,7 @@
     {
       "Id": "3959ea17-f276-4ae5-9c7a-f672f4f13eb6",
       "ProductId": "ae003a82-88af-48e6-b9b5-75f3726582e5",
-      "PhotoUrl": "https://picsum.photos/seed/air-jordan-jordan-stadium-90-blue/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1608231387042-66d1773070a5?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": true,
       "DisplayOrder": 1,
       "IsDeleted": false,
@@ -289,7 +289,7 @@
     {
       "Id": "db83691d-02f5-48db-bc6e-6d526e4cbf00",
       "ProductId": "ae003a82-88af-48e6-b9b5-75f3726582e5",
-      "PhotoUrl": "https://picsum.photos/seed/air-jordan-jordan-stadium-90-blue-2/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1551107696-a4b0c5a0d9a2?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": false,
       "DisplayOrder": 2,
       "IsDeleted": false,
@@ -301,7 +301,7 @@
     {
       "Id": "f907bf71-5010-43e3-846f-cd9dcd81d2ed",
       "ProductId": "ae003a82-88af-48e6-b9b5-75f3726582e5",
-      "PhotoUrl": "https://picsum.photos/seed/air-jordan-jordan-stadium-90-blue-3/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": false,
       "DisplayOrder": 3,
       "IsDeleted": false,
@@ -313,7 +313,7 @@
     {
       "Id": "ccc25eaf-a1d2-48ef-aff4-9f111d68dbae",
       "ProductId": "00143bba-4259-4cff-9230-d285eb7fc8a5",
-      "PhotoUrl": "https://picsum.photos/seed/air-jordan-air-jordan-1-mid-beige/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1542291026-7eec264c27ff?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": true,
       "DisplayOrder": 1,
       "IsDeleted": false,
@@ -325,7 +325,7 @@
     {
       "Id": "d3735414-ed9d-436f-b0f4-e9b03bdb9d68",
       "ProductId": "00143bba-4259-4cff-9230-d285eb7fc8a5",
-      "PhotoUrl": "https://picsum.photos/seed/air-jordan-air-jordan-1-mid-beige-2/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1608231387042-66d1773070a5?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": false,
       "DisplayOrder": 2,
       "IsDeleted": false,
@@ -337,7 +337,7 @@
     {
       "Id": "55c86954-1aac-4d82-b3da-ca2b3b98f33d",
       "ProductId": "38899d41-f49f-4285-b651-f4acd6ade822",
-      "PhotoUrl": "https://picsum.photos/seed/air-jordan-air-jordan-13-retro-bred-blackred/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1551107696-a4b0c5a0d9a2?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": true,
       "DisplayOrder": 1,
       "IsDeleted": false,
@@ -349,7 +349,7 @@
     {
       "Id": "9751417b-fbd2-4ebf-bdd4-5f01578652c7",
       "ProductId": "38899d41-f49f-4285-b651-f4acd6ade822",
-      "PhotoUrl": "https://picsum.photos/seed/air-jordan-air-jordan-13-retro-bred-blackred-2/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": false,
       "DisplayOrder": 2,
       "IsDeleted": false,
@@ -361,7 +361,7 @@
     {
       "Id": "625e30b5-3773-4bda-bfb4-f524b0eb0d85",
       "ProductId": "38899d41-f49f-4285-b651-f4acd6ade822",
-      "PhotoUrl": "https://picsum.photos/seed/air-jordan-air-jordan-13-retro-bred-blackred-3/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1542291026-7eec264c27ff?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": false,
       "DisplayOrder": 3,
       "IsDeleted": false,
@@ -373,7 +373,7 @@
     {
       "Id": "7cf0cff1-b35f-45ad-b4a3-17d5511f2acf",
       "ProductId": "98f9ba1a-79e5-4351-9738-4dc165787eb6",
-      "PhotoUrl": "https://picsum.photos/seed/air-jordan-air-jordan-2-retro-brown/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1608231387042-66d1773070a5?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": true,
       "DisplayOrder": 1,
       "IsDeleted": false,
@@ -385,7 +385,7 @@
     {
       "Id": "a448ccc7-7408-43c6-a1e2-f869af278da9",
       "ProductId": "98f9ba1a-79e5-4351-9738-4dc165787eb6",
-      "PhotoUrl": "https://picsum.photos/seed/air-jordan-air-jordan-2-retro-brown-2/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1551107696-a4b0c5a0d9a2?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": false,
       "DisplayOrder": 2,
       "IsDeleted": false,
@@ -397,7 +397,7 @@
     {
       "Id": "0b898553-55d9-4379-a1cf-82a6b5cb4d9f",
       "ProductId": "4566c2d9-e65c-4e9a-930a-9c3e7b7fc4e4",
-      "PhotoUrl": "https://picsum.photos/seed/air-jordan-jordan-tatum-2-bred-blackred/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": true,
       "DisplayOrder": 1,
       "IsDeleted": false,
@@ -409,7 +409,7 @@
     {
       "Id": "a4ae9c5e-814f-485a-87cc-10c36b013e5f",
       "ProductId": "4566c2d9-e65c-4e9a-930a-9c3e7b7fc4e4",
-      "PhotoUrl": "https://picsum.photos/seed/air-jordan-jordan-tatum-2-bred-blackred-2/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1542291026-7eec264c27ff?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": false,
       "DisplayOrder": 2,
       "IsDeleted": false,
@@ -421,7 +421,7 @@
     {
       "Id": "f717b63c-c8d4-4373-87bc-ff8db1f711ad",
       "ProductId": "3c488b2a-b261-40f8-96ad-8d2569b6a269",
-      "PhotoUrl": "https://picsum.photos/seed/air-jordan-air-jordan-14-retro-purple/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1608231387042-66d1773070a5?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": true,
       "DisplayOrder": 1,
       "IsDeleted": false,
@@ -433,7 +433,7 @@
     {
       "Id": "5b4dc449-9de8-4966-9bf9-f75580f323ea",
       "ProductId": "3c488b2a-b261-40f8-96ad-8d2569b6a269",
-      "PhotoUrl": "https://picsum.photos/seed/air-jordan-air-jordan-14-retro-purple-2/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1551107696-a4b0c5a0d9a2?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": false,
       "DisplayOrder": 2,
       "IsDeleted": false,
@@ -445,7 +445,7 @@
     {
       "Id": "8ccb08a2-d144-4be7-b74a-063297c8f66b",
       "ProductId": "833cf1f4-3c13-4094-b982-1f99d77a2e9d",
-      "PhotoUrl": "https://picsum.photos/seed/air-jordan-jordan-zion-3-brown/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": true,
       "DisplayOrder": 1,
       "IsDeleted": false,
@@ -457,7 +457,7 @@
     {
       "Id": "d759a672-1f8c-460d-b83b-67eeea3cb114",
       "ProductId": "833cf1f4-3c13-4094-b982-1f99d77a2e9d",
-      "PhotoUrl": "https://picsum.photos/seed/air-jordan-jordan-zion-3-brown-2/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1542291026-7eec264c27ff?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": false,
       "DisplayOrder": 2,
       "IsDeleted": false,
@@ -469,7 +469,7 @@
     {
       "Id": "30730970-13cf-4aac-858f-e2c4bd07f31b",
       "ProductId": "833cf1f4-3c13-4094-b982-1f99d77a2e9d",
-      "PhotoUrl": "https://picsum.photos/seed/air-jordan-jordan-zion-3-brown-3/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1608231387042-66d1773070a5?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": false,
       "DisplayOrder": 3,
       "IsDeleted": false,
@@ -481,7 +481,7 @@
     {
       "Id": "3a188f2b-6af0-484d-8a9e-7b3c73e3dd67",
       "ProductId": "4dd25cd1-aa13-476c-98b0-bd430606e2e3",
-      "PhotoUrl": "https://picsum.photos/seed/air-jordan-jordan-mvp-orange/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1551107696-a4b0c5a0d9a2?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": true,
       "DisplayOrder": 1,
       "IsDeleted": false,
@@ -493,7 +493,7 @@
     {
       "Id": "d90db88d-054f-4f62-a014-37e31d1fa23e",
       "ProductId": "4dd25cd1-aa13-476c-98b0-bd430606e2e3",
-      "PhotoUrl": "https://picsum.photos/seed/air-jordan-jordan-mvp-orange-2/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": false,
       "DisplayOrder": 2,
       "IsDeleted": false,

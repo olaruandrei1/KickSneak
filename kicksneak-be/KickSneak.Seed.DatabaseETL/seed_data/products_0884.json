@@ -205,7 +205,7 @@
     {
       "Id": "82777db3-5515-4fa0-aa2e-7759337678cf",
       "ProductId": "d4fb658b-cb5d-49f0-bc93-4582ce669ca9",
-      "PhotoUrl": "https://picsum.photos/seed/puma-roma-basic-bred-blackred/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1551107696-a4b0c5a0d9a2?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": true,
       "DisplayOrder": 1,
       "IsDeleted": false,
@@ -217,7 +217,7 @@
     {
       "Id": "6bad71ca-8dc1-4aa5-afcf-4128a870bb5c",
       "ProductId": "d4fb658b-cb5d-49f0-bc93-4582ce669ca9",
-      "PhotoUrl": "https://picsum.photos/seed/puma-roma-basic-bred-blackred-2/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": false,
       "DisplayOrder": 2,
       "IsDeleted": false,
@@ -229,7 +229,7 @@
     {
       "Id": "235b3a72-b963-428a-8e9e-f3e8dffb6692",
       "ProductId": "a82ac3a3-402d-4b2b-be34-e10ac316bc0b",
-      "PhotoUrl": "https://picsum.photos/seed/puma-slipstream-brown/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1542291026-7eec264c27ff?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": true,
       "DisplayOrder": 1,
       "IsDeleted": false,
@@ -241,7 +241,7 @@
     {
       "Id": "91676c18-7a52-4225-a3e4-c3f1e13b20cf",
       "ProductId": "a82ac3a3-402d-4b2b-be34-e10ac316bc0b",
-      "PhotoUrl": "https://picsum.photos/seed/puma-slipstream-brown-2/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1608231387042-66d1773070a5?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": false,
       "DisplayOrder": 2,
       "IsDeleted": false,
@@ -253,7 +253,7 @@
     {
       "Id": "458798ca-2661-4502-b4d3-7c10e688b29d",
       "ProductId": "09c9ee01-8771-4d9d-b58f-68e84439a9bc",
-      "PhotoUrl": "https://picsum.photos/seed/puma-leadcat-20-multi-color/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1551107696-a4b0c5a0d9a2?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": true,
       "DisplayOrder": 1,
       "IsDeleted": false,
@@ -265,7 +265,7 @@
     {
       "Id": "f8a5ae52-92ad-4058-b6fd-7a6508e0c2c7",
       "ProductId": "09c9ee01-8771-4d9d-b58f-68e84439a9bc",
-      "PhotoUrl": "https://picsum.photos/seed/puma-leadcat-20-multi-color-2/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": false,
       "DisplayOrder": 2,
       "IsDeleted": false,
@@ -277,7 +277,7 @@
     {
       "Id": "0ec72686-e3cd-4ce8-b288-7b21584900cc",
       "ProductId": "3e805e03-fd69-4cdd-906a-d9d443b10125",
-      "PhotoUrl": "https://picsum.photos/seed/puma-palermo-cream/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1542291026-7eec264c27ff?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": true,
       "DisplayOrder": 1,
       "IsDeleted": false,
@@ -289,7 +289,7 @@
     {
       "Id": "f7288bba-036f-47f5-9d89-e410683f31f1",
       "ProductId": "3e805e03-fd69-4cdd-906a-d9d443b10125",
-      "PhotoUrl": "https://picsum.photos/seed/puma-palermo-cream-2/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1608231387042-66d1773070a5?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": false,
       "DisplayOrder": 2,
       "IsDeleted": false,
@@ -301,7 +301,7 @@
     {
       "Id": "d5f5e308-b285-4917-b75a-4adb367fd790",
       "ProductId": "3e805e03-fd69-4cdd-906a-d9d443b10125",
-      "PhotoUrl": "https://picsum.photos/seed/puma-palermo-cream-3/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1551107696-a4b0c5a0d9a2?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": false,
       "DisplayOrder": 3,
       "IsDeleted": false,
@@ -313,7 +313,7 @@
     {
       "Id": "f4691c26-efa2-436a-85db-67322cca8759",
       "ProductId": "f87e2ca8-5c7a-4268-83ac-708899a03c21",
-      "PhotoUrl": "https://picsum.photos/seed/puma-deviate-nitro-2-university-blue/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": true,
       "DisplayOrder": 1,
       "IsDeleted": false,
@@ -325,7 +325,7 @@
     {
       "Id": "60c9f104-92b9-4b96-90a9-60225ce860d7",
       "ProductId": "f87e2ca8-5c7a-4268-83ac-708899a03c21",
-      "PhotoUrl": "https://picsum.photos/seed/puma-deviate-nitro-2-university-blue-2/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1542291026-7eec264c27ff?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": false,
       "DisplayOrder": 2,
       "IsDeleted": false,
@@ -337,7 +337,7 @@
     {
       "Id": "43e726c1-4422-4fb8-8d05-e4a3e0a3242f",
       "ProductId": "f87e2ca8-5c7a-4268-83ac-708899a03c21",
-      "PhotoUrl": "https://picsum.photos/seed/puma-deviate-nitro-2-university-blue-3/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1608231387042-66d1773070a5?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": false,
       "DisplayOrder": 3,
       "IsDeleted": false,
@@ -349,7 +349,7 @@
     {
       "Id": "f6567f0b-b288-4460-8802-ff237f2d06b7",
       "ProductId": "3db3acf6-2627-4164-98f9-f81d340973b5",
-      "PhotoUrl": "https://picsum.photos/seed/puma-velocity-nitro-3-blue/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1551107696-a4b0c5a0d9a2?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": true,
       "DisplayOrder": 1,
       "IsDeleted": false,
@@ -361,7 +361,7 @@
     {
       "Id": "c1deea69-df02-49fc-b56f-c45e7894ce28",
       "ProductId": "3db3acf6-2627-4164-98f9-f81d340973b5",
-      "PhotoUrl": "https://picsum.photos/seed/puma-velocity-nitro-3-blue-2/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": false,
       "DisplayOrder": 2,
       "IsDeleted": false,
@@ -373,7 +373,7 @@
     {
       "Id": "65f93bac-d74a-4652-ac0c-74f9c7b19e1f",
       "ProductId": "3db3acf6-2627-4164-98f9-f81d340973b5",
-      "PhotoUrl": "https://picsum.photos/seed/puma-velocity-nitro-3-blue-3/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1542291026-7eec264c27ff?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": false,
       "DisplayOrder": 3,
       "IsDeleted": false,
@@ -385,7 +385,7 @@
     {
       "Id": "90a16d9e-d2e3-4efc-a950-c26f8d4ebdcb",
       "ProductId": "f1548d09-e464-4e0f-8bb8-b270965d83bd",
-      "PhotoUrl": "https://picsum.photos/seed/puma-super-liga-og-orange/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1608231387042-66d1773070a5?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": true,
       "DisplayOrder": 1,
       "IsDeleted": false,
@@ -397,7 +397,7 @@
     {
       "Id": "106360e3-d570-4312-b1c7-1df72582f0a0",
       "ProductId": "f1548d09-e464-4e0f-8bb8-b270965d83bd",
-      "PhotoUrl": "https://picsum.photos/seed/puma-super-liga-og-orange-2/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1551107696-a4b0c5a0d9a2?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": false,
       "DisplayOrder": 2,
       "IsDeleted": false,
@@ -409,7 +409,7 @@
     {
       "Id": "2246c0a5-ab40-4ba5-8be1-bfdbefba3a07",
       "ProductId": "f1548d09-e464-4e0f-8bb8-b270965d83bd",
-      "PhotoUrl": "https://picsum.photos/seed/puma-super-liga-og-orange-3/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": false,
       "DisplayOrder": 3,
       "IsDeleted": false,
@@ -421,7 +421,7 @@
     {
       "Id": "0a74f05a-2aea-41e2-b659-7c607c064029",
       "ProductId": "ad5dab09-214c-4abe-a9eb-49f04d2c0de3",
-      "PhotoUrl": "https://picsum.photos/seed/puma-leadcat-20-navy/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1542291026-7eec264c27ff?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": true,
       "DisplayOrder": 1,
       "IsDeleted": false,
@@ -433,7 +433,7 @@
     {
       "Id": "57032f8d-b54c-4d4d-886a-c42aef1d996b",
       "ProductId": "ad5dab09-214c-4abe-a9eb-49f04d2c0de3",
-      "PhotoUrl": "https://picsum.photos/seed/puma-leadcat-20-navy-2/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1608231387042-66d1773070a5?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": false,
       "DisplayOrder": 2,
       "IsDeleted": false,
@@ -445,7 +445,7 @@
     {
       "Id": "21ec4021-5c12-4614-92d8-4718544893d0",
       "ProductId": "419e4676-88ca-47e5-b80b-96e6fb17316b",
-      "PhotoUrl": "https://picsum.photos/seed/puma-deviate-nitro-2-beige/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1551107696-a4b0c5a0d9a2?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": true,
       "DisplayOrder": 1,
       "IsDeleted": false,
@@ -457,7 +457,7 @@
     {
       "Id": "a5cc6857-20a5-45fa-8db5-7b1929682648",
       "ProductId": "419e4676-88ca-47e5-b80b-96e6fb17316b",
-      "PhotoUrl": "https://picsum.photos/seed/puma-deviate-nitro-2-beige-2/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": false,
       "DisplayOrder": 2,
       "IsDeleted": false,
@@ -469,7 +469,7 @@
     {
       "Id": "cf0bba92-f4b1-4b41-82b2-7dda7c57fd93",
       "ProductId": "419e4676-88ca-47e5-b80b-96e6fb17316b",
-      "PhotoUrl": "https://picsum.photos/seed/puma-deviate-nitro-2-beige-3/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1542291026-7eec264c27ff?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": false,
       "DisplayOrder": 3,
       "IsDeleted": false,
@@ -481,7 +481,7 @@
     {
       "Id": "838f2af0-ad25-4b30-8d24-8ab7dbc313c1",
       "ProductId": "496ca94e-417f-4b4b-b0de-cb45e795a168",
-      "PhotoUrl": "https://picsum.photos/seed/puma-velocity-nitro-3-orange/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1608231387042-66d1773070a5?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": true,
       "DisplayOrder": 1,
       "IsDeleted": false,
@@ -493,7 +493,7 @@
     {
       "Id": "4677aeaf-5455-4688-b384-dc2c4d62b3d8",
       "ProductId": "496ca94e-417f-4b4b-b0de-cb45e795a168",
-      "PhotoUrl": "https://picsum.photos/seed/puma-velocity-nitro-3-orange-2/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1551107696-a4b0c5a0d9a2?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": false,
       "DisplayOrder": 2,
       "IsDeleted": false,
@@ -505,7 +505,7 @@
     {
       "Id": "f8ce8e4c-f673-4d83-b71a-e44a74c42fc7",
       "ProductId": "496ca94e-417f-4b4b-b0de-cb45e795a168",
-      "PhotoUrl": "https://picsum.photos/seed/puma-velocity-nitro-3-orange-3/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": false,
       "DisplayOrder": 3,
       "IsDeleted": false,

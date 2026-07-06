@@ -205,7 +205,7 @@
     {
       "Id": "5dce6455-786c-43a4-ac9d-baadad8e4433",
       "ProductId": "989954d6-b0b5-4dd5-9e19-58908d4f3dd3",
-      "PhotoUrl": "https://picsum.photos/seed/adidas-handball-spezial-cream/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": true,
       "DisplayOrder": 1,
       "IsDeleted": false,
@@ -217,7 +217,7 @@
     {
       "Id": "89d15164-974b-4c20-b5c5-6f77bcbdd1e1",
       "ProductId": "989954d6-b0b5-4dd5-9e19-58908d4f3dd3",
-      "PhotoUrl": "https://picsum.photos/seed/adidas-handball-spezial-cream-2/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1542291026-7eec264c27ff?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": false,
       "DisplayOrder": 2,
       "IsDeleted": false,
@@ -229,7 +229,7 @@
     {
       "Id": "dc939e2e-508c-4997-a4c6-93a5be7c415c",
       "ProductId": "68aa896a-4d8e-4d60-b469-b782d0bb215a",
-      "PhotoUrl": "https://picsum.photos/seed/adidas-samba-og-olive/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1608231387042-66d1773070a5?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": true,
       "DisplayOrder": 1,
       "IsDeleted": false,
@@ -241,7 +241,7 @@
     {
       "Id": "96409aa9-cdf0-4d24-ba68-4b48d830c504",
       "ProductId": "68aa896a-4d8e-4d60-b469-b782d0bb215a",
-      "PhotoUrl": "https://picsum.photos/seed/adidas-samba-og-olive-2/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1551107696-a4b0c5a0d9a2?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": false,
       "DisplayOrder": 2,
       "IsDeleted": false,
@@ -253,7 +253,7 @@
     {
       "Id": "790c82da-4506-4477-9edb-019992bed26b",
       "ProductId": "6e877b57-ded1-4e8f-b6a0-3f640c8ed9b0",
-      "PhotoUrl": "https://picsum.photos/seed/adidas-samba-og-sail/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": true,
       "DisplayOrder": 1,
       "IsDeleted": false,
@@ -265,7 +265,7 @@
     {
       "Id": "0b367eb6-c858-4381-ad7e-0c8083a6e1f9",
       "ProductId": "6e877b57-ded1-4e8f-b6a0-3f640c8ed9b0",
-      "PhotoUrl": "https://picsum.photos/seed/adidas-samba-og-sail-2/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1542291026-7eec264c27ff?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": false,
       "DisplayOrder": 2,
       "IsDeleted": false,
@@ -277,7 +277,7 @@
     {
       "Id": "85bf7235-91ae-4b70-83fb-32398e17c679",
       "ProductId": "6e877b57-ded1-4e8f-b6a0-3f640c8ed9b0",
-      "PhotoUrl": "https://picsum.photos/seed/adidas-samba-og-sail-3/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1608231387042-66d1773070a5?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": false,
       "DisplayOrder": 3,
       "IsDeleted": false,
@@ -289,7 +289,7 @@
     {
       "Id": "7e465ef7-1054-4ccd-9a9e-4c19da5801bf",
       "ProductId": "83ae67a5-aecc-4613-ac52-d30a2e01105f",
-      "PhotoUrl": "https://picsum.photos/seed/adidas-forum-low-blue/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1551107696-a4b0c5a0d9a2?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": true,
       "DisplayOrder": 1,
       "IsDeleted": false,
@@ -301,7 +301,7 @@
     {
       "Id": "289e582c-b9d8-45ff-a152-c3cd959fa624",
       "ProductId": "83ae67a5-aecc-4613-ac52-d30a2e01105f",
-      "PhotoUrl": "https://picsum.photos/seed/adidas-forum-low-blue-2/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": false,
       "DisplayOrder": 2,
       "IsDeleted": false,
@@ -313,7 +313,7 @@
     {
       "Id": "5ec28fb0-9b14-44f3-8cf1-538720cde4b5",
       "ProductId": "83ae67a5-aecc-4613-ac52-d30a2e01105f",
-      "PhotoUrl": "https://picsum.photos/seed/adidas-forum-low-blue-3/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1542291026-7eec264c27ff?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": false,
       "DisplayOrder": 3,
       "IsDeleted": false,
@@ -325,7 +325,7 @@
     {
       "Id": "750bd0ea-aff2-4125-8c2b-7d78507c244a",
       "ProductId": "b9ed4260-3cfa-4502-b097-b3f84f80e7b6",
-      "PhotoUrl": "https://picsum.photos/seed/adidas-ultraboost-light-multi-color/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1608231387042-66d1773070a5?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": true,
       "DisplayOrder": 1,
       "IsDeleted": false,
@@ -337,7 +337,7 @@
     {
       "Id": "b7e526fa-89f5-4d5d-977a-d31477341e85",
       "ProductId": "b9ed4260-3cfa-4502-b097-b3f84f80e7b6",
-      "PhotoUrl": "https://picsum.photos/seed/adidas-ultraboost-light-multi-color-2/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1551107696-a4b0c5a0d9a2?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": false,
       "DisplayOrder": 2,
       "IsDeleted": false,
@@ -349,7 +349,7 @@
     {
       "Id": "82cff534-5f61-4dec-898c-01104e57e759",
       "ProductId": "b9ed4260-3cfa-4502-b097-b3f84f80e7b6",
-      "PhotoUrl": "https://picsum.photos/seed/adidas-ultraboost-light-multi-color-3/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": false,
       "DisplayOrder": 3,
       "IsDeleted": false,
@@ -361,7 +361,7 @@
     {
       "Id": "db4661ec-e4bd-44c0-a058-4946630c15f3",
       "ProductId": "f4972de4-f44f-4009-ab2b-a1826312fe5c",
-      "PhotoUrl": "https://picsum.photos/seed/adidas-sl-72-yellow/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1542291026-7eec264c27ff?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": true,
       "DisplayOrder": 1,
       "IsDeleted": false,
@@ -373,7 +373,7 @@
     {
       "Id": "d075e014-5caf-4818-bc50-a3701d58e1b9",
       "ProductId": "f4972de4-f44f-4009-ab2b-a1826312fe5c",
-      "PhotoUrl": "https://picsum.photos/seed/adidas-sl-72-yellow-2/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1608231387042-66d1773070a5?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": false,
       "DisplayOrder": 2,
       "IsDeleted": false,
@@ -385,7 +385,7 @@
     {
       "Id": "432fd041-d33d-4a40-b155-2a684d836aa5",
       "ProductId": "f4972de4-f44f-4009-ab2b-a1826312fe5c",
-      "PhotoUrl": "https://picsum.photos/seed/adidas-sl-72-yellow-3/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1551107696-a4b0c5a0d9a2?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": false,
       "DisplayOrder": 3,
       "IsDeleted": false,
@@ -397,7 +397,7 @@
     {
       "Id": "0b6ecd23-9a3d-4f3c-801c-844ea4826ebe",
       "ProductId": "b8195cd5-1b7b-44ed-ba66-93936da26e3e",
-      "PhotoUrl": "https://picsum.photos/seed/adidas-ultraboost-light-red/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": true,
       "DisplayOrder": 1,
       "IsDeleted": false,
@@ -409,7 +409,7 @@
     {
       "Id": "d3faa3b3-a2ed-45cf-8fec-4b44d6ada548",
       "ProductId": "b8195cd5-1b7b-44ed-ba66-93936da26e3e",
-      "PhotoUrl": "https://picsum.photos/seed/adidas-ultraboost-light-red-2/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1542291026-7eec264c27ff?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": false,
       "DisplayOrder": 2,
       "IsDeleted": false,
@@ -421,7 +421,7 @@
     {
       "Id": "a417ab7f-0d6c-4411-a3d3-7a9bc576f00b",
       "ProductId": "b8195cd5-1b7b-44ed-ba66-93936da26e3e",
-      "PhotoUrl": "https://picsum.photos/seed/adidas-ultraboost-light-red-3/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1608231387042-66d1773070a5?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": false,
       "DisplayOrder": 3,
       "IsDeleted": false,
@@ -433,7 +433,7 @@
     {
       "Id": "821741c5-511d-4ca8-b50c-d021198d9fa6",
       "ProductId": "7eb9a21a-9eab-4cc9-9d2b-8a50d38b6cb1",
-      "PhotoUrl": "https://picsum.photos/seed/adidas-ultraboost-light-blue/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1551107696-a4b0c5a0d9a2?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": true,
       "DisplayOrder": 1,
       "IsDeleted": false,
@@ -445,7 +445,7 @@
     {
       "Id": "5e6ebf7f-2bd5-4229-8bd5-4053d1bf6c06",
       "ProductId": "7eb9a21a-9eab-4cc9-9d2b-8a50d38b6cb1",
-      "PhotoUrl": "https://picsum.photos/seed/adidas-ultraboost-light-blue-2/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": false,
       "DisplayOrder": 2,
       "IsDeleted": false,
@@ -457,7 +457,7 @@
     {
       "Id": "d92ab2c6-7d48-48ee-b963-d1510da504a2",
       "ProductId": "27435ecd-ce7a-4481-a733-0d7a23e06a4d",
-      "PhotoUrl": "https://picsum.photos/seed/adidas-stan-smith-grey/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1542291026-7eec264c27ff?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": true,
       "DisplayOrder": 1,
       "IsDeleted": false,
@@ -469,7 +469,7 @@
     {
       "Id": "c49d7e87-335a-435f-ab82-dd5d9df27836",
       "ProductId": "27435ecd-ce7a-4481-a733-0d7a23e06a4d",
-      "PhotoUrl": "https://picsum.photos/seed/adidas-stan-smith-grey-2/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1608231387042-66d1773070a5?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": false,
       "DisplayOrder": 2,
       "IsDeleted": false,
@@ -481,7 +481,7 @@
     {
       "Id": "cb1db7cb-f916-4cf9-aabe-55819bc480dc",
       "ProductId": "d8dcb26a-e248-403b-8fdb-c815c2b0bcb0",
-      "PhotoUrl": "https://picsum.photos/seed/adidas-ultraboost-light-purple/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1551107696-a4b0c5a0d9a2?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": true,
       "DisplayOrder": 1,
       "IsDeleted": false,
@@ -493,7 +493,7 @@
     {
       "Id": "b27ed3ab-fc68-483b-83e2-68a1ced73ed6",
       "ProductId": "d8dcb26a-e248-403b-8fdb-c815c2b0bcb0",
-      "PhotoUrl": "https://picsum.photos/seed/adidas-ultraboost-light-purple-2/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": false,
       "DisplayOrder": 2,
       "IsDeleted": false,
@@ -505,7 +505,7 @@
     {
       "Id": "f183a852-0441-4cc6-b72f-b69e1be042dc",
       "ProductId": "d8dcb26a-e248-403b-8fdb-c815c2b0bcb0",
-      "PhotoUrl": "https://picsum.photos/seed/adidas-ultraboost-light-purple-3/800/600",
+      "PhotoUrl": "https://images.unsplash.com/photo-1542291026-7eec264c27ff?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       "IsPrimary": false,
       "DisplayOrder": 3,
       "IsDeleted": false,
