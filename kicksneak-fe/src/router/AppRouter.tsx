@@ -73,9 +73,9 @@ export const AppRouter = () => {
           <Route path="/" element={<HomePage />} />
           <Route path="/search" element={<SearchResultsPage />} />
           <Route path="/sneakers" element={<SearchResultsPage />} />
-          <Route path="/new" element={<SearchResultsPage />} />
-          <Route path="/deals" element={<SearchResultsPage />} />
-          <Route path="/deals/*" element={<SearchResultsPage />} />
+          <Route path="/new" element={<Navigate to="/search?sort=newest" replace />} />
+          <Route path="/deals" element={<Navigate to="/search?priceMax=150" replace />} />
+          
           <Route path="/brand/:slug" element={<SearchResultsPage />} />
           <Route path="/category/:slug" element={<SearchResultsPage />} />
           <Route path="/men" element={<SearchResultsPage />} />

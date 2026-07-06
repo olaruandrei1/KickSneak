@@ -171,7 +171,15 @@ export const NavMobile = ({ categories }: NavMobileProps) => {
                 <div key={cat.id} className={styles.megaCat}>
                   <button
                     className={`${styles.megaCatBtn} ${cat.highlight ? styles.highlight : ''}`}
-                    onClick={() => setExpandedId(expandedId === cat.id ? null : cat.id)}
+                    onClick={() => {
+                    if (cat.id === 'brands') {
+                        navigate('/brands');
+                        setSearchOpenMobile(false);
+                        setMegaMenuOpenMobile(false);
+                    } else {
+                        setExpandedId(expandedId === cat.id ? null : cat.id);
+                    }
+                  }}
                   >
                     <span>{cat.label}</span>
                     <span className={`${styles.chevron} ${expandedId === cat.id ? styles.chevronOpen : ''}`}>›</span>

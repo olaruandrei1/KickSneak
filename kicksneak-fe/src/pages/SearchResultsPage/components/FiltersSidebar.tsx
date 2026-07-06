@@ -18,7 +18,10 @@ interface FiltersSidebarProps {
 
 type SectionKey = 'category' | 'gender' | 'brands' | 'activity' | 'color' | 'price';
 
-export const FiltersSidebar = ({ filters, onChange }: FiltersSidebarProps) => {
+export const FiltersSidebar = ({ filters, onChange, facets }: FiltersSidebarProps) => {
+    const activeActivities = facets?.activities?.map((a: any) => a.name) || FILTER_OPTIONS.activities;
+    const activeColors = facets?.colors?.map((c: any) => c.name) || FILTER_OPTIONS.colors.map((c: any) => c.label);
+    const displayedColors = FILTER_OPTIONS.colors.filter((c: any) => activeColors.includes(c.label));
     const [openSection, setOpenSection] = useState<SectionKey | null>('category');
 
     const toggle = (section: SectionKey) =>
@@ -149,7 +152,7 @@ export const FiltersSidebar = ({ filters, onChange }: FiltersSidebarProps) => {
             <SectionHeader label="ACTIVITY" section="activity" />
             <Collapse in={openSection === 'activity'}>
                 <div className={styles.checkList}>
-                    {FILTER_OPTIONS.activities.map((a) => (
+                    {activeActivities.map((a: string) => (
                         <FormControlLabel
                             key={a}
                             control={
@@ -171,7 +174,7 @@ export const FiltersSidebar = ({ filters, onChange }: FiltersSidebarProps) => {
             <SectionHeader label="COLOR" section="color" />
             <Collapse in={openSection === 'color'}>
                 <div className={styles.colorGrid}>
-                    {FILTER_OPTIONS.colors.map((c) => (
+                    {displayedColors.map((c: any) => (
                         <button
                             key={c.label}
                             className={`${styles.colorItem} ${filters.colors.includes(c.label) ? styles.colorActive : ''}`}

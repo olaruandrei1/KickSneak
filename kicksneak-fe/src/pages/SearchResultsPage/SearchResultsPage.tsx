@@ -20,12 +20,22 @@ import type { SearchHit } from '../../services/searchHubService';
 import styles from './SearchResultsPage.module.css';
 import { useAuthStore } from '../../store/authStore';
 
-const PAGE_SIZE = 12;
+const PAGE_SIZE = 24;
 
-interface ElasticSearchResponse {
-    items: SearchHit[];
+interface SearchPagedResponse {
+    items: ProductItem[];
     total: number;
-    tookMs: number;
+    page: number;
+    pageSize: number;
+    facets: {
+        brands?: { id: string; name: string; count: number }[];
+        categories?: { id: string; name: string; count: number }[];
+        colors?: { id: string; name: string; count: number }[];
+        genders?: { id: string; name: string; count: number }[];
+        activities?: { id: string; name: string; count: number }[];
+        priceRange?: { min: number; max: number };
+    };
+    detected: { brandId: string | null; brandName: string | null; categoryId: string | null; categoryName: string | null };
 }
 
 const hitToProductItem = (hit: SearchHit): ProductItem => ({
@@ -97,6 +107,8 @@ const filtersFromParams = (sp: URLSearchParams): FilterState => ({
     ...DEFAULT_FILTERS,
     categories: sp.getAll('category'),
     brands: sp.getAll('brand'),
+    activities: sp.getAll('activity'),
+    colors: sp.getAll('color'),
     genders: sp.getAll('gender'),
     priceMin: sp.get('priceMin') ? Number(sp.get('priceMin')) : DEFAULT_FILTERS.priceMin,
     priceMax: sp.get('priceMax') ? Number(sp.get('priceMax')) : DEFAULT_FILTERS.priceMax,
@@ -108,6 +120,8 @@ const filtersToParams = (filters: FilterState, query: string, sort: SortOption):
     filters.categories.forEach((c) => p.append('category', c));
     filters.brands.forEach((b) => p.append('brand', b));
     filters.genders.forEach((g) => p.append('gender', g));
+    filters.activities.forEach((a) => p.append('activity', a));
+    filters.colors.forEach((c) => p.append('color', c));
     if (filters.priceMin > 0) p.set('priceMin', String(filters.priceMin));
     if (filters.priceMax < 10000) p.set('priceMax', String(filters.priceMax));
     if (sort !== 'featured') p.set('sort', sort);
@@ -128,6 +142,7 @@ export const SearchResultsPage = () => {
     const [allItems, setAllItems] = useState<ProductItem[]>([]);
     const [items, setItems] = useState<ProductItem[]>([]);
     const [total, setTotal] = useState(0);
+    const [facets, setFacets] = useState<SearchPagedResponse["facets"] | null>(null);
     const [page, setPage] = useState(1);
     const [loading, setLoading] = useState(false);
     const [hasMore, setHasMore] = useState(true);
@@ -278,9 +293,9 @@ export const SearchResultsPage = () => {
     }, [pagedItems, filtered.length]);
 
     const recommendations = useMemo(() => {
-        const currentIds = new Set(filtered.map((i) => i.id));
+        const currentIds = new Set(allItems.map((i) => i.id));
         return getRecommendations(allItems, recentlyViewed, currentIds);
-    }, [allItems, recentlyViewed, filtered]);
+    }, [allItems, recentlyViewed]);
 
     // ── Infinite scroll ──
     useEffect(() => {
@@ -337,7 +352,7 @@ export const SearchResultsPage = () => {
 
             <div className={styles.layout}>
                 {!isMobileOrTablet && (
-                    <FiltersSidebar filters={filters} onChange={handleFiltersChange} />
+                    <FiltersSidebar filters={filters} onChange={handleFiltersChange} facets={facets} />
                 )}
 
                 <div className={styles.content}>
@@ -491,7 +506,7 @@ export const SearchResultsPage = () => {
                         <Close />
                     </IconButton>
                 </div>
-                <FiltersSidebar filters={filters} onChange={handleFiltersChange} />
+                <FiltersSidebar filters={filters} onChange={handleFiltersChange} facets={facets} />
             </Drawer>
         </div>
     );

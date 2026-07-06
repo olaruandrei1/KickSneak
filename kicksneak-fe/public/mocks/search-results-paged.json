@@ -531,5 +531,72 @@
             "isNew": false,
             "isFavorite": false
         }
-    ]
+    ],
+    "facets": {
+        "brands": [
+            {
+                "id": "Nike",
+                "name": "Nike",
+                "count": 10
+            },
+            {
+                "id": "adidas",
+                "name": "adidas",
+                "count": 5
+            },
+            {
+                "id": "Air Jordan",
+                "name": "Air Jordan",
+                "count": 20
+            }
+        ],
+        "categories": [
+            {
+                "id": "Sneakers",
+                "name": "Sneakers",
+                "count": 15
+            }
+        ],
+        "colors": [
+            {
+                "id": "White",
+                "name": "White",
+                "count": 4
+            },
+            {
+                "id": "Black",
+                "name": "Black",
+                "count": 5
+            }
+        ],
+        "genders": [
+            {
+                "id": "Men",
+                "name": "Men",
+                "count": 10
+            }
+        ],
+        "activities": [
+            {
+                "id": "Running",
+                "name": "Running",
+                "count": 3
+            },
+            {
+                "id": "Basketball",
+                "name": "Basketball",
+                "count": 5
+            }
+        ],
+        "priceRange": {
+            "min": 50,
+            "max": 1000
+        }
+    },
+    "detected": {
+        "brandId": null,
+        "brandName": null,
+        "categoryId": null,
+        "categoryName": null
+    }
 }
