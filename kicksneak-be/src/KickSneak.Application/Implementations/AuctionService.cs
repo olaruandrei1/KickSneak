@@ -1,4 +1,4 @@
-﻿using KickSneak.Application.Contracts.Application;
+using KickSneak.Application.Contracts.Application;
 using KickSneak.Application.Contracts.Persistence;
 using KickSneak.Application.Hubs;
 using KickSneak.Domain.DTOs.Auctions;
@@ -22,7 +22,13 @@ public sealed class AuctionService(
     {
         var (auctions, total) = await uow.Auctions.GetPaginatedAsync(
             a => a.Status.Equals(AuctionStatus.Active) || a.Status.Equals(AuctionStatus.Scheduled),
-            page, pageSize, ct
+            page, pageSize, ct,
+            a => a.StockItem,
+            a => a.StockItem.Product,
+            a => a.StockItem.Product.Photos,
+            a => a.StockItem.Product.Brand,
+            a => a.StockItem.Product.Color,
+            a => a.StockItem.Size
         );
 
         List<AuctionListItemDto> items = [];
@@ -59,7 +65,18 @@ public sealed class AuctionService(
 
     public async Task<AuctionDetailDto?> GetAuctionDetailAsync(Guid auctionId, string? firebaseUid = null, CancellationToken ct = default)
     {
-        var auction = await uow.Auctions.GetFirstOrDefaultAsync(a => a.Id.Equals(auctionId), ct);
+        var auction = await uow.Auctions.GetFirstOrDefaultAsync(
+            a => a.Id.Equals(auctionId), ct,
+            a => a.StockItem,
+            a => a.StockItem.Product,
+            a => a.StockItem.Product.Photos,
+            a => a.StockItem.Product.Brand,
+            a => a.StockItem.Product.Color,
+            a => a.StockItem.Product.Category,
+            a => a.StockItem.Size,
+            a => a.Seller,
+            a => a.Seller.User
+        );
         if (auction is null) return null;
 
         var cached = await cache.GetAuctionAsync(auctionId, ct);
@@ -372,26 +389,9 @@ public sealed class AuctionService(
             TriggeredExtension: triggeredExtension
         );
 
-        await cache.AddBidAsync(auctionId, bid, ct);
-
-        if (cached is null)
-        {
-            await cache.SetAuctionAsync(auctionId, new AuctionCacheEntry(
-                auctionId, dto.Amount, newBidCount,
-                auction.ExtensionCount + (triggeredExtension ? 1 : 0),
-                newEndsAt,
-                auction.Status.ToString().ToLowerInvariant(),
-                auction.ReserveMet
-            ), ct);
-        }
-        else
-        {
-            await cache.UpdatePriceAsync(auctionId, dto.Amount, newBidCount, ct);
-            if (triggeredExtension)
-                await cache.ExtendAuctionAsync(auctionId, newEndsAt,
-                    cached.ExtensionCount + 1, ct);
-        }
-
+        // Persist to the database FIRST. Redis (the cache) is only updated after a
+        // successful commit — otherwise a failed save would leave a phantom bid in the
+        // cache and every following attempt would wrongly fail with "self_bid".
         Bid dbBid = new()
         {
             Id = bid.Id,
@@ -417,6 +417,27 @@ public sealed class AuctionService(
 
         uow.Auctions.Update(auction);
         await uow.SaveChangesAsync(ct);
+
+        // Commit succeeded → now update the cache.
+        await cache.AddBidAsync(auctionId, bid, ct);
+
+        if (cached is null)
+        {
+            await cache.SetAuctionAsync(auctionId, new AuctionCacheEntry(
+                auctionId, dto.Amount, newBidCount,
+                auction.ExtensionCount + (triggeredExtension ? 1 : 0),
+                newEndsAt,
+                auction.Status.ToString().ToLowerInvariant(),
+                auction.ReserveMet
+            ), ct);
+        }
+        else
+        {
+            await cache.UpdatePriceAsync(auctionId, dto.Amount, newBidCount, ct);
+            if (triggeredExtension)
+                await cache.ExtendAuctionAsync(auctionId, newEndsAt,
+                    cached.ExtensionCount + 1, ct);
+        }
 
         await hub.Clients.Group($"auction:{auctionId}").SendAsync("bid_placed", new
         {

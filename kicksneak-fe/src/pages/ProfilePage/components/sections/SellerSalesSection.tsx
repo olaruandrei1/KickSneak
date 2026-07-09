@@ -22,9 +22,9 @@ export const SellerSalesSection = ({ profile }: Props) => {
     const [data, setData] = useState<SalesData | null>(null);
     const { theme } = useThemeStore();
     const isDark = theme === 'dark';
-    const color = isDark ? '#408A71' : '#7286D3';
-    const gridColor = isDark ? 'rgba(176,228,204,0.08)' : 'rgba(114,134,211,0.12)';
-    const textColor = isDark ? '#408A71' : '#8EA7E9';
+    const color = isDark ? '#A3C51B' : '#566E0B';
+    const gridColor = isDark ? 'rgba(176,228,204,0.08)' : 'rgba(23,26,11,0.12)';
+    const textColor = isDark ? '#A3C51B' : '#6A6F5E';
 
     useEffect(() => {
         httpClient.get<SalesData>(ApiRoutes.sellerSales)
@@ -66,9 +66,9 @@ export const SellerSalesSection = ({ profile }: Props) => {
                             </linearGradient>
                         </defs>
                         <CartesianGrid stroke={gridColor} strokeDasharray="3 3" vertical={false} />
-                        <XAxis dataKey="month" tick={{ fill: textColor, fontSize: 11, fontFamily: 'DM Sans' }} axisLine={false} tickLine={false} />
-                        <YAxis tick={{ fill: textColor, fontSize: 11, fontFamily: 'DM Sans' }} axisLine={false} tickLine={false} tickFormatter={(v) => `$${v}`} />
-                        <Tooltip contentStyle={{ background: 'var(--color-bg)', border: '1px solid var(--color-border)', borderRadius: 8, fontFamily: 'DM Sans', fontSize: 12, color: 'var(--color-text)' }} />
+                        <XAxis dataKey="month" tick={{ fill: textColor, fontSize: 11, fontFamily: 'Space Grotesk' }} axisLine={false} tickLine={false} />
+                        <YAxis tick={{ fill: textColor, fontSize: 11, fontFamily: 'Space Grotesk' }} axisLine={false} tickLine={false} tickFormatter={(v) => `$${v}`} />
+                        <Tooltip contentStyle={{ background: 'var(--color-bg)', border: '1px solid var(--color-border)', borderRadius: 8, fontFamily: 'Space Grotesk', fontSize: 12, color: 'var(--color-text)' }} />
                         <Area type="monotone" dataKey="revenue" stroke={color} strokeWidth={2.5} fill="url(#sellerGrad)"
                             dot={{ fill: color, r: 4, strokeWidth: 0 }} activeDot={{ r: 6, fill: color }} />
                     </AreaChart>

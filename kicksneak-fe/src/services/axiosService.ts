@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { auth } from '../config/firebase';
+import { auth, authReady } from '../config/firebase';
 
 export const httpClient = axios.create({
     baseURL: import.meta.env.VITE_API_BASE_URL ?? '',
@@ -11,6 +11,9 @@ export const httpClient = axios.create({
 
 httpClient.interceptors.request.use(async (config) => {
     try {
+        // Wait for Firebase to restore the persisted session before reading the user,
+        // otherwise cold-load requests race ahead of auth and come back 401.
+        await authReady;
         const user = auth.currentUser;
         if (user) {
             const token = await user.getIdToken();

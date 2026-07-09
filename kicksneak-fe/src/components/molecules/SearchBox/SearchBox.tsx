@@ -5,9 +5,14 @@ import {
     useCallback,
 } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { AutoAwesome } from '@mui/icons-material';
 import type { ProductItem } from '../../../types/product';
 import { ProductChip } from '../../atoms/ProductChip/ProductChip';
 import { searchHubService, type SearchHit } from '../../../services/searchHubService';
+import { useAuthStore } from '../../../store/authStore';
+import { aiSearchService } from '../../../services/aiSearchService';
+import { httpClient } from '../../../services/axiosService';
+import { ApiRoutes } from '../../../services/apiRoutes';
 import styles from './SearchBox.module.css';
 
 interface SearchBoxProps {
@@ -37,25 +42,68 @@ export const SearchBox = ({
 }: SearchBoxProps) => {
     const navigate = useNavigate();
     const [query, setQuery] = useState('');
+    const [aiMode, setAiMode] = useState(false);
     const [results, setResults] = useState<ProductItem[]>([]);
     const [displayed, setDisplayed] = useState<ProductItem[]>([]);
     const [total, setTotal] = useState(0);
     const [isOpen, setIsOpen] = useState(false);
     const [isExiting, setIsExiting] = useState(false);
     const [dropdownAnim, setDropdownAnim] = useState(false);
+    const { user } = useAuthStore();
+    const [aiRecs, setAiRecs] = useState<ProductItem[]>([]);
     const inputRef = useRef<HTMLInputElement>(null);
     const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
     const wrapperRef = useRef<HTMLDivElement>(null);
 
+    const aiModeRef = useRef(aiMode);
+    const queryRef = useRef(query);
+    const uidRef = useRef(user?.uid);
+    const isOpenRef = useRef(isOpen);
+
+    useEffect(() => { aiModeRef.current = aiMode; }, [aiMode]);
+    useEffect(() => { queryRef.current = query; }, [query]);
+    useEffect(() => { uidRef.current = user?.uid; }, [user?.uid]);
+    useEffect(() => { isOpenRef.current = isOpen; }, [isOpen]);
+
+    const closeDropdown = useCallback(() => {
+        setIsExiting(true);
+        setTimeout(() => {
+            setIsOpen(false);
+            setIsExiting(false);
+            setDisplayed([]);
+        }, 220);
+    }, []);
+
     // Subscribe to SignalR results
     useEffect(() => {
-        searchHubService.onResults((response) => {
-            const items = response.items.map(hitToProductItem);
-            setResults(items);
-            setTotal(response.total);
+        searchHubService.onResults(async (response) => {
+            let items = response.items.map(hitToProductItem);
 
             if (items.length > 0) {
-                if (!isOpen) {
+                if (aiModeRef.current && uidRef.current) {
+                    try {
+                        const candidateIds = items.map(i => i.id);
+                        const aiScored = await aiSearchService.rerank(
+                            queryRef.current,
+                            candidateIds,
+                            uidRef.current,
+                            items.length
+                        );
+                        if (aiScored.length > 0) {
+                            const scoreMap = new Map(aiScored.map(i => [i.id, i.score]));
+                            items.sort((a, b) => (scoreMap.get(b.id) ?? 0) - (scoreMap.get(a.id) ?? 0));
+                        }
+                    } catch (err) {
+                        console.warn('Live search AI rerank failed, keeping Elastic order', err);
+                    }
+                }
+
+                if (!queryRef.current.trim()) return;
+
+                setResults(items);
+                setTotal(response.total);
+
+                if (!isOpenRef.current) {
                     setIsOpen(true);
                     setTimeout(() => {
                         setDropdownAnim(true);
@@ -65,6 +113,8 @@ export const SearchBox = ({
                     setDisplayed(items.slice(0, 6));
                 }
             } else {
+                setResults([]);
+                setTotal(0);
                 closeDropdown();
             }
         });
@@ -72,7 +122,7 @@ export const SearchBox = ({
         return () => {
             searchHubService.disconnect();
         };
-    }, [isOpen]);
+    }, [closeDropdown]);
 
     useEffect(() => {
         if (autoFocus) inputRef.current?.focus();
@@ -86,24 +136,49 @@ export const SearchBox = ({
         };
         document.addEventListener('mousedown', handler);
         return () => document.removeEventListener('mousedown', handler);
-    }, []);
-
-    const closeDropdown = () => {
-        setIsExiting(true);
-        setTimeout(() => {
-            setIsOpen(false);
-            setIsExiting(false);
-            setDisplayed([]);
-        }, 220);
-    };
+    }, [closeDropdown]);
 
     const goToSearch = useCallback((q: string) => {
         if (!q.trim()) return;
         closeDropdown();
         setQuery('');
         onClose?.();
-        navigate(`/search?q=${encodeURIComponent(q.trim())}`);
-    }, [navigate, onClose]);
+        const aiParam = aiMode ? '&ai=1' : '';
+        navigate(`/search?q=${encodeURIComponent(q.trim())}${aiParam}`);
+    }, [navigate, onClose, aiMode]);
+
+    const fetchAiRecs = async () => {
+        if (!user?.uid) return;
+        try {
+            // Backend /products/recommended returns fully-enriched products
+            // (AI ids → viewed-category → best-sellers fallback) in one call.
+            const res = await httpClient.get<{ title: string; items: ProductItem[] }>(
+                ApiRoutes.productsRecommended
+            );
+            const items = res.data.items ?? [];
+
+            if (items.length > 0) {
+                setAiRecs(items.slice(0, 5));
+                setIsOpen(true);
+                setTimeout(() => setDropdownAnim(true), 40);
+            }
+        } catch (err) {
+            console.error('Failed to fetch AI recs', err);
+        }
+    };
+
+    const handleFocus = () => {
+        if (!query.trim() && user?.uid) {
+            if (aiRecs.length > 0) {
+                if (!isOpen) {
+                    setIsOpen(true);
+                    setTimeout(() => setDropdownAnim(true), 40);
+                }
+            } else {
+                fetchAiRecs();
+            }
+        }
+    };
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const val = e.target.value;
@@ -112,7 +187,17 @@ export const SearchBox = ({
         if (debounceRef.current) clearTimeout(debounceRef.current);
 
         if (!val.trim()) {
-            closeDropdown();
+            setResults([]);
+            setTotal(0);
+            if (aiRecs.length > 0) {
+                if (!isOpen) {
+                    setIsOpen(true);
+                    setTimeout(() => setDropdownAnim(true), 40);
+                }
+            } else {
+                closeDropdown();
+                if (user?.uid) fetchAiRecs();
+            }
             return;
         }
 
@@ -156,13 +241,39 @@ export const SearchBox = ({
                     value={query}
                     onChange={handleChange}
                     onKeyDown={handleKeyDown}
+                    onFocus={handleFocus}
                     autoComplete="off"
                     spellCheck={false}
                 />
+                <button
+                    type="button"
+                    className={`${styles.aiToggle} ${aiMode ? styles.aiToggleActive : ''}`}
+                    onClick={() => setAiMode((v) => !v)}
+                    aria-pressed={aiMode}
+                    title={aiMode ? 'AI search on — press Enter to search' : 'Search with AI'}
+                >
+                    <AutoAwesome />
+                    AI
+                </button>
+
                 {query && (
                     <button
                         className={styles.clear}
-                        onClick={() => { setQuery(''); closeDropdown(); }}
+                        onClick={() => { 
+                            setQuery(''); 
+                            setResults([]);
+                            setTotal(0);
+                            if (aiRecs.length > 0 && user?.uid) {
+                                if (!isOpen) {
+                                    setIsOpen(true);
+                                    setTimeout(() => setDropdownAnim(true), 40);
+                                }
+                            } else {
+                                closeDropdown();
+                                if (user?.uid) fetchAiRecs();
+                            }
+                            inputRef.current?.focus(); 
+                        }}
                         aria-label="Clear search"
                     >
                         ✕
@@ -179,13 +290,16 @@ export const SearchBox = ({
                 `}>
                     <div className={styles.dropdownHeader}>
                         <span className={styles.dropdownLabel}>
-                            {total} result{total !== 1 ? 's' : ''} for
-                            <strong> "{query}"</strong>
+                            {query ? (
+                                <>{total} result{total !== 1 ? 's' : ''} for <strong>"{query}"</strong></>
+                            ) : (
+                                <>Recommended for you ✦ AI</>
+                            )}
                         </span>
                     </div>
 
                     <div className={styles.list}>
-                        {displayed.map((item, i) => (
+                        {(query ? displayed : aiRecs).map((item, i) => (
                             <ProductChip
                                 key={item.id}
                                 item={item}
@@ -195,7 +309,7 @@ export const SearchBox = ({
                         ))}
                     </div>
 
-                    {total > 6 && (
+                    {query && total > 6 && (
                         <div className={styles.dropdownFooter}>
                             <button
                                 className={styles.seeAll}

@@ -246,7 +246,7 @@ const AuctionDetailPage = () => {
                     {/* Stats row */}
                     <div className={styles.statsRow}>
                         <Chip label={CONDITION_LABEL[product.condition] ?? product.condition} size="small"
-                            sx={{ background: 'rgba(64,138,113,0.12)', color: 'var(--color-accent)', fontFamily: 'var(--font-display)', fontSize: '0.7rem', fontWeight: 700 }} />
+                            sx={{ background: 'rgba(163,197,27,0.12)', color: 'var(--color-accent)', fontFamily: 'var(--font-display)', fontSize: '0.7rem', fontWeight: 700 }} />
                         <span className={styles.stat}><Visibility sx={{ fontSize: 14 }} />{auction.views} views</span>
                         <span className={styles.stat}><Gavel sx={{ fontSize: 14 }} />{auction.bidCount} bids</span>
                         <span className={styles.stat}><StarBorder sx={{ fontSize: 14 }} />{auction.watchers} watching</span>

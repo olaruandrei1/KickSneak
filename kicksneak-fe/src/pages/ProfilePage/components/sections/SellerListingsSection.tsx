@@ -343,7 +343,7 @@ export const SellerListingsSection = ({ profile }: Props) => {
                                             borderBottom: '1px solid var(--color-border)', cursor: 'pointer',
                                             borderRadius: 8, transition: 'background 0.15s',
                                         }}
-                                        onMouseEnter={e => (e.currentTarget.style.background = 'rgba(64,138,113,0.06)')}
+                                        onMouseEnter={e => (e.currentTarget.style.background = 'rgba(163,197,27,0.06)')}
                                         onMouseLeave={e => (e.currentTarget.style.background = 'transparent')}
                                     >
                                         <img src={p.image} alt={p.name}
@@ -400,7 +400,7 @@ export const SellerListingsSection = ({ profile }: Props) => {
                                 <div style={{
                                     gridColumn: '1/-1', display: 'flex', alignItems: 'center', gap: 10,
                                     padding: '10px 14px', borderRadius: 10,
-                                    background: listAsAuction ? 'rgba(64,138,113,0.08)' : 'var(--color-surface)',
+                                    background: listAsAuction ? 'rgba(163,197,27,0.08)' : 'var(--color-surface)',
                                     border: `1px solid ${listAsAuction ? 'var(--color-accent)' : 'var(--color-border)'}`,
                                     cursor: 'pointer', transition: 'all 0.2s',
                                 }} onClick={() => setListAsAuction(v => !v)}>

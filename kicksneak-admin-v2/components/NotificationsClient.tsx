@@ -3,11 +3,13 @@
 import { useState, useEffect } from "react";
 import { sendBroadcast, getRecentBroadcasts, searchUsers } from "@/app/notifications/actions";
 import { Bell, User, Users, Store, ShieldAlert, Send, Eye, Loader, Check, Info, X } from "lucide-react";
+import AlertModal from "./AlertModal";
 
 interface BroadcastHistoryItem {
   title: string;
   body: string;
   type: string;
+  target?: string;
   createdAt: Date;
   count: number;
 }
@@ -25,6 +27,11 @@ interface NotificationsClientProps {
 export default function NotificationsClient({ roles, initialHistory }: NotificationsClientProps) {
   const [history, setHistory] = useState<BroadcastHistoryItem[]>(initialHistory);
   const [loading, setLoading] = useState(false);
+  const [modalState, setModalState] = useState({ isOpen: false, title: "", message: "", type: "info" as "info"|"success"|"error"|"warning" });
+
+  const showAlert = (message: string, type: "info"|"success"|"error"|"warning" = "info", title?: string) => {
+    setModalState({ isOpen: true, message, type, title: title || "" });
+  };
 
   // Form State
   const [title, setTitle] = useState("");
@@ -72,7 +79,7 @@ export default function NotificationsClient({ roles, initialHistory }: Notificat
     if (!title.trim() || !body.trim()) return;
 
     if (target === "user" && !selectedUser) {
-      alert("Te rog să selectezi un utilizator din rezultatele căutării!");
+      showAlert("Te rog să selectezi un utilizator din rezultatele căutării!", "warning");
       return;
     }
 
@@ -88,7 +95,7 @@ export default function NotificationsClient({ roles, initialHistory }: Notificat
       });
 
       if (res.success) {
-        alert(`Broadcast trimis cu succes către ${res.count} utilizatori!`);
+        showAlert(`Broadcast trimis cu succes către ${res.count} utilizatori!`, "success");
         // Reset form
         setTitle("");
         setBody("");
@@ -98,17 +105,24 @@ export default function NotificationsClient({ roles, initialHistory }: Notificat
         const updatedHistory = await getRecentBroadcasts();
         setHistory(updatedHistory);
       } else {
-        alert(`Eroare: ${res.message}`);
+        showAlert(`Eroare: ${res.message}`, "error");
       }
     } catch (err) {
       console.error(err);
-      alert("Trimiterea broadcastului a eșuat.");
+      showAlert("Trimiterea broadcastului a eșuat.", "error");
     } finally {
       setLoading(false);
     }
   };
 
   const getTargetLabel = (b: BroadcastHistoryItem) => {
+    switch (b.target) {
+      case "user": return "Utilizator specific";
+      case "sellers": return "Toți vânzătorii";
+      case "role": return "Utilizatori după rol";
+      case "all": return "Toți utilizatorii";
+    }
+    // Fallback for old rows without a target field
     if (b.count === 1) return "Utilizator specific";
     if (b.count > 30) return "Toți utilizatorii";
     return "Grup utilizatori";
@@ -311,6 +325,14 @@ export default function NotificationsClient({ roles, initialHistory }: Notificat
           </div>
         </div>
       </div>
+
+      <AlertModal 
+        isOpen={modalState.isOpen} 
+        onClose={() => setModalState(prev => ({ ...prev, isOpen: false }))} 
+        title={modalState.title} 
+        message={modalState.message} 
+        type={modalState.type} 
+      />
 
       <style jsx>{`
         .notifications-layout {

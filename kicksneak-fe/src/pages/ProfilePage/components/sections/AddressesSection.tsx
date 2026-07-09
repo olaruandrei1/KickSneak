@@ -122,7 +122,7 @@ export const AddressesSection = () => {
                                 {addr.isPrincipal && (
                                     <Chip label="Default" size="small" sx={{
                                         height: 18, fontSize: '0.6rem',
-                                        background: 'rgba(64,138,113,0.15)',
+                                        background: 'rgba(163,197,27,0.15)',
                                         color: 'var(--color-accent)',
                                         fontFamily: 'var(--font-display)',
                                         fontWeight: 700,

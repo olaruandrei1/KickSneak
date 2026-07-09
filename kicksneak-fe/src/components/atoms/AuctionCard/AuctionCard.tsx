@@ -46,7 +46,7 @@ const AuctionCard = ({ auction, mode = 'grid' }: AuctionCardProps) => {
         >
             <div className={styles.imageWrap}>
                 <img
-                    src={auction.productImage}
+                    src={auction.productImage || undefined}
                     alt={auction.productName}
                     className={styles.image}
                     loading="lazy"

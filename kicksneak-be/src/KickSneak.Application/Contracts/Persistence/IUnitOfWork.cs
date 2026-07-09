@@ -50,10 +50,20 @@ public interface IUnitOfWork : IAsyncDisposable
     IRepository<AutoBid> AutoBids { get; }
 
     IRepository<Notification> Notifications { get; }
+    IRepository<NotificationSetting> NotificationSettings { get; }
+    IRepository<NotificationBroadcast> NotificationBroadcasts { get; }
 
     IRepository<AppTask> Tasks { get; }
     IRepository<TaskComment> TaskComments { get; }
 
     Task<int> SaveChangesAsync(CancellationToken ct = default);
     Task ExecuteInTransactionAsync(Func<Task> action, CancellationToken ct = default);
+
+    /// <summary>
+    /// Runs a write as the base connection role (ks_owner), bypassing RLS / SET ROLE.
+    /// For system operations that legitimately span multiple roles' tables
+    /// (e.g. returns/cancellations that flip stock_items back to Active).
+    /// Ownership must be enforced by the caller's queries.
+    /// </summary>
+    Task ExecuteElevatedAsync(Func<Task> action, CancellationToken ct = default);
 }

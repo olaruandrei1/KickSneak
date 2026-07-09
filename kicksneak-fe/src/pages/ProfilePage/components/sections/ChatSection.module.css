@@ -53,6 +53,7 @@
     display: flex !important;
     flex-direction: column !important;
     height: 480px;
+    overflow: hidden;
 }
 
 .statusBar {
@@ -93,7 +94,7 @@
     display: flex;
     flex-direction: column;
     gap: 12px;
-    max-height: 400px;
+    min-height: 0;
     scroll-behavior: smooth;
 }
 
@@ -289,7 +290,7 @@
 
 .historyBtn:hover {
     border-color: var(--color-accent);
-    background: rgba(64, 138, 113, 0.06);
+    background: rgba(163, 197, 27, 0.06);
 }
 
 .historyBtnTitle {
@@ -322,7 +323,7 @@
     align-items: baseline;
     gap: 8px;
     padding: 4px 8px;
-    background: rgba(64, 138, 113, 0.06);
+    background: rgba(163, 197, 27, 0.06);
     border-radius: 6px;
     margin: 2px 0;
 }

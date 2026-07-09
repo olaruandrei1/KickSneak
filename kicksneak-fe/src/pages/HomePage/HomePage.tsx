@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react';
 import { cachedFetch } from '../../services/cachedFetchService';
 import { httpClient } from '../../services/axiosService';
 import { ApiRoutes } from '../../services/apiRoutes';
-import { aiSearchService } from '../../services/aiSearchService';
 import { useAuthStore } from '../../store/authStore';
 import type { ProductItem } from '../../types/product';
 import { ProductCard } from '../../components/atoms/ProductCard/ProductCard';
@@ -47,34 +46,21 @@ export const HomePage = () => {
         });
     }, []);
 
-    // ── AI Recommendations (Flask neural net) ──
+    // ── AI Recommendations ──
+    // Backend /products/recommended does the whole pipeline server-side:
+    // neural-net ids (Flask) → full product data, falling back to viewed-category
+    // picks and finally best-sellers when the user has no activity yet.
     useEffect(() => {
         if (!user?.uid) return;
 
         const fetchAiRecs = async () => {
-            const aiItems = await aiSearchService.recommend(user.uid, 6);
-
-            if (aiItems.length === 0) return;
-
-            // Enrich AI results with full product data from backend
             try {
-                const ids = aiItems.map(i => i.id);
-                const scoreMap = new Map(aiItems.map(i => [i.id, i.score]));
-
-                const res = await httpClient.get<{ items: ProductItem[] }>(
-                    `/api/search?q=*&size=50`
+                const res = await httpClient.get<{ title: string; items: ProductItem[] }>(
+                    ApiRoutes.productsRecommended
                 );
-                const allProducts = Array.isArray(res.data)
-                    ? res.data
-                    : res.data.items ?? [];
-
-                const enriched = allProducts
-                    .filter(p => ids.includes(p.id))
-                    .sort((a, b) => (scoreMap.get(b.id) ?? 0) - (scoreMap.get(a.id) ?? 0));
-
-                setAiRecommendations(enriched);
+                setAiRecommendations(res.data.items ?? []);
             } catch {
-                // Flask gave IDs but can't enrich — skip
+                // Recommendations are best-effort — hide the section on failure.
             }
         };
 

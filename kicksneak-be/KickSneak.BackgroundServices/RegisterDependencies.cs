@@ -21,6 +21,16 @@ public static class RegisterDependencies
                     .WithSimpleSchedule(s => s
                         .WithIntervalInSeconds(30)
                         .RepeatForever()));
+
+                // Demo: one varied notification per minute to real users (off via DEMO_NOTIFICATIONS=off).
+                var demoKey = JobKey.Create("demo-notifications");
+                q.AddJob<DemoNotificationJob>(demoKey);
+                q.AddTrigger(t => t
+                    .ForJob(demoKey)
+                    .StartAt(DateTimeOffset.UtcNow.AddSeconds(45))
+                    .WithSimpleSchedule(s => s
+                        .WithIntervalInMinutes(1)
+                        .RepeatForever()));
             });
 
             services.AddQuartzHostedService(o => o.WaitForJobsToComplete = true);

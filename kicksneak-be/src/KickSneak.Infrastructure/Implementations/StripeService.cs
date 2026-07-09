@@ -22,7 +22,7 @@ public class StripeService : IStripeService
         return intent.ClientSecret;
     }
 
-    public async Task<string> CreateCheckoutSessionAsync(string successUrl, string cancelUrl, long amount, string productName, CancellationToken ct = default)
+    public async Task<string> CreateCheckoutSessionAsync(string successUrl, string cancelUrl, long amount, string productName, IDictionary<string, string>? metadata = null, CancellationToken ct = default)
     {
         SessionCreateOptions options = new()
         {
@@ -42,7 +42,8 @@ public class StripeService : IStripeService
             ],
             Mode = "payment",
             SuccessUrl = successUrl,
-            CancelUrl = cancelUrl
+            CancelUrl = cancelUrl,
+            Metadata = metadata is null ? null : new Dictionary<string, string>(metadata)
         };
 
         SessionService service = new();

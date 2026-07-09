@@ -15,6 +15,7 @@ import { Spinner } from '../../components/atoms/Spinner/Spinner';
 import { useResponsiveStore } from '../../services/responsiveObserver';
 import { Switch, FormControlLabel } from '@mui/material';
 import { AutoAwesome } from '@mui/icons-material';
+import { ApiRoutes } from '../../services/apiRoutes';
 import { aiSearchService } from '../../services/aiSearchService';
 import type { SearchHit } from '../../services/searchHubService';
 import styles from './SearchResultsPage.module.css';
@@ -27,14 +28,7 @@ interface SearchPagedResponse {
     total: number;
     page: number;
     pageSize: number;
-    facets: {
-        brands?: { id: string; name: string; count: number }[];
-        categories?: { id: string; name: string; count: number }[];
-        colors?: { id: string; name: string; count: number }[];
-        genders?: { id: string; name: string; count: number }[];
-        activities?: { id: string; name: string; count: number }[];
-        priceRange?: { min: number; max: number };
-    };
+    facets: any;
     detected: { brandId: string | null; brandName: string | null; categoryId: string | null; categoryName: string | null };
 }
 
@@ -145,16 +139,19 @@ export const SearchResultsPage = () => {
     const [facets, setFacets] = useState<SearchPagedResponse["facets"] | null>(null);
     const [page, setPage] = useState(1);
     const [loading, setLoading] = useState(false);
+    const [refreshing, setRefreshing] = useState(false);
     const [hasMore, setHasMore] = useState(true);
     const [filters, setFilters] = useState<FilterState>(() => filtersFromParams(searchParams));
     const [sort, setSort] = useState<SortOption>(sortParam);
     const [drawerOpen, setDrawerOpen] = useState(false);
-    const [aiMode, setAiMode] = useState(false);
+    const [aiMode, setAiMode] = useState(searchParams.get('ai') === '1');
     const [aiLoading, setAiLoading] = useState(false);
 
     const observerRef = useRef<IntersectionObserver | null>(null);
     const sentinelRef = useRef<HTMLDivElement>(null);
     const isFirstLoad = useRef(true);
+    const loadingRef = useRef(false);
+    const itemsCountRef = useRef(0);
 
     const recentlyViewed = useMemo<ProductItem[]>(
         () => localStorageService.get<ProductItem[]>('recently_viewed') ?? [],
@@ -167,50 +164,92 @@ export const SearchResultsPage = () => {
         setSort(sortParam);
         setPage(1);
         setHasMore(true);
+        // A search launched with the navbar AI toggle arrives as ?ai=1.
+        if (searchParams.get('ai') === '1') setAiMode(true);
     }, [paramsKey]);
 
     // ── Fetch from Elastic ──
-    const fetchFromElastic = useCallback(async () => {
-        if (!query.trim()) {
-            setAllItems([]);
-            return;
-        }
-
+    // ── Fetch from Backend ──
+    const fetchFromElastic = useCallback(async (isLoadMore = false) => {
+        // Prevent overlapping "load more" calls from stacking up (runaway pagination guard).
+        if (isLoadMore && loadingRef.current) return;
+        loadingRef.current = true;
         setLoading(true);
+        if (!isLoadMore) setRefreshing(true);
         try {
-            const params = new URLSearchParams({ q: query, size: '50' });
-
-            // Pass filters to Elastic for server-side filtering
             const currentFilters = filtersFromParams(searchParams);
-            if (currentFilters.brands.length === 1)
-                params.set('brand', currentFilters.brands[0]);
-            if (currentFilters.categories.length === 1)
-                params.set('category', currentFilters.categories[0]);
-            if (currentFilters.genders.length === 1)
-                params.set('gender', currentFilters.genders[0]);
+            const params = new URLSearchParams({
+                page: String(isLoadMore ? page : 1),
+                pageSize: String(PAGE_SIZE),
+            });
+            if (query.trim()) params.set('q', query);
+
+            if (currentFilters.brands.length > 0)
+                currentFilters.brands.forEach(b => params.append('brand', b));
+            if (currentFilters.categories.length > 0)
+                currentFilters.categories.forEach(c => params.append('category', c));
+            if (currentFilters.genders.length > 0)
+                currentFilters.genders.forEach(g => params.append('gender', g));
+            if (currentFilters.colors.length > 0)
+                currentFilters.colors.forEach(c => params.append('color', c));
+            if (currentFilters.activities.length > 0)
+                currentFilters.activities.forEach(a => params.append('activity', a));
             if (currentFilters.priceMin > 0)
                 params.set('minPrice', String(currentFilters.priceMin));
             if (currentFilters.priceMax < 10000)
                 params.set('maxPrice', String(currentFilters.priceMax));
+            if (sort !== 'featured')
+                params.set('sort', sort);
 
-            const res = await httpClient.get<ElasticSearchResponse>(
-                `/api/search?${params.toString()}`
-            );
+            const url = `${ApiRoutes.searchResultsPaged}?${params.toString()}`;
+            const res = await httpClient.get<SearchPagedResponse>(url);
 
-            const items = res.data.items.map(hitToProductItem);
-            setAllItems(items);
+            const data = res.data;
+            const newItems = data.items;
+
+            if (isLoadMore) {
+                // No more items came back → stop paginating (avoids infinite requests).
+                if (newItems.length === 0) {
+                    setHasMore(false);
+                    return;
+                }
+                setAllItems(prev => [...prev, ...newItems]);
+            } else {
+                setAllItems(newItems);
+                
+                if (data.detected?.brandName) {
+                    const detectedBrand = data.detected.brandName;
+                    if (!currentFilters.brands.includes(detectedBrand)) {
+                        setFilters(prev => ({ ...prev, brands: [...prev.brands, detectedBrand] }));
+                    }
+                }
+            }
+
+            setTotal(data.total);
+            setFacets(data.facets);
+            setHasMore(data.page * data.pageSize < data.total);
         } catch {
-            setAllItems([]);
+            // A failed request must halt pagination, otherwise the infinite-scroll
+            // observer keeps firing and spams the backend with the same bad page.
+            setHasMore(false);
+            if (!isLoadMore) setAllItems([]);
         } finally {
+            loadingRef.current = false;
             setLoading(false);
+            if (!isLoadMore) setRefreshing(false);
         }
-    }, [query, searchParams]);
+    }, [query, searchParams, page, sort]);
 
     useEffect(() => {
         isFirstLoad.current = true;
-        fetchFromElastic().then(() => { isFirstLoad.current = false; });
-    }, [query, paramsKey]);
+        fetchFromElastic(false).then(() => { isFirstLoad.current = false; });
+    }, [query, paramsKey, sort]);
 
+    useEffect(() => {
+        if (!isFirstLoad.current && page > 1) {
+            fetchFromElastic(true);
+        }
+    }, [page]);
 
     // ── AI search mode ──
     useEffect(() => {
@@ -219,11 +258,9 @@ export const SearchResultsPage = () => {
         const fetchAi = async () => {
             setAiLoading(true);
             try {
-                const params = new URLSearchParams({ q: query, size: '50' });
-                const res = await httpClient.get<ElasticSearchResponse>(
-                    `/api/search?${params.toString()}`
-                );
-                const elasticItems = res.data.items.map(hitToProductItem);
+                const params = new URLSearchParams({ q: query, pageSize: '50', page: '1' });
+                const res = await httpClient.get<SearchPagedResponse>(`${ApiRoutes.searchResultsPaged}?${params.toString()}`);
+                const elasticItems = res.data.items;
 
                 if (elasticItems.length === 0) {
                     setAllItems([]);
@@ -231,31 +268,22 @@ export const SearchResultsPage = () => {
                 }
 
                 const firebaseUid = useAuthStore.getState().user?.uid ?? null;
-
-                // Send candidate IDs to AI reranker
                 const candidateIds = elasticItems.map(item => item.id);
-                const aiResults = await aiSearchService.rerank(
-                    query.trim(),
-                    candidateIds,
-                    firebaseUid,
-                );
+                const aiResults = await aiSearchService.rerank(query.trim(), candidateIds, firebaseUid);
 
                 if (aiResults.length === 0) {
-                    // Flask down — use Elastic order
                     setAllItems(elasticItems);
                     return;
                 }
 
                 const scoreMap = new Map(aiResults.map(r => [r.id, r.score]));
-                const reranked = [...elasticItems].sort((a, b) => {
-                    const scoreA = scoreMap.get(a.id) ?? 0;
-                    const scoreB = scoreMap.get(b.id) ?? 0;
-                    return scoreB - scoreA;
-                });
+                const reranked = [...elasticItems].sort((a, b) => (scoreMap.get(b.id) ?? 0) - (scoreMap.get(a.id) ?? 0));
 
                 setAllItems(reranked);
+                setTotal(reranked.length);
+                setHasMore(false);
             } catch {
-                await fetchFromElastic();
+                await fetchFromElastic(false);
             } finally {
                 setAiLoading(false);
             }
@@ -264,33 +292,10 @@ export const SearchResultsPage = () => {
         fetchAi();
     }, [aiMode, query]);
 
-    const filtered = useMemo(() => {
-        let list = [...allItems];
-
-        if (filters.categories.length > 1)
-            list = list.filter((i) => filters.categories.includes(i.category));
-        if (filters.brands.length > 1)
-            list = list.filter((i) => filters.brands.includes(i.brand));
-        if (filters.genders.length > 1)
-            list = list.filter((i) => filters.genders.includes((i as any).gender));
-
-        switch (sort) {
-            case 'price_asc': list.sort((a, b) => a.price - b.price); break;
-            case 'price_desc': list.sort((a, b) => b.price - a.price); break;
-            case 'most_sold': list.sort((a, b) => (b.sold ?? 0) - (a.sold ?? 0)); break;
-            default: break;
-        }
-
-        return list;
-    }, [allItems, filters, sort]);
-
-    const pagedItems = useMemo(() => filtered.slice(0, page * PAGE_SIZE), [filtered, page]);
-
     useEffect(() => {
-        setItems(pagedItems);
-        setTotal(filtered.length);
-        setHasMore(pagedItems.length < filtered.length);
-    }, [pagedItems, filtered.length]);
+        setItems(allItems);
+        itemsCountRef.current = allItems.length;
+    }, [allItems]);
 
     const recommendations = useMemo(() => {
         const currentIds = new Set(allItems.map((i) => i.id));
@@ -302,7 +307,13 @@ export const SearchResultsPage = () => {
         observerRef.current?.disconnect();
         observerRef.current = new IntersectionObserver(
             (entries) => {
-                if (entries[0].isIntersecting && hasMore && !loading && !isFirstLoad.current) {
+                if (
+                    entries[0].isIntersecting &&
+                    hasMore &&
+                    !loadingRef.current &&
+                    !isFirstLoad.current &&
+                    itemsCountRef.current > 0
+                ) {
                     setPage((prev) => prev + 1);
                 }
             },
@@ -426,32 +437,37 @@ export const SearchResultsPage = () => {
                         />
                     </div>
 
-                    <ProductGrid
-                        totalCount={total}
-                        searchQuery={query || breadcrumb}
-                        defaultMode="grid"
-                        showModeSwitch
-                        showSort
-                        showClearFilters
-                        onSortChange={handleSortChange}
-                        onClearFilters={() => navigate('/search')}
-                        emptyState={
-                            !loading ? (
-                                <Box sx={{ textAlign: 'center', py: 8 }}>
-                                    <Typography variant="h6" sx={{ color: 'var(--color-text)', fontFamily: 'var(--font-display)' }}>
-                                        No results found
-                                    </Typography>
-                                    <Typography variant="body2" sx={{ color: 'var(--color-text-muted)', mt: 1 }}>
-                                        Try adjusting your filters or search query.
-                                    </Typography>
-                                </Box>
-                            ) : undefined
-                        }
-                    >
-                        {items.map((item) => (
-                            <ProductCard key={item.id} item={item} />
-                        ))}
-                    </ProductGrid>
+                    <div className={styles.gridWrap}>
+                        {refreshing && <div className={styles.filterBar} />}
+                        <div className={refreshing ? styles.gridFading : undefined}>
+                            <ProductGrid
+                                totalCount={total}
+                                searchQuery={query || breadcrumb}
+                                defaultMode="grid"
+                                showModeSwitch
+                                showSort
+                                showClearFilters
+                                onSortChange={handleSortChange}
+                                onClearFilters={() => navigate('/search')}
+                                emptyState={
+                                    !loading ? (
+                                        <Box sx={{ textAlign: 'center', py: 8 }}>
+                                            <Typography variant="h6" sx={{ color: 'var(--color-text)', fontFamily: 'var(--font-display)' }}>
+                                                No results found
+                                            </Typography>
+                                            <Typography variant="body2" sx={{ color: 'var(--color-text-muted)', mt: 1 }}>
+                                                Try adjusting your filters or search query.
+                                            </Typography>
+                                        </Box>
+                                    ) : undefined
+                                }
+                            >
+                                {items.map((item) => (
+                                    <ProductCard key={item.id} item={item} />
+                                ))}
+                            </ProductGrid>
+                        </div>
+                    </div>
 
                     <div ref={sentinelRef} className={styles.sentinel} />
 

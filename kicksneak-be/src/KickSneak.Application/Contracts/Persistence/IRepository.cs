@@ -30,6 +30,16 @@ public interface IRepository<T> where T : class
         params Expression<Func<T, object>>[] includes
     );
 
+    Task<(IReadOnlyList<T> Items, int TotalCount)> GetPaginatedOrderedAsync<TKey>(
+        Expression<Func<T, bool>>? predicate,
+        Expression<Func<T, TKey>> orderBy,
+        bool descending,
+        int page = 1,
+        int pageSize = 20,
+        CancellationToken ct = default,
+        params Expression<Func<T, object>>[] includes
+    );
+
     Task AddAsync(T entity, CancellationToken ct = default);
     Task AddRangeAsync(IEnumerable<T> entities, CancellationToken ct = default);
 

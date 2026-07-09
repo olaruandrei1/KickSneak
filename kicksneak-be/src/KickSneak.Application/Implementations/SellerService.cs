@@ -1,4 +1,4 @@
-﻿using KickSneak.Application.Contracts.Application;
+using KickSneak.Application.Contracts.Application;
 using KickSneak.Application.Contracts.Persistence;
 using KickSneak.Domain.DTOs.Profile;
 using KickSneak.Domain.DTOs.Seller;
@@ -56,33 +56,39 @@ public sealed class SellerService(IUnitOfWork uow, IProfileService profileServic
         if (seller is null)
             return new SellerListingsResponseDto([]);
 
-        var stockItems = await uow.StockItems.GetAsync(s => s.SellerId == seller.Id, ct);
-        var usedItems = await uow.UsedItems.GetAsync(u => u.SellerId == seller.Id, ct);
+        var stockItems = await uow.StockItems.GetAsync(s => s.SellerId == seller.Id, ct, includes: [s => s.Size]);
+        var usedItems = await uow.UsedItems.GetAsync(u => u.SellerId == seller.Id, ct, includes: [u => u.Size, u => u.Photos]);
+
+        var productIds = stockItems.Select(s => s.ProductId).Union(usedItems.Select(u => u.ProductId)).Distinct().ToList();
+        var products = await uow.Products.GetAsync(p => productIds.Contains(p.Id), ct, includes: [p => p.Brand, p => p.Photos]);
+        var productDict = products.ToDictionary(p => p.Id);
 
         var dtos = new List<SellerListingDto>();
 
         foreach (var s in stockItems)
         {
+            productDict.TryGetValue(s.ProductId, out var product);
             dtos.Add(new SellerListingDto(
-                Id: s.Id, Name: s.Product?.Title ?? string.Empty,
-                Brand: s.Product?.Brand?.Name ?? string.Empty,
+                Id: s.Id, Name: product?.Title ?? string.Empty,
+                Brand: product?.Brand?.Name ?? string.Empty,
                 Size: s.Size?.SizeLabel ?? string.Empty,
                 Price: s.Price, Status: s.StatusItem.ToString().ToLowerInvariant(),
                 Views: 0,
-                Image: s.Product?.Photos.FirstOrDefault(p => p.IsPrimary)?.PhotoUrl ?? string.Empty,
+                Image: product?.Photos.FirstOrDefault(p => p.IsPrimary)?.PhotoUrl ?? string.Empty,
                 ListedAt: s.CreatedAt.ToString("yyyy-MM-dd")
             ));
         }
 
         foreach (var u in usedItems)
         {
+            productDict.TryGetValue(u.ProductId, out var product);
             var primaryPhoto = u.Photos.FirstOrDefault(p => p.IsPrimary)?.PhotoUrl
-                               ?? u.Product?.Photos.FirstOrDefault(p => p.IsPrimary)?.PhotoUrl
+                               ?? product?.Photos.FirstOrDefault(p => p.IsPrimary)?.PhotoUrl
                                ?? string.Empty;
 
             dtos.Add(new SellerListingDto(
-                Id: u.Id, Name: u.Product?.Title ?? string.Empty,
-                Brand: u.Product?.Brand?.Name ?? string.Empty,
+                Id: u.Id, Name: product?.Title ?? string.Empty,
+                Brand: product?.Brand?.Name ?? string.Empty,
                 Size: u.Size?.SizeLabel ?? string.Empty,
                 Price: u.Price, Status: u.StatusItem.ToString().ToLowerInvariant(),
                 Views: 0, Image: primaryPhoto,
@@ -98,8 +104,10 @@ public sealed class SellerService(IUnitOfWork uow, IProfileService profileServic
         var seller = await GetSellerAsync(firebaseUid, ct);
         if (seller is null) return null;
 
+        var searchEu = dto.SizeLabel.Replace("EU ", "");
+        if (!searchEu.Contains('.')) searchEu += ".0";
         var size = await uow.Sizes.GetFirstOrDefaultAsync(
-            s => s.SizeEu == dto.SizeLabel.Replace("EU ", ""), ct);
+            s => s.SizeEu == searchEu, ct);
 
         var stockItem = new StockItem
         {
@@ -114,15 +122,17 @@ public sealed class SellerService(IUnitOfWork uow, IProfileService profileServic
 
         await uow.SaveChangesAsync(ct);
 
+        var product = await uow.Products.GetFirstOrDefaultAsync(p => p.Id == dto.ProductId, ct, includes: [p => p.Brand, p => p.Photos]);
+
         return new SellerListingDto(
             Id: stockItem.Id,
-            Name: string.Empty,
-            Brand: string.Empty,
+            Name: product?.Title ?? string.Empty,
+            Brand: product?.Brand?.Name ?? string.Empty,
             Size: dto.SizeLabel,
             Price: dto.Price,
             Status: ItemStatus.PendingReview.ToString().ToLowerInvariant(),
             Views: 0,
-            Image: dto.ImageUrl ?? string.Empty,
+            Image: product?.Photos.FirstOrDefault(p => p.IsPrimary)?.PhotoUrl ?? string.Empty,
             ListedAt: DateTime.UtcNow.ToString("yyyy-MM-dd")
         );
     }
@@ -134,9 +144,11 @@ public sealed class SellerService(IUnitOfWork uow, IProfileService profileServic
         if (seller is null)
             return null;
 
-        var stockItem = await uow.StockItems.GetFirstOrDefaultAsync(s => s.Id == stockItemId && s.SellerId == seller.Id, ct);
+        var stockItem = await uow.StockItems.GetFirstOrDefaultAsync(s => s.Id == stockItemId && s.SellerId == seller.Id, ct, includes: [s => s.Size]);
 
         if (stockItem is null) return null;
+
+        var product = await uow.Products.GetFirstOrDefaultAsync(p => p.Id == stockItem.ProductId, ct, includes: [p => p.Brand, p => p.Photos]);
 
         stockItem.Price = dto.Price;
         stockItem.ModifiedAt = DateTime.UtcNow;
@@ -147,13 +159,13 @@ public sealed class SellerService(IUnitOfWork uow, IProfileService profileServic
 
         return new SellerListingDto(
             Id: stockItem.Id,
-            Name: stockItem.Product?.Title ?? string.Empty,
-            Brand: stockItem.Product?.Brand?.Name ?? string.Empty,
+            Name: product?.Title ?? string.Empty,
+            Brand: product?.Brand?.Name ?? string.Empty,
             Size: stockItem.Size?.SizeLabel ?? string.Empty,
             Price: stockItem.Price,
             Status: stockItem.StatusItem.ToString().ToLowerInvariant(),
             Views: 0,
-            Image: stockItem.Product?.Photos.FirstOrDefault(p => p.IsPrimary)?.PhotoUrl ?? string.Empty,
+            Image: product?.Photos.FirstOrDefault(p => p.IsPrimary)?.PhotoUrl ?? string.Empty,
             ListedAt: stockItem.CreatedAt.ToString("yyyy-MM-dd")
         );
     }
@@ -292,7 +304,7 @@ public sealed class SellerService(IUnitOfWork uow, IProfileService profileServic
         var products = await uow.Products.GetAsync(
             p => p.Title!.ToLower().Contains(q) ||
                  p.Brand!.Name!.ToLower().Contains(q), ct,
-            includes: p => p.Brand);
+            includes: [p => p.Brand, p => p.Photos]);
 
         return products.Take(10).Select(p => new CatalogSearchResultDto(
             Id: p.Id,
@@ -310,12 +322,14 @@ public sealed class SellerService(IUnitOfWork uow, IProfileService profileServic
         if (seller is null)
             return null;
 
-        var product = await uow.Products.GetFirstOrDefaultAsync(p => p.Id == dto.ProductId, ct);
+        var product = await uow.Products.GetFirstOrDefaultAsync(p => p.Id == dto.ProductId, ct, includes: [p => p.Brand, p => p.Photos]);
 
         if (product is null)
             return null;
 
-        var size = await uow.Sizes.GetFirstOrDefaultAsync(s => s.SizeEu == dto.SizeLabel.Replace("EU ", ""), ct);
+        var searchEu = dto.SizeLabel.Replace("EU ", "");
+        if (!searchEu.Contains('.')) searchEu += ".0";
+        var size = await uow.Sizes.GetFirstOrDefaultAsync(s => s.SizeEu == searchEu, ct);
 
         var usedItem = new UsedItem
         {

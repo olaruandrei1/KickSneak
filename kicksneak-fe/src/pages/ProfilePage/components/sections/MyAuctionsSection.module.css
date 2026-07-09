@@ -39,7 +39,7 @@
 }
 
 .tabActive {
-    background: rgba(64, 138, 113, 0.1);
+    background: rgba(163, 197, 27, 0.1);
     border-color: var(--color-accent);
     color: var(--color-accent);
 }
@@ -176,7 +176,7 @@
 }
 
 .browseBtn:hover {
-    background: rgba(64, 138, 113, 0.1);
+    background: rgba(163, 197, 27, 0.1);
 }
 
 @media (max-width: 600px) {

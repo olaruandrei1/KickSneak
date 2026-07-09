@@ -65,12 +65,12 @@
 
 .sizeBtn:hover {
     border-color: var(--color-secondary);
-    background: rgba(64, 138, 113, 0.08);
+    background: rgba(163, 197, 27, 0.08);
 }
 
 .sizeBtnActive {
     border-color: var(--color-accent) !important;
-    background: rgba(64, 138, 113, 0.15) !important;
+    background: rgba(163, 197, 27, 0.15) !important;
 }
 
 .sizeBid {

@@ -10,6 +10,7 @@ using KickSneak.WebApi.Endpoints;
 using KickSneak.WebApi.Middlewares;
 using Microsoft.EntityFrameworkCore;
 using Npgsql;
+using Prometheus;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -75,9 +76,11 @@ if (app.Environment.IsDevelopment())
 
 app.UseCors("AllowFrontend");
 app.UseHttpsRedirection();
+app.UseHttpMetrics();
 
 app.UseSecurityHeaders();
-app.UseCustomRateLimiter();
+// Rate limiter disabled for demo — was causing spurious 401/429 during testing.
+// app.UseCustomRateLimiter();
 app.UseFirebaseAuth();
 app.UseUserResolverMiddleware();
 app.UseTracing();
@@ -88,6 +91,7 @@ app.Use(async (context, next) =>
     await next();
 });
 
+app.MapMetrics();
 app.MapAllEndpoints();
 
 app.Run();

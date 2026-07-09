@@ -70,6 +70,17 @@ const wss = new WebSocketServer({ server });
 const admins = new Set();
 const clients = new Map(); // sessionId -> Set of WebSocket clients
 
+// Keepalive: without this, idle WS connections silently drop (proxies/browsers),
+// so messages only appear after a manual refresh. Ping every 25s, drop dead sockets.
+const keepAlive = setInterval(() => {
+  wss.clients.forEach((ws) => {
+    if (ws.isAlive === false) return ws.terminate();
+    ws.isAlive = false;
+    try { ws.ping(); } catch { /* socket already closing */ }
+  });
+}, 25000);
+wss.on('close', () => clearInterval(keepAlive));
+
 wss.on('connection', (ws, req) => {
   const parameters = url.parse(req.url, true).query;
   const role = parameters.role || 'client'; // default is client
@@ -79,6 +90,8 @@ wss.on('connection', (ws, req) => {
   ws.role = role;
   ws.sessionId = sessionId;
   ws.userId = userId;
+  ws.isAlive = true;
+  ws.on('pong', () => { ws.isAlive = true; });
 
   if (role === 'admin') {
     admins.add(ws);
@@ -263,6 +276,6 @@ wss.on('connection', (ws, req) => {
   });
 });
 
-server.listen(PORT, () => {
+server.listen(PORT, '0.0.0.0', () => {
   console.log(`[WS] Standalone support WebSocket server listening on port ${PORT}`);
 });

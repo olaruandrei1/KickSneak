@@ -29,16 +29,23 @@ interface ChatSession {
 
 const CHAT_WS_URL = import.meta.env.VITE_CHAT_WS_URL ?? 'ws://localhost:8080';
 const CHAT_API_URL = import.meta.env.VITE_CHAT_API_URL ?? 'http://localhost:8080';
+const SUPPORT_WS_URL = import.meta.env.VITE_SUPPORT_WS_URL ?? 'ws://localhost:3005';
 
 export const ChatSection = ({ profile }: Props) => {
     const { user } = useAuthStore();
-    const [mode, setMode] = useState<ChatMode>('ai');
+    const [mode, setMode] = useState<ChatMode>(() => {
+        try { const s = sessionStorage.getItem('ks_chatMode'); return s === 'support' ? 'support' : 'ai'; }
+        catch { return 'ai'; }
+    });
     const [messages, setMessages] = useState<Message[]>([]);
     const [input, setInput] = useState('');
     const [isConnected, setIsConnected] = useState(false);
     const [isTyping, setIsTyping] = useState(false);
     const [streamingContent, setStreamingContent] = useState('');
-    const [sessionId, setSessionId] = useState<string | null>(null);
+    const [sessionId, setSessionId] = useState<string | null>(() => {
+        try { return sessionStorage.getItem('ks_chatSessionId'); }
+        catch { return null; }
+    });
     const [sessions, setSessions] = useState<ChatSession[]>([]);
     const [showHistory, setShowHistory] = useState(false);
     const [isWaitingResponse, setIsWaitingResponse] = useState(false);
@@ -47,7 +54,10 @@ export const ChatSection = ({ profile }: Props) => {
     const messagesRef = useRef<HTMLDivElement>(null);
     const isFirstMount = useRef(true);
     const streamingContentRef = useRef('');
-    const reconnectingRef = useRef(false);
+    const modeRef = useRef(mode);
+    const sessionIdRef = useRef(sessionId);
+    useEffect(() => { modeRef.current = mode; }, [mode]);
+    useEffect(() => { sessionIdRef.current = sessionId; }, [sessionId]);
 
     useEffect(() => {
         if (isFirstMount.current) {
@@ -58,6 +68,16 @@ export const ChatSection = ({ profile }: Props) => {
             messagesRef.current.scrollTop = messagesRef.current.scrollHeight;
         }
     }, [messages, streamingContent]);
+
+    useEffect(() => {
+        try { sessionStorage.setItem('ks_chatMode', mode); } catch {}
+    }, [mode]);
+    useEffect(() => {
+        try {
+            if (sessionId) sessionStorage.setItem('ks_chatSessionId', sessionId);
+            else sessionStorage.removeItem('ks_chatSessionId');
+        } catch {}
+    }, [sessionId]);
 
     const fetchSessions = useCallback(async () => {
         if (!user?.uid) return;
@@ -79,7 +99,6 @@ export const ChatSection = ({ profile }: Props) => {
 
         ws.onopen = () => {
             setIsConnected(true);
-            reconnectingRef.current = false;
         };
 
         ws.onmessage = (event) => {
@@ -94,7 +113,7 @@ export const ChatSection = ({ profile }: Props) => {
                     if (data.messages?.length > 0) {
                         setMessages(data.messages.map((m: any) => ({
                             id: m.id,
-                            role: m.role === 'assistant' ? 'assistant' : 'user',
+                            role: m.role === 'assistant' ? 'assistant' : (m.role === 'admin' ? 'support' : 'user'),
                             content: m.content,
                             timestamp: new Date(m.createdAt),
                         })));
@@ -156,31 +175,123 @@ export const ChatSection = ({ profile }: Props) => {
         };
     }, [user?.uid, mode, fetchSessions]);
 
-    useEffect(() => {
-        if (mode !== 'ai' || !user?.uid) return;
+    const connectSupportWebSocket = useCallback((currentSessionId: string) => {
+        if (!user?.uid) return;
+        if (wsRef.current?.readyState === WebSocket.OPEN || wsRef.current?.readyState === WebSocket.CONNECTING) return;
 
-        const timer = setTimeout(() => {
-            connectWebSocket();
-        }, 50);
+        const ws = new WebSocket(`${SUPPORT_WS_URL}/?role=client&sessionId=${currentSessionId}&userId=${user.uid}`);
+        wsRef.current = ws;
 
-        return () => {
-            clearTimeout(timer);
-            if (!reconnectingRef.current) {
-                wsRef.current?.close();
-                wsRef.current = null;
+        ws.onopen = () => {
+            setIsConnected(true);
+            ws.send(JSON.stringify({ type: 'register_session', sessionId: currentSessionId }));
+        };
+
+        ws.onmessage = (event) => {
+            const data = JSON.parse(event.data);
+
+            if (data.type === 'message' && data.message) {
+                if (data.message.role === 'user') return; // Evităm duplicarea mesajelor noastre optimiste trimise deja prin handleSend
+                setMessages(m => {
+                    if (m.some(msg => msg.id === data.message.id)) return m;
+                    return [...m, {
+                        id: data.message.id || Date.now().toString(),
+                        role: data.message.role === 'admin' ? 'support' : 'user',
+                        content: data.message.content,
+                        timestamp: new Date(data.message.created_at || Date.now()),
+                    }];
+                });
+            } else if (data.type === 'status_changed') {
+                if (data.status === 'agent') {
+                    setMessages(m => [...m, {
+                        id: Date.now().toString(),
+                        role: 'support',
+                        content: "An agent has joined the chat.",
+                        timestamp: new Date(),
+                    }]);
+                } else if (data.status === 'closed') {
+                    setMessages(m => [...m, {
+                        id: Date.now().toString(),
+                        role: 'support',
+                        content: "The support session has been closed.",
+                        timestamp: new Date(),
+                    }]);
+                }
             }
         };
-    }, [mode, user?.uid, connectWebSocket]);
+
+        ws.onclose = () => {
+            setIsConnected(false);
+            // Only auto-reconnect if this WS is still the active one (not replaced by useEffect cleanup)
+            if (wsRef.current === ws) {
+                wsRef.current = null;
+                setTimeout(() => connectSupportWebSocket(currentSessionId), 2000);
+            }
+        };
+
+        ws.onerror = () => {
+            setIsConnected(false);
+        };
+    }, [user?.uid]);
+
+    useEffect(() => {
+        if (!user?.uid) return;
+
+        if (mode === 'ai') connectWebSocket();
+        else if (mode === 'support' && sessionId) connectSupportWebSocket(sessionId);
+
+        return () => {
+            const currentWs = wsRef.current;
+            wsRef.current = null;
+            if (currentWs?.readyState === WebSocket.OPEN || currentWs?.readyState === WebSocket.CONNECTING) {
+                currentWs.close();
+            }
+        };
+    }, [mode, user?.uid, sessionId, connectWebSocket, connectSupportWebSocket]);
+
+    // Verificăm periodic dacă un admin a preluat manual sesiunea din dashboard
+    useEffect(() => {
+        if (mode !== 'ai' || !sessionId) return;
+        const interval = setInterval(() => {
+            fetchSessions();
+        }, 3000);
+        return () => clearInterval(interval);
+    }, [mode, sessionId, fetchSessions]);
+
+    useEffect(() => {
+        if (mode === 'ai' && sessionId) {
+            const current = sessions.find(s => s.id === sessionId);
+            if (current && current.status === 'agent') {
+                escalateToSupport();
+            }
+        }
+    }, [sessions, mode, sessionId]);
+
+    // Mark the support conversation as DONE when the user leaves the page (refresh / navigate away).
+    useEffect(() => {
+        const closeSupport = () => {
+            try {
+                if (modeRef.current === 'support' && sessionIdRef.current
+                    && wsRef.current?.readyState === WebSocket.OPEN) {
+                    wsRef.current.send(JSON.stringify({ type: 'close', sessionId: sessionIdRef.current }));
+                }
+            } catch { /* unloading */ }
+        };
+        window.addEventListener('beforeunload', closeSupport);
+        return () => {
+            window.removeEventListener('beforeunload', closeSupport);
+            closeSupport(); // route change / component unmount
+        };
+    }, []);
 
     const escalateToSupport = () => {
-        wsRef.current?.close();
-        wsRef.current = null;
+        if (mode === 'support') return;
 
-        setMode('support');
+        const currentSessionId = sessionId || `session_${Date.now()}`;
+        setSessionId(currentSessionId);
+
         setStreamingContent('');
         setIsTyping(false);
-        setIsConnected(false);
-        setSessionId(null);
 
         setMessages(prev => [...prev, {
             id: Date.now().toString(),
@@ -188,6 +299,8 @@ export const ChatSection = ({ profile }: Props) => {
             content: "You've been connected to KickSneak Live Support. A representative will respond shortly.",
             timestamp: new Date(),
         }]);
+
+        setMode('support'); // triggers useEffect → closes old WS, opens support WS
     };
 
     const handleSend = () => {
@@ -209,15 +322,13 @@ export const ChatSection = ({ profile }: Props) => {
                 content: input,
                 sessionId: sessionId,
             }));
-        } else if (mode === 'support') {
-            setTimeout(() => {
-                setMessages(m => [...m, {
-                    id: (Date.now() + 1).toString(),
-                    role: 'support',
-                    content: "Thank you for your message. A support agent will respond shortly.",
-                    timestamp: new Date(),
-                }]);
-            }, 1000);
+        } else if (mode === 'support' && wsRef.current?.readyState === WebSocket.OPEN) {
+            wsRef.current.send(JSON.stringify({
+                type: 'message',
+                content: input,
+                sessionId: sessionId,
+                role: 'user',
+            }));
         }
     };
 
@@ -235,18 +346,25 @@ export const ChatSection = ({ profile }: Props) => {
         setIsTyping(false);
         setSessionId(null);
         setShowHistory(false);
+        setMode('ai'); // triggers useEffect → closes support WS, opens AI WS
+    };
 
-        reconnectingRef.current = true;
-        wsRef.current?.close();
-        wsRef.current = null;
-        setIsConnected(false);
+    const handleBackToAI = () => {
+        if (sessionId && wsRef.current?.readyState === WebSocket.OPEN) {
+            wsRef.current.send(JSON.stringify({
+                type: 'close_session',
+                sessionId: sessionId,
+            }));
+        }
+
+        setMessages(m => [...m, {
+            id: Date.now().toString(),
+            role: 'assistant',
+            content: 'Live support ended. Reconnected to KickSneak AI.',
+            timestamp: new Date()
+        }]);
 
         setMode('ai');
-
-        setTimeout(() => {
-            reconnectingRef.current = false;
-            connectWebSocket();
-        }, 200);
     };
 
     const handleLoadSession = async (sid: string) => {
@@ -261,7 +379,7 @@ export const ChatSection = ({ profile }: Props) => {
             setShowHistory(false);
             setMessages((data.messages ?? []).map((m: any) => ({
                 id: m.id,
-                role: m.role === 'assistant' ? 'assistant' : 'user',
+                role: m.role === 'assistant' ? 'assistant' : (m.role === 'admin' ? 'support' : 'user'),
                 content: m.content,
                 timestamp: new Date(m.createdAt),
             })));
@@ -348,7 +466,7 @@ export const ChatSection = ({ profile }: Props) => {
                             </>
                         )}
                         {mode === 'support' && (
-                            <button className={styles.newChatBtn} onClick={handleNewChat}>
+                            <button className={styles.newChatBtn} onClick={handleBackToAI}>
                                 Back to AI
                             </button>
                         )}

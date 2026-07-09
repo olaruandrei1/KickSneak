@@ -9,6 +9,7 @@ using KickSneak.Infrastructure.Contracts;
 using KickSneak.Infrastructure.Implementations;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using StackExchange.Redis;
 using Stripe;
 using System.Text;
@@ -45,6 +46,16 @@ public static class RegisterInfrastructureDependencies
 
         StripeConfiguration.ApiKey = stripeSettings.SecretKey;
         services.AddLazyScoped<IStripeService, StripeService>();
+
+        // AI recommender client (best-effort HTTP to the Python ai-service).
+        services.AddSingleton<IAiRecommendationClient>(sp =>
+        {
+            var aiUrl = Environment.GetEnvironmentVariable("AI_SERVICE_URL") ?? "http://ai-service:5050";
+            var http = new HttpClient { BaseAddress = new Uri(aiUrl), Timeout = TimeSpan.FromSeconds(3) };
+            return new AiRecommendationClient(http, sp.GetRequiredService<ILogger<AiRecommendationClient>>());
+        });
+
+        services.AddSingleton<IWebPushSender, WebPushSender>();
 
         if (FirebaseApp.DefaultInstance == null)
         {

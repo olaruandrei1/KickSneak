@@ -1,13 +1,15 @@
 -- ============================================================
--- KickSneak RBAC — Full Migration Script
+-- KickSneak RBAC ï¿½ Full Migration Script
 -- Run as superuser (postgres) against kicksneak database
 -- ============================================================
 
 -- ----------------------------------------------
--- 1. CLEANUP — drop old roles if re-running
+-- 1. CLEANUP ï¿½ idempotent reset of RLS + policies
+--    (roles are NEVER dropped: DROP OWNED BY ks_owner
+--     would drop every table it owns -> 42P01 on re-run)
 -- ----------------------------------------------
 
-DO $$ 
+DO $$
 DECLARE t text;
 BEGIN
     FOR t IN SELECT tablename FROM pg_tables WHERE schemaname = 'public'
@@ -25,31 +27,28 @@ BEGIN
     END LOOP;
 END $$;
 
-DO $$ 
-DECLARE role_name text;
+-- ----------------------------------------------
+-- 2. CREATE ROLES (create-if-missing, never DROP+CREATE)
+-- ----------------------------------------------
+
+DO $$
+DECLARE r record;
 BEGIN
-    FOR role_name IN SELECT unnest(ARRAY['ks_guest','ks_user','ks_seller','ks_admin','ks_chat_service','ks_owner'])
+    FOR r IN
+        SELECT * FROM (VALUES
+            ('ks_guest','KsGuest2026!'),
+            ('ks_user','KsUser2026!'),
+            ('ks_seller','KsSeller2026!'),
+            ('ks_admin','KsAdmin2026!'),
+            ('ks_chat_service','KsChat2026!'),
+            ('ks_owner','KsOwner2026!')
+        ) AS v(rolname, pwd)
     LOOP
-        IF EXISTS (SELECT FROM pg_roles WHERE rolname = role_name) THEN
-            EXECUTE format('REVOKE ALL PRIVILEGES ON ALL TABLES IN SCHEMA public FROM %I', role_name);
-            EXECUTE format('REVOKE ALL PRIVILEGES ON ALL SEQUENCES IN SCHEMA public FROM %I', role_name);
-            EXECUTE format('REVOKE USAGE ON SCHEMA public FROM %I', role_name);
-            EXECUTE format('DROP OWNED BY %I', role_name);
-            EXECUTE format('DROP ROLE %I', role_name);
+        IF NOT EXISTS (SELECT FROM pg_roles WHERE rolname = r.rolname) THEN
+            EXECUTE format('CREATE ROLE %I LOGIN PASSWORD %L', r.rolname, r.pwd);
         END IF;
     END LOOP;
 END $$;
-
--- ----------------------------------------------
--- 2. CREATE ROLES
--- ----------------------------------------------
-
-CREATE ROLE ks_guest LOGIN PASSWORD 'KsGuest2026!';
-CREATE ROLE ks_user LOGIN PASSWORD 'KsUser2026!';
-CREATE ROLE ks_seller LOGIN PASSWORD 'KsSeller2026!';
-CREATE ROLE ks_admin LOGIN PASSWORD 'KsAdmin2026!';
-CREATE ROLE ks_chat_service LOGIN PASSWORD 'KsChat2026!';
-CREATE ROLE ks_owner LOGIN PASSWORD 'KsOwner2026!';
 
 GRANT ks_guest TO ks_user;
 GRANT ks_user TO ks_seller;
@@ -62,13 +61,24 @@ GRANT USAGE ON SCHEMA public TO ks_guest, ks_user, ks_seller, ks_admin, ks_chat_
 -- 3. TABLE OWNERSHIP -> ks_owner
 -- ----------------------------------------------
 
+-- chat_sessions/chat_messages stay owned by ks_chat_service (the Go chat service
+-- runs its own migrations on them). Grabbing them here breaks that service (42501).
 DO $$
 DECLARE t text;
 BEGIN
     FOR t IN SELECT tablename FROM pg_tables WHERE schemaname = 'public'
+             AND tablename NOT IN ('chat_sessions', 'chat_messages')
     LOOP
         EXECUTE format('ALTER TABLE %I OWNER TO ks_owner', t);
     END LOOP;
+END $$;
+
+-- Re-assert chat table ownership to ks_chat_service (fixes DBs where a prior run grabbed them).
+DO $$ BEGIN
+    IF EXISTS (SELECT FROM pg_tables WHERE schemaname = 'public' AND tablename = 'chat_sessions') THEN
+        EXECUTE 'ALTER TABLE chat_sessions OWNER TO ks_chat_service';
+        EXECUTE 'ALTER TABLE chat_messages OWNER TO ks_chat_service';
+    END IF;
 END $$;
 
 DO $$
@@ -98,7 +108,7 @@ GRANT SELECT ON
     users, user_addresses, user_contacts, user_cart,
     user_favorites, "UserSizePreference",
     orders, returns, reviews, offers,
-    notifications, webpush_subscriptions,
+    notifications, notification_settings, webpush_subscriptions,
     auto_bids, product_viewed, roles
 TO ks_user;
 
@@ -106,8 +116,9 @@ GRANT INSERT, UPDATE ON
     users, user_addresses, user_contacts, user_cart,
     user_favorites, "UserSizePreference",
     orders, returns, reviews, offers,
-    bids, auto_bids, notifications,
-    webpush_subscriptions, product_viewed
+    bids, auto_bids, notifications, notification_settings,
+    webpush_subscriptions, product_viewed,
+    sellers, auctions  -- seller enrollment: a buyer creates/edits their own seller profile
 TO ks_user;
 
 GRANT DELETE ON
@@ -168,70 +179,91 @@ GRANT USAGE, SELECT ON ALL SEQUENCES IN SCHEMA public TO ks_chat_service;
 -- ----------------------------------------------
 
 ALTER TABLE user_addresses ENABLE ROW LEVEL SECURITY;
+DROP POLICY IF EXISTS user_addresses_own ON user_addresses;
 CREATE POLICY user_addresses_own ON user_addresses
     USING ("UserId"::text = current_setting('app.current_user_id', true) OR current_user IN ('ks_owner', 'ks_admin'));
 
 ALTER TABLE user_contacts ENABLE ROW LEVEL SECURITY;
+DROP POLICY IF EXISTS user_contacts_own ON user_contacts;
 CREATE POLICY user_contacts_own ON user_contacts
     USING ("UserId"::text = current_setting('app.current_user_id', true) OR current_user IN ('ks_owner', 'ks_admin'));
 
 ALTER TABLE user_cart ENABLE ROW LEVEL SECURITY;
+DROP POLICY IF EXISTS user_cart_own ON user_cart;
 CREATE POLICY user_cart_own ON user_cart
     USING ("UserId"::text = current_setting('app.current_user_id', true) OR current_user IN ('ks_owner', 'ks_admin'));
 
 ALTER TABLE user_favorites ENABLE ROW LEVEL SECURITY;
+DROP POLICY IF EXISTS user_favorites_own ON user_favorites;
 CREATE POLICY user_favorites_own ON user_favorites
     USING ("UserId"::text = current_setting('app.current_user_id', true) OR current_user IN ('ks_owner', 'ks_admin'));
 
 ALTER TABLE "UserSizePreference" ENABLE ROW LEVEL SECURITY;
+DROP POLICY IF EXISTS user_size_pref_own ON "UserSizePreference";
 CREATE POLICY user_size_pref_own ON "UserSizePreference"
     USING ("UserId"::text = current_setting('app.current_user_id', true) OR current_user IN ('ks_owner', 'ks_admin'));
 
 ALTER TABLE orders ENABLE ROW LEVEL SECURITY;
+DROP POLICY IF EXISTS orders_own ON orders;
 CREATE POLICY orders_own ON orders
     USING ("BuyerId"::text = current_setting('app.current_user_id', true)
            OR current_user IN ('ks_owner', 'ks_seller', 'ks_admin', 'ks_chat_service'));
 
 ALTER TABLE returns ENABLE ROW LEVEL SECURITY;
+DROP POLICY IF EXISTS returns_own ON returns;
 CREATE POLICY returns_own ON returns
     USING ("UserId"::text = current_setting('app.current_user_id', true)
            OR current_user IN ('ks_owner', 'ks_seller', 'ks_admin', 'ks_chat_service'));
 
 ALTER TABLE notifications ENABLE ROW LEVEL SECURITY;
+DROP POLICY IF EXISTS notifications_own ON notifications;
 CREATE POLICY notifications_own ON notifications
     USING ("UserId"::text = current_setting('app.current_user_id', true) OR current_user IN ('ks_owner', 'ks_admin'));
 
 ALTER TABLE bids ENABLE ROW LEVEL SECURITY;
+DROP POLICY IF EXISTS bids_read ON bids;
 CREATE POLICY bids_read ON bids FOR SELECT USING (true);
+DROP POLICY IF EXISTS bids_insert ON bids;
 CREATE POLICY bids_insert ON bids FOR INSERT
     WITH CHECK ("BidderId"::text = current_setting('app.current_user_id', true) OR current_user IN ('ks_owner', 'ks_admin'));
+DROP POLICY IF EXISTS bids_update ON bids;
 CREATE POLICY bids_update ON bids FOR UPDATE
     USING ("BidderId"::text = current_setting('app.current_user_id', true) OR current_user IN ('ks_owner', 'ks_admin'));
 
 ALTER TABLE auto_bids ENABLE ROW LEVEL SECURITY;
+DROP POLICY IF EXISTS auto_bids_own ON auto_bids;
 CREATE POLICY auto_bids_own ON auto_bids
     USING ("UserId"::text = current_setting('app.current_user_id', true) OR current_user IN ('ks_owner', 'ks_admin'));
 
 ALTER TABLE stock_items ENABLE ROW LEVEL SECURITY;
+DROP POLICY IF EXISTS stock_items_read ON stock_items;
 CREATE POLICY stock_items_read ON stock_items FOR SELECT USING (true);
+DROP POLICY IF EXISTS stock_items_insert ON stock_items;
 CREATE POLICY stock_items_insert ON stock_items FOR INSERT
-    WITH CHECK ("SellerId"::text = current_setting('app.current_user_id', true) OR current_user IN ('ks_owner', 'ks_admin'));
+    WITH CHECK (EXISTS (SELECT 1 FROM sellers WHERE sellers."Id" = "SellerId" AND sellers."UserId"::text = current_setting('app.current_user_id', true)) OR current_user IN ('ks_owner', 'ks_admin'));
+DROP POLICY IF EXISTS stock_items_update ON stock_items;
 CREATE POLICY stock_items_update ON stock_items FOR UPDATE
-    USING ("SellerId"::text = current_setting('app.current_user_id', true) OR current_user IN ('ks_owner', 'ks_admin'));
+    USING (EXISTS (SELECT 1 FROM sellers WHERE sellers."Id" = "SellerId" AND sellers."UserId"::text = current_setting('app.current_user_id', true)) OR current_user IN ('ks_owner', 'ks_admin'));
 
 ALTER TABLE used_items ENABLE ROW LEVEL SECURITY;
+DROP POLICY IF EXISTS used_items_read ON used_items;
 CREATE POLICY used_items_read ON used_items FOR SELECT USING (true);
+DROP POLICY IF EXISTS used_items_insert ON used_items;
 CREATE POLICY used_items_insert ON used_items FOR INSERT
-    WITH CHECK ("SellerId"::text = current_setting('app.current_user_id', true) OR current_user IN ('ks_owner', 'ks_admin'));
+    WITH CHECK (EXISTS (SELECT 1 FROM sellers WHERE sellers."Id" = "SellerId" AND sellers."UserId"::text = current_setting('app.current_user_id', true)) OR current_user IN ('ks_owner', 'ks_admin'));
+DROP POLICY IF EXISTS used_items_update ON used_items;
 CREATE POLICY used_items_update ON used_items FOR UPDATE
-    USING ("SellerId"::text = current_setting('app.current_user_id', true) OR current_user IN ('ks_owner', 'ks_admin'));
+    USING (EXISTS (SELECT 1 FROM sellers WHERE sellers."Id" = "SellerId" AND sellers."UserId"::text = current_setting('app.current_user_id', true)) OR current_user IN ('ks_owner', 'ks_admin'));
 
 ALTER TABLE webpush_subscriptions ENABLE ROW LEVEL SECURITY;
+DROP POLICY IF EXISTS webpush_own ON webpush_subscriptions;
 CREATE POLICY webpush_own ON webpush_subscriptions
     USING ("UserId"::text = current_setting('app.current_user_id', true) OR current_user IN ('ks_owner', 'ks_admin'));
 
 ALTER TABLE reviews ENABLE ROW LEVEL SECURITY;
+DROP POLICY IF EXISTS reviews_read ON reviews;
 CREATE POLICY reviews_read ON reviews FOR SELECT USING (true);
+DROP POLICY IF EXISTS reviews_insert ON reviews;
 CREATE POLICY reviews_insert ON reviews FOR INSERT
     WITH CHECK ("BuyerId"::text = current_setting('app.current_user_id', true) OR current_user IN ('ks_owner', 'ks_admin'));
 

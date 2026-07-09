@@ -1,4 +1,5 @@
 ﻿using KickSneak.Application.Contracts.Application;
+using KickSneak.Domain.DTOs.Products;
 using KickSneak.WebApi.Middlewares;
 
 namespace KickSneak.WebApi.Endpoints;
@@ -25,13 +26,22 @@ public static class ProductEndpoints
         pub.MapGet("/search", async (IProductService svc, string q, CancellationToken ct) =>
             Results.Ok(await svc.SearchProductsAsync(q, ct)));
 
+        // Browse + search + filters + facets (empty q => all products, newest first)
         pub.MapGet("/search-paged", async (
             IProductService svc,
-            string q,
+            string? q = null,
+            string[]? brand = null,
+            string[]? category = null,
+            string[]? color = null,
+            string[]? gender = null,
+            double? minPrice = null,
+            double? maxPrice = null,
+            string? sort = null,
             int page = 1,
-            int pageSize = 12,
+            int pageSize = 24,
             CancellationToken ct = default) =>
-            Results.Ok(await svc.SearchProductsPagedAsync(q, page, pageSize, ct)));
+            Results.Ok(await svc.BrowseProductsAsync(
+                new ProductBrowseQuery(q, brand, category, color, gender, minPrice, maxPrice, sort, page, pageSize), ct)));
 
         pub.MapGet("/{id:guid}", async (IProductService svc, Guid id, HttpContext ctx, CancellationToken ct) =>
         {

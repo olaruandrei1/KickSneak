@@ -8,6 +8,7 @@ import {
   toggleSellerSuspended 
 } from "@/app/sellers/actions";
 import { Search, Loader, ShieldAlert, Star, X, Check } from "lucide-react";
+import AlertModal from "./AlertModal";
 
 interface SellerItem {
   Id: string;
@@ -44,7 +45,12 @@ export default function SellersClient({ initialSellers }: SellersClientProps) {
   const [sellers, setSellers] = useState<SellerItem[]>(initialSellers.items);
   const [total, setTotal] = useState(initialSellers.total);
   const [loading, setLoading] = useState(false);
+  const [modalState, setModalState] = useState({ isOpen: false, title: "", message: "", type: "info" as "info"|"success"|"error"|"warning" });
   const [search, setSearch] = useState("");
+
+  const showAlert = (message: string, type: "info"|"success"|"error"|"warning" = "info", title?: string) => {
+    setModalState({ isOpen: true, message, type, title: title || "" });
+  };
   const [page, setPage] = useState(1);
   const pageSize = 8;
 
@@ -87,7 +93,7 @@ export default function SellersClient({ initialSellers }: SellersClientProps) {
 
   const handleScoreSave = async (sellerId: string) => {
     if (tempScore < 0 || tempScore > 100) {
-      alert("Scorul trebuie să fie între 0 și 100!");
+      showAlert("Scorul trebuie să fie între 0 și 100!", "warning");
       return;
     }
     setLoading(true);
@@ -332,6 +338,14 @@ export default function SellersClient({ initialSellers }: SellersClientProps) {
           </div>
         </div>
       )}
+
+      <AlertModal 
+        isOpen={modalState.isOpen} 
+        onClose={() => setModalState(prev => ({ ...prev, isOpen: false }))} 
+        title={modalState.title} 
+        message={modalState.message} 
+        type={modalState.type} 
+      />
 
       <style jsx>{`
         .filters-bar {

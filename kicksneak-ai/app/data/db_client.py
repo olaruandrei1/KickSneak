@@ -75,7 +75,29 @@ class DbClient:
             """)
             return cur.fetchall()
 
+    def resolve_user_id(self, user_id: str) -> str | None:
+        """Frontend sends the Firebase UID; interaction tables are keyed by the DB Guid.
+        Pass through if it's already a UUID, else look up the Guid by FirebaseUid."""
+        import uuid as _uuid
+        if not user_id:
+            return None
+        try:
+            _uuid.UUID(str(user_id))
+            return str(user_id)
+        except (ValueError, TypeError):
+            pass
+        with self.cursor() as cur:
+            cur.execute(
+                'SELECT "Id" AS id FROM users WHERE "FirebaseUid" = %s AND NOT "IsDeleted"',
+                (user_id,),
+            )
+            row = cur.fetchone()
+            return str(row["id"]) if row else None
+
     def fetch_user_interactions(self, user_id: str) -> dict:
+        user_id = self.resolve_user_id(user_id)
+        if user_id is None:
+            return {"purchased": [], "viewed": [], "favorited": []}
         with self.cursor() as cur:
             cur.execute("""
                 SELECT si."ProductId" AS product_id

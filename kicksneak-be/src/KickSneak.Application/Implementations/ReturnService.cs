@@ -52,15 +52,6 @@ public sealed class ReturnService(IUnitOfWork uow) : IReturnService
 
         if (order is null) throw new Exception("Order not found");
 
-        order.Status = OrderStatus.Refunded;
-        uow.Orders.Update(order);
-
-        if (order.StockItem is not null)
-        {
-            order.StockItem.StatusItem = ItemStatus.Active;
-            uow.StockItems.Update(order.StockItem);
-        }
-
         var returnEntity = new Return
         {
             OrderId = dto.OrderId,
@@ -71,8 +62,20 @@ public sealed class ReturnService(IUnitOfWork uow) : IReturnService
             CreatedBy = firebaseUid,
         };
 
-        await uow.Returns.AddAsync(returnEntity, ct);
-        await uow.SaveChangesAsync(ct);
+        // Elevated: flips order + stock_items (seller-owned) back — a system operation.
+        await uow.ExecuteElevatedAsync(async () =>
+        {
+            order.Status = OrderStatus.Refunded;
+            uow.Orders.Update(order);
+
+            if (order.StockItem is not null)
+            {
+                order.StockItem.StatusItem = ItemStatus.Active;
+                uow.StockItems.Update(order.StockItem);
+            }
+
+            await uow.Returns.AddAsync(returnEntity, ct);
+        }, ct);
 
         var product = order.StockItem?.Product;
         return new ReturnDto(
@@ -100,15 +103,17 @@ public sealed class ReturnService(IUnitOfWork uow) : IReturnService
         if (order is null) return;
         if (order.Status != OrderStatus.Pending && order.Status != OrderStatus.Confirmed) return;
 
-        order.Status = OrderStatus.Cancelled;
-        uow.Orders.Update(order);
-
-        if (order.StockItem is not null)
+        // Elevated: flips order + stock_items (seller-owned) back — a system operation.
+        await uow.ExecuteElevatedAsync(async () =>
         {
-            order.StockItem.StatusItem = ItemStatus.Active;
-            uow.StockItems.Update(order.StockItem);
-        }
+            order.Status = OrderStatus.Cancelled;
+            uow.Orders.Update(order);
 
-        await uow.SaveChangesAsync(ct);
+            if (order.StockItem is not null)
+            {
+                order.StockItem.StatusItem = ItemStatus.Active;
+                uow.StockItems.Update(order.StockItem);
+            }
+        }, ct);
     }
 }

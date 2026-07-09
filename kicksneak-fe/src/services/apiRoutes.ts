@@ -33,6 +33,11 @@ export const ApiRoutes = {
     cartAdd: USE_MOCKS ? `${MOCK_BASE}/cart.json` : `${API_BASE}/cart/add`,
 
     notifications: USE_MOCKS ? `${MOCK_BASE}/notifications.json` : `${API_BASE}/notifications`,
+    notificationRead: (id: string) => `${API_BASE}/notifications/${id}/read`,
+    notificationsReadAll: `${API_BASE}/notifications/read-all`,
+    notificationSettings: USE_MOCKS ? `${MOCK_BASE}/notification-settings.json` : `${API_BASE}/profile/notification-settings`,
+    vapidPublicKey: `${API_BASE}/notifications/vapid-public-key`,
+    subscribePush: `${API_BASE}/notifications/subscribe`,
     orders: USE_MOCKS ? `${MOCK_BASE}/orders.json` : `${API_BASE}/orders`,
 
     orderConfirmation: (orderId: string) =>

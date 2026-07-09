@@ -77,12 +77,18 @@ public sealed class CartService(IUnitOfWork uow) : ICartService
                 s => s.ProductId == dto.ProductId.Value, ct,
                 s => s.Size);
 
-            var sizeLabel = dto.SizeLabel?.Replace("EU ", "").Replace("US M ", "").Replace("UK ", "").Trim();
+            var sizeLabel = dto.SizeLabel?.Trim();
 
-            var stockItem = allStock.FirstOrDefault(s =>
-                !s.IsDeleted
-                && s.StatusItem == ItemStatus.Active
-                && (sizeLabel == null || s.Size?.SizeLabel == sizeLabel));
+            var activeStock = allStock
+                .Where(s => !s.IsDeleted && s.StatusItem == ItemStatus.Active)
+                .ToList();
+
+            // Match the exact size label the client sent (same format as sizes.SizeLabel);
+            // if no exact match (or no size given), fall back to the first active listing.
+            var stockItem = (!string.IsNullOrEmpty(sizeLabel)
+                    ? activeStock.FirstOrDefault(s => s.Size?.SizeLabel == sizeLabel)
+                    : null)
+                ?? activeStock.FirstOrDefault();
 
             stockItemId = stockItem?.Id;
         }

@@ -5,6 +5,7 @@ import { AppRouter } from './router/AppRouter';
 import { initResponsiveObserver } from './services/responsiveObserver';
 import { useThemeStore } from './store/themeStore';
 import { darkMuiTheme, lightMuiTheme } from './theme/muiTheme';
+import { LiveNotificationProvider } from './providers/LiveNotificationProvider';
 import '../src/styles/global.css'
 
 function App() {
@@ -18,7 +19,9 @@ function App() {
   return (
     <ThemeProvider theme={theme === 'dark' ? darkMuiTheme : lightMuiTheme}>
       <CssBaseline enableColorScheme />
-      <AppRouter />
+      <LiveNotificationProvider>
+        <AppRouter />
+      </LiveNotificationProvider>
     </ThemeProvider>
   );
 }

@@ -1,4 +1,4 @@
-﻿using System.Text.Json;
+using System.Text.Json;
 using System.Text.Json.Serialization;
 using Npgsql;
 
@@ -19,6 +19,11 @@ var jsonOpts = new JsonSerializerOptions
 {
     PropertyNameCaseInsensitive = true,
     NumberHandling = JsonNumberHandling.AllowReadingFromString
+};
+
+var esJsonOpts = new JsonSerializerOptions
+{
+    PropertyNamingPolicy = JsonNamingPolicy.CamelCase
 };
 Log("Waiting 30s for backend migrations...");
 await Task.Delay(TimeSpan.FromSeconds(30));
@@ -252,6 +257,102 @@ await Execute(conn, """
 
 Log("FK references fixed");
 
+// ── 4b. Generate baseline interactions (AI cold-start: views / favorites / orders) ──
+// Set-based + referential-safe: only references existing users/products/stock rows.
+// Makes the app "runnable on first key" with non-empty data for the recommender/reranker.
+Log("Generating baseline interactions (views / favorites / orders)...");
+
+await Execute(conn, """
+    INSERT INTO product_viewed ("UserId", "ProductId", "ViewCount")
+    SELECT u."Id", p."Id", (1 + floor(random() * 5))::int
+    FROM users u
+    CROSS JOIN LATERAL (
+        SELECT "Id" FROM products WHERE "IsDeleted" = false ORDER BY random() LIMIT 20
+    ) p
+    ON CONFLICT DO NOTHING;
+""");
+
+await Execute(conn, """
+    INSERT INTO user_favorites ("UserId", "ProductId", "IsDeleted", "CreatedAt")
+    SELECT u."Id", p."Id", false, now()
+    FROM users u
+    CROSS JOIN LATERAL (
+        SELECT "Id" FROM products WHERE "IsDeleted" = false ORDER BY random() LIMIT 8
+    ) p
+    ON CONFLICT DO NOTHING;
+""");
+
+// orders.StockItemId is UNIQUE (a unit sells once): pick DISTINCT active stock,
+// assign each a random buyer via LATERAL (per-row eval), then mark those Sold.
+await Execute(conn, """
+    WITH picked AS (
+        SELECT "Id", "Price" FROM stock_items
+        WHERE "IsDeleted" = false AND "StatusItem" = 1
+        ORDER BY random() LIMIT 1500
+    ), ins AS (
+        INSERT INTO orders ("Id", "BuyerId", "StockItemId", "Status", "TotalPrice", "IsDeleted", "CreatedAt", "CreatedBy")
+        SELECT gen_random_uuid(), usr."Id", si."Id", 3, si."Price", false,
+               now() - (random() * 180 || ' days')::interval, 'seed'
+        FROM picked si
+        CROSS JOIN LATERAL (SELECT "Id" FROM users WHERE "CreatedBy" = 'seed' ORDER BY random() LIMIT 1) usr
+        RETURNING "StockItemId"
+    )
+    UPDATE stock_items SET "StatusItem" = 2
+    WHERE "Id" IN (SELECT "StockItemId" FROM ins);
+""");
+
+Log("Generating auctions and bids...");
+await Execute(conn, """
+    WITH picked_auctions AS (
+        SELECT "Id", "Price", "SellerId",
+               (CASE WHEN random() > 0.5 THEN 1 ELSE 2 END) AS status,
+               (floor(random() * 6) + 1)::int AS bid_count
+        FROM stock_items
+        WHERE "IsDeleted" = false AND "StatusItem" = 1
+        ORDER BY random() LIMIT 500
+    ), ins_auctions AS (
+        INSERT INTO auctions ("Id", "StockItemId", "SellerId", "StartPrice", "CurrentPrice", "Status", "StartsAt", "EndsAt", "IsDeleted", "CreatedAt", "CreatedBy", "ReserveMet", "BidCount", "ExtensionCount")
+        SELECT gen_random_uuid(), pa."Id", pa."SellerId",
+               round((pa."Price" * 0.8)::numeric, 2),
+               round((pa."Price" * (0.8 + random() * 0.5))::numeric, 2),
+               pa.status,
+               now() - ((random() * 25 + 1) || ' days')::interval,
+               -- Active auctions must end in the future, ended ones in the past.
+               CASE WHEN pa.status = 1
+                    THEN now() + ((random() * 10 + 0.05) || ' days')::interval
+                    ELSE now() - ((random() * 5 + 0.05) || ' days')::interval
+               END,
+               false, now(), 'seed', true, pa.bid_count, 0
+        FROM picked_auctions pa
+        RETURNING "Id", "StartPrice", "CurrentPrice", "StartsAt", "EndsAt", "BidCount", "StockItemId"
+    ), ins_bids AS (
+        -- Build a realistic ascending bid history: amounts interpolate from StartPrice
+        -- up to CurrentPrice (the newest, highest bid), each placed by a random bot user
+        -- (never the tester), timestamped in ascending order ending at the auction close.
+        INSERT INTO bids ("Id", "AuctionId", "BidderId", "Amount", "PlacedAt", "IsDeleted", "CreatedAt", "CreatedBy", "IsAutoBid", "TriggeredExtension")
+        SELECT gen_random_uuid(),
+               a."Id",
+               usr."Id",
+               CASE WHEN a."BidCount" <= 1 THEN a."CurrentPrice"
+                    ELSE round((a."StartPrice"
+                        + (a."CurrentPrice" - a."StartPrice") * ((g.n - 1.0) / (a."BidCount" - 1.0)))::numeric, 2)
+               END,
+               LEAST(now(), a."EndsAt")
+                    - ((a."BidCount" - g.n) * 6 || ' hours')::interval
+                    - ((random() * 180) || ' minutes')::interval,
+               false, now(), 'seed',
+               (random() > 0.7),
+               false
+        FROM ins_auctions a
+        CROSS JOIN LATERAL generate_series(1, a."BidCount") AS g(n)
+        CROSS JOIN LATERAL (SELECT "Id" FROM users WHERE "CreatedBy" = 'seed' ORDER BY random() LIMIT 1) usr
+    )
+    UPDATE stock_items SET "StatusItem" = 3
+    WHERE "Id" IN (SELECT "StockItemId" FROM ins_auctions);
+""");
+
+Log("Baseline interactions generated");
+
 // ── 5. Bulk index products into Elasticsearch ──
 Log("Indexing products into Elasticsearch...");
 var elasticUrl = Environment.GetEnvironmentVariable("ELASTICSEARCH_URL") ?? "http://localhost:9200";
@@ -268,21 +369,21 @@ try
             "settings": { "number_of_shards": 1, "number_of_replicas": 0 },
             "mappings": {
                 "properties": {
-                    "Id": { "type": "keyword" },
-                    "Title": { "type": "text", "analyzer": "standard" },
-                    "Brand": { "type": "keyword" },
-                    "Category": { "type": "keyword" },
-                    "Color": { "type": "keyword" },
-                    "Material": { "type": "keyword" },
-                    "Gender": { "type": "keyword" },
-                    "Fit": { "type": "keyword" },
-                    "RetailPrice": { "type": "double" },
-                    "LowestAsk": { "type": "double" },
-                    "Image": { "type": "keyword", "index": false },
-                    "ProductUniversalId": { "type": "keyword" },
-                    "ShortDescription": { "type": "text" },
-                    "SoldCount": { "type": "integer" },
-                    "IsNew": { "type": "boolean" }
+                    "id": { "type": "keyword" },
+                    "title": { "type": "text", "analyzer": "standard" },
+                    "brand": { "type": "keyword" },
+                    "category": { "type": "keyword" },
+                    "color": { "type": "keyword" },
+                    "material": { "type": "keyword" },
+                    "gender": { "type": "keyword" },
+                    "fit": { "type": "keyword" },
+                    "retailPrice": { "type": "double" },
+                    "lowestAsk": { "type": "double" },
+                    "image": { "type": "keyword", "index": false },
+                    "productUniversalId": { "type": "keyword" },
+                    "shortDescription": { "type": "text" },
+                    "soldCount": { "type": "integer" },
+                    "isNew": { "type": "boolean" }
                 }
             }
         }
@@ -385,7 +486,7 @@ try
             IsNew = isNew,
             ReleaseDate = releaseDate,
             IndexedAt = DateTime.UtcNow
-        }));
+        }, esJsonOpts));
 
         batchSize++;
         if (batchSize >= 500)

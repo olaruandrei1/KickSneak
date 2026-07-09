@@ -13,4 +13,6 @@ COPY . .
 
 EXPOSE 5050
 
-CMD ["gunicorn", "--bind", "0.0.0.0:5050", "--workers", "2", "--timeout", "120", "run:app"]
+# Single worker: /api/train hot-reloads models in-process, so one serving
+# process keeps recommend/rerank consistent after a retrain.
+CMD ["gunicorn", "--bind", "0.0.0.0:5050", "--workers", "1", "--timeout", "120", "run:app"]

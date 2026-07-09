@@ -49,6 +49,8 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
     public DbSet<AutoBid> AutoBids => Set<AutoBid>();
 
     public DbSet<Notification> Notifications => Set<Notification>();
+    public DbSet<NotificationSetting> NotificationSettings => Set<NotificationSetting>();
+    public DbSet<NotificationBroadcast> NotificationBroadcasts => Set<NotificationBroadcast>();
 
     public DbSet<AppTask> Tasks => Set<AppTask>();
     public DbSet<TaskComment> TaskComments => Set<TaskComment>();

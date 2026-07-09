@@ -35,9 +35,16 @@ export interface NavbarCategory {
 }
 
 export interface SizeOption {
-  system:     string;
+  sizeId?:    string;
+  system?:    string;
   label:      string;
   price:      number | null;
+  us?:        string;
+  eu?:        string;
+  uk?:        string;
+  cm?:        string;
+  kr?:        string;
+  available?: boolean;
 }
 
 export interface ColorwayOption {
@@ -67,6 +74,7 @@ export interface ProductDetail {
   breadcrumbs:  { label: string; href: string }[];
   colorways:    ColorwayOption[];
   sizes:        SizeOption[];
+  preferredSizeId?: string;
   priceHistory: PriceHistoryPoint[];
   relatedProducts: ProductItem[];
   recentlyViewed:  ProductItem[];

@@ -1,4 +1,4 @@
-﻿using KickSneak.Application.Contracts.Persistence;
+using KickSneak.Application.Contracts.Persistence;
 using KickSneak.Persistence.Context;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
@@ -14,6 +14,15 @@ public class Repository<T>(AppDbContext context) : IRepository<T> where T : clas
 
     public async Task<T?> GetFirstOrDefaultAsync(Expression<Func<T, bool>> predicate, CancellationToken ct = default)
     => await _dbSet.FirstOrDefaultAsync(predicate, CancellationToken.None);
+
+    public async Task<T?> GetFirstOrDefaultAsync(Expression<Func<T, bool>> predicate, CancellationToken ct = default, params Expression<Func<T, object>>[] includes)
+    {
+        IQueryable<T> query = _dbSet;
+        foreach (var include in includes)
+            query = query.Include(include);
+
+        return await query.FirstOrDefaultAsync(predicate, CancellationToken.None);
+    }
 
     public async Task<IReadOnlyList<T>> GetAllAsync(CancellationToken ct = default)
     => await _dbSet.ToListAsync(CancellationToken.None);
@@ -57,6 +66,33 @@ public class Repository<T>(AppDbContext context) : IRepository<T> where T : clas
         return (items, total);
     }
 
+    public async Task<(IReadOnlyList<T> Items, int TotalCount)> GetPaginatedOrderedAsync<TKey>(
+        Expression<Func<T, bool>>? predicate,
+        Expression<Func<T, TKey>> orderBy,
+        bool descending,
+        int page = 1,
+        int pageSize = 20,
+        CancellationToken ct = default,
+        params Expression<Func<T, object>>[] includes
+    )
+    {
+        IQueryable<T> query = _dbSet;
+
+        foreach (var include in includes)
+            query = query.Include(include);
+
+        if (predicate is not null)
+            query = query.Where(predicate);
+
+        var total = await query.CountAsync(CancellationToken.None);
+
+        query = descending ? query.OrderByDescending(orderBy) : query.OrderBy(orderBy);
+
+        var items = await query.Skip((page - 1) * pageSize).Take(pageSize).ToListAsync(ct);
+
+        return (items, total);
+    }
+
     public async Task AddAsync(T entity, CancellationToken ct = default)
     => await _dbSet.AddAsync(entity, CancellationToken.None);
 
@@ -88,15 +124,7 @@ public class Repository<T>(AppDbContext context) : IRepository<T> where T : clas
         return await query.Where(predicate).ToListAsync(CancellationToken.None);
     }
 
-    public async Task<T?> GetFirstOrDefaultAsync(Expression<Func<T, bool>> predicate, CancellationToken ct = default, params Expression<Func<T, object>>[] includes)
-    {
-        IQueryable<T> query = _dbSet;
 
-        foreach (var include in includes)
-            query = query.Include(include);
-
-        return await query.FirstOrDefaultAsync(predicate, CancellationToken.None);
-    }
 
     public async Task<IReadOnlyList<T>> GetAllAsync(CancellationToken ct = default, params Expression<Func<T, object>>[] includes)
     {

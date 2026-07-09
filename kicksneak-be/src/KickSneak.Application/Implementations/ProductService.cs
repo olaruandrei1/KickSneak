@@ -1,12 +1,14 @@
-﻿using KickSneak.Application.Contracts.Application;
+﻿using System.Linq.Expressions;
+using KickSneak.Application.Contracts.Application;
 using KickSneak.Application.Contracts.Persistence;
 using KickSneak.Domain.DTOs.Products;
 using KickSneak.Domain.Entities.Catalog;
 using KickSneak.Domain.Enums;
+using KickSneak.Infrastructure.Contracts;
 
 namespace KickSneak.Application.Implementations;
 
-public sealed class ProductService(IUnitOfWork uow) : IProductService
+public sealed class ProductService(IUnitOfWork uow, IAiRecommendationClient aiClient) : IProductService
 {
     public async Task<ProductsResponseDto> GetNewProductsAsync(CancellationToken ct = default)
     {
@@ -39,6 +41,24 @@ public sealed class ProductService(IUnitOfWork uow) : IProductService
             var user = await uow.Users.GetFirstOrDefaultAsync(u => u.FirebaseUid == firebaseUid, ct);
             if (user is not null)
             {
+                // AI-personalized recommendations (best-effort; falls through to DB logic on empty/failure).
+                var aiIds = await aiClient.GetRecommendedProductIdsAsync(user.Id.ToString(), 6, ct);
+                if (aiIds.Count > 0)
+                {
+                    var aiProducts = await uow.Products.GetAsync(
+                        p => aiIds.Contains(p.Id) && !p.IsDeleted, ct,
+                        p => p.Brand, p => p.Photos, p => p.StockItems, p => p.Category);
+
+                    var ordered = aiIds
+                        .Select(id => aiProducts.FirstOrDefault(p => p.Id == id))
+                        .Where(p => p is not null)
+                        .Cast<Product>()
+                        .ToList();
+
+                    if (ordered.Count > 0)
+                        return new RecommendedProductsDto("Recommended For You", ordered.Select(MapToItemDto).ToList());
+                }
+
                 var viewed = await uow.ProductViews.GetAsync(v => v.UserId == user.Id, ct);
                 var viewedIds = viewed.Select(v => v.ProductId).ToHashSet();
 
@@ -106,6 +126,93 @@ public sealed class ProductService(IUnitOfWork uow) : IProductService
         );
     }
 
+    // Lower-cased, de-duplicated, non-empty names; returns null when there is nothing to filter on.
+    private static string[]? NormalizeNames(string[]? values)
+    {
+        var normalized = values?
+            .Where(v => !string.IsNullOrWhiteSpace(v))
+            .Select(v => v.Trim().ToLowerInvariant())
+            .Distinct()
+            .ToArray();
+        return normalized is { Length: > 0 } ? normalized : null;
+    }
+
+    public async Task<ProductsPagedResponseDto> BrowseProductsAsync(ProductBrowseQuery query, CancellationToken ct = default)
+    {
+        var q = string.IsNullOrWhiteSpace(query.Q) || query.Q!.Trim().Length < 2
+            ? null
+            : query.Q!.Trim().ToLowerInvariant();
+
+        // Filters arrive as display names (multi-select) from the storefront UI.
+        var brandNames = NormalizeNames(query.Brand);
+        var categoryNames = NormalizeNames(query.Category);
+        var colorNames = NormalizeNames(query.Color);
+        var genderNames = NormalizeNames(query.Gender);
+        var min = query.MinPrice;
+        var max = query.MaxPrice;
+
+        Expression<Func<Product, bool>> predicate = p =>
+            !p.IsDeleted
+            && (q == null
+                || (p.Title != null && p.Title.ToLower().Contains(q))
+                || (p.Brand != null && p.Brand.Name != null && p.Brand.Name.ToLower().Contains(q))
+                || (p.Category != null && p.Category.Name != null && p.Category.Name.ToLower().Contains(q)))
+            && (brandNames == null || (p.Brand != null && p.Brand.Name != null && brandNames.Contains(p.Brand.Name.ToLower())))
+            && (categoryNames == null || (p.Category != null && p.Category.Name != null && categoryNames.Contains(p.Category.Name.ToLower())))
+            && (colorNames == null || (p.Color != null && p.Color.Name != null && colorNames.Contains(p.Color.Name.ToLower())))
+            && (genderNames == null || (p.Gender != null && p.Gender.Name != null && genderNames.Contains(p.Gender.Name.ToLower())))
+            && ((min == null && max == null)
+                || p.StockItems.Any(s => !s.IsDeleted
+                    && (min == null || s.Price >= min)
+                    && (max == null || s.Price <= max)));
+
+        // Default order: newest first (CreatedAt desc). Price sorts are applied per-page below.
+        var (products, total) = await uow.Products.GetPaginatedOrderedAsync(
+            predicate,
+            p => p.CreatedAt,
+            descending: true,
+            query.Page, query.PageSize, ct,
+            p => p.Brand, p => p.Photos, p => p.StockItems, p => p.Category);
+
+        var items = products.Select(MapToItemDto).ToList();
+
+        items = query.Sort switch
+        {
+            "price_asc" => items.OrderBy(i => i.Price).ToList(),
+            "price_desc" => items.OrderByDescending(i => i.Price).ToList(),
+            _ => items
+        };
+
+        // Facets: full lookup lists so the filter UI can render all options.
+        var brands = (await uow.Brands.GetAsync(b => !b.IsDeleted, ct))
+            .Select(b => new FacetItemDto(b.Id, b.Name ?? string.Empty)).OrderBy(f => f.Name).ToList();
+        var categories = (await uow.Categories.GetAsync(c => !c.IsDeleted, ct))
+            .Select(c => new FacetItemDto(c.Id, c.Name ?? string.Empty)).OrderBy(f => f.Name).ToList();
+        var colors = (await uow.Colors.GetAsync(c => !c.IsDeleted, ct))
+            .Select(c => new FacetItemDto(c.Id, c.Name ?? string.Empty)).OrderBy(f => f.Name).ToList();
+        var genders = (await uow.Genders.GetAsync(g => !g.IsDeleted, ct))
+            .Select(g => new FacetItemDto(g.Id, g.Name ?? string.Empty)).OrderBy(f => f.Name).ToList();
+
+        var activeStock = await uow.StockItems.GetAsync(s => !s.IsDeleted && s.StatusItem == ItemStatus.Active, ct);
+        var priceRange = activeStock.Count > 0
+            ? new PriceRangeDto(activeStock.Min(s => s.Price), activeStock.Max(s => s.Price))
+            : new PriceRangeDto(0, 0);
+
+        var facets = new ProductFacetsDto(brands, categories, colors, genders, priceRange);
+
+        // Detected: prefill hint when the query text matches a brand / category name.
+        DetectedFiltersDto? detected = null;
+        if (q != null)
+        {
+            var brandMatch = brands.FirstOrDefault(b => b.Name.ToLowerInvariant().Contains(q));
+            var catMatch = categories.FirstOrDefault(c => c.Name.ToLowerInvariant().Contains(q));
+            if (brandMatch is not null || catMatch is not null)
+                detected = new DetectedFiltersDto(brandMatch?.Id, brandMatch?.Name, catMatch?.Id);
+        }
+
+        return new ProductsPagedResponseDto(items, total, query.Page, query.PageSize, facets, detected);
+    }
+
     public async Task<ProductsResponseDto> SearchProductsAsync(string query, CancellationToken ct = default)
     {
         var q = query.ToLowerInvariant();
@@ -134,13 +241,38 @@ public sealed class ProductService(IUnitOfWork uow) : IProductService
 
         var sizes = stockItems
             .Where(s => s.Size is not null)
-            .GroupBy(s => s.Size!.SizeEu ?? string.Empty)
-            .Select(g => new SizeOptionDto(
-                System: "EU",
-                Label: $"EU {g.Key}",
-                Price: g.Min(s => s.Price),
-                XpressShip: false
-            )).ToList();
+            .GroupBy(s => s.Size!.Id)
+            .Select(g =>
+            {
+                var sz = g.First().Size!;
+                return new SizeOptionDto(
+                    SizeId: sz.Id,
+                    Label: sz.SizeLabel ?? $"EU {sz.SizeEu}",
+                    System: "EU",
+                    Us: sz.SizeUs,
+                    Eu: sz.SizeEu,
+                    Uk: sz.SizeUk,
+                    Cm: sz.SizeCm?.ToString("0.#"),
+                    Price: g.Min(s => s.Price),
+                    Available: g.Any(s => s.StatusItem == ItemStatus.Active),
+                    XpressShip: false
+                );
+            })
+            .OrderBy(s => s.Eu)
+            .ToList();
+
+        // B17: preselect the user's saved footwear size (matched on EU) if in stock
+        Guid? preferredSizeId = null;
+        if (firebaseUid is not null)
+        {
+            var prefUser = await uow.Users.GetFirstOrDefaultAsync(u => u.FirebaseUid == firebaseUid, ct);
+            if (prefUser is not null)
+            {
+                var pref = await uow.UserSizePreferences.GetFirstOrDefaultAsync(p => p.UserId == prefUser.Id, ct);
+                if (pref?.FootwearEU is { Length: > 0 } prefEu)
+                    preferredSizeId = sizes.FirstOrDefault(s => s.Eu == prefEu)?.SizeId;
+            }
+        }
 
         var colorways = (await uow.Products.GetAsync(
             p => p.BrandId == product.BrandId && p.Id != id, ct,
@@ -221,6 +353,7 @@ public sealed class ProductService(IUnitOfWork uow) : IProductService
             Sold: stockItems.Count(s => s.StatusItem == ItemStatus.Sold),
             IsNew: product.ReleaseDate >= DateTime.UtcNow.AddMonths(-3),
             Sizes: sizes,
+            PreferredSizeId: preferredSizeId,
             Colorways: colorways,
             PriceHistory: priceHistory,
             RelatedProducts: related,

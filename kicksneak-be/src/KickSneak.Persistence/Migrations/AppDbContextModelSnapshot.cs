@@ -1106,6 +1106,9 @@ namespace KickSneak.Persistence.Migrations
                     b.Property<string>("CreatedBy")
                         .HasColumnType("text");
 
+                    b.Property<string>("Href")
+                        .HasColumnType("text");
+
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("boolean");
 
@@ -1134,6 +1137,69 @@ namespace KickSneak.Persistence.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("notifications", (string)null);
+                });
+
+            modelBuilder.Entity("KickSneak.Domain.Entities.Notifications.NotificationBroadcast", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Body")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("text");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("boolean");
+
+                    b.Property<DateTime?>("ModifiedAt")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<string>("ModifiedBy")
+                        .HasColumnType("text");
+
+                    b.Property<int>("RecipientCount")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Target")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Title")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Type")
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("notification_broadcasts", (string)null);
+                });
+
+            modelBuilder.Entity("KickSneak.Domain.Entities.Notifications.NotificationSetting", b =>
+                {
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid");
+
+                    b.Property<bool>("Marketing")
+                        .HasColumnType("boolean");
+
+                    b.Property<bool>("NewReleases")
+                        .HasColumnType("boolean");
+
+                    b.Property<bool>("OrderUpdates")
+                        .HasColumnType("boolean");
+
+                    b.Property<bool>("PriceDrop")
+                        .HasColumnType("boolean");
+
+                    b.HasKey("UserId");
+
+                    b.ToTable("notification_settings", (string)null);
                 });
 
             modelBuilder.Entity("KickSneak.Domain.Entities.Sellers.Affiliate", b =>
@@ -2003,6 +2069,17 @@ namespace KickSneak.Persistence.Migrations
                 });
 
             modelBuilder.Entity("KickSneak.Domain.Entities.Notifications.Notification", b =>
+                {
+                    b.HasOne("KickSneak.Domain.Entities.Users.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("KickSneak.Domain.Entities.Notifications.NotificationSetting", b =>
                 {
                     b.HasOne("KickSneak.Domain.Entities.Users.User", "User")
                         .WithMany()

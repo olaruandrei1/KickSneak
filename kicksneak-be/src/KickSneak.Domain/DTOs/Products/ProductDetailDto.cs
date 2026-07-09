@@ -1,6 +1,17 @@
 ﻿namespace KickSneak.Domain.DTOs.Products;
 
-public record SizeOptionDto(string System, string Label, double? Price, bool XpressShip);
+public record SizeOptionDto(
+    Guid SizeId,
+    string Label,
+    string System,     // default display system ("EU")
+    string? Us,
+    string? Eu,
+    string? Uk,
+    string? Cm,
+    double? Price,
+    bool Available,
+    bool XpressShip
+);
 public record ColorwayOptionDto(Guid Id, string Name, string Image, double Price);
 public record PriceHistoryPointDto(string Date, double Price);
 
@@ -45,6 +56,7 @@ public record ProductDetailDto(
     int Sold,
     bool IsNew,
     List<SizeOptionDto> Sizes,
+    Guid? PreferredSizeId,
     List<ColorwayOptionDto> Colorways,
     List<PriceHistoryPointDto> PriceHistory,
     List<ProductItemDto> RelatedProducts,

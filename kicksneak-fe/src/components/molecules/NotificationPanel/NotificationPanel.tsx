@@ -98,9 +98,12 @@ export const NotificationPanel = ({ variant, onClose }: NotificationPanelProps) 
                         >
                             <span
                                 className={styles.typeIcon}
-                                style={{ color: TYPE_COLOR[n.type], background: `${TYPE_COLOR[n.type]}18` }}
+                                style={{
+                                    color: TYPE_COLOR[n.type] ?? TYPE_COLOR.system,
+                                    background: `${TYPE_COLOR[n.type] ?? TYPE_COLOR.system}18`,
+                                }}
                             >
-                                {TYPE_ICON[n.type]}
+                                {TYPE_ICON[n.type] ?? TYPE_ICON.system}
                             </span>
                             <div className={styles.itemContent}>
                                 <span className={styles.itemTitle}>{n.title}</span>

@@ -83,10 +83,16 @@ public sealed class AuctionCacheService(IConnectionMultiplexer redis) : IAuction
 
     public async Task AddBidAsync(Guid auctionId, BidDto bid, CancellationToken ct = default)
     {
+        var key = BidsKey(auctionId);
         var json = JsonSerializer.Serialize(bid);
 
-        await _db.ListLeftPushAsync(BidsKey(auctionId), json);
-        await _db.ListTrimAsync(BidsKey(auctionId), 0, 49); 
+        await _db.ListLeftPushAsync(key, json);
+        await _db.ListTrimAsync(key, 0, 49);
+
+        // Keep the bids list on the same lifecycle as the auction state key.
+        // Without this the list never expires, so a stale bid can linger after the
+        // state key is gone and cause phantom "self_bid" rejections.
+        await _db.KeyExpireAsync(key, TimeSpan.FromDays(30));
     }
 
     public async Task<List<BidDto>> GetRecentBidsAsync(Guid auctionId, int count = 50, CancellationToken ct = default)

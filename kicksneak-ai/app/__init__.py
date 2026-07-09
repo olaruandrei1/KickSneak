@@ -1,8 +1,9 @@
 import logging
 
 from flask import Flask
+from flask_cors import CORS
 
-from app.routes import recommend_bp, rerank_bp
+from app.routes import recommend_bp, rerank_bp, train_bp
 from app.services import recommend_service, rerank_service
 
 
@@ -10,9 +11,11 @@ def create_app() -> Flask:
     _configure_logging()
 
     app = Flask(__name__)
+    CORS(app)  # allow browser calls from the frontend (rerank/recommend)
 
     app.register_blueprint(recommend_bp)
     app.register_blueprint(rerank_bp)
+    app.register_blueprint(train_bp)
 
     @app.route("/health", methods=["GET"])
     def health():

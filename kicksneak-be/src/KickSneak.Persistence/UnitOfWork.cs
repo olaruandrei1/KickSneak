@@ -66,6 +66,8 @@ public class UnitOfWork(AppDbContext context, RlsContext rlsContext) : IUnitOfWo
     public IRepository<AutoBid> AutoBids { get; } = new Repository<AutoBid>(context);
 
     public IRepository<Notification> Notifications { get; } = new Repository<Notification>(context);
+    public IRepository<NotificationSetting> NotificationSettings { get; } = new Repository<NotificationSetting>(context);
+    public IRepository<NotificationBroadcast> NotificationBroadcasts { get; } = new Repository<NotificationBroadcast>(context);
 
     public IRepository<AppTask> Tasks { get; } = new Repository<AppTask>(context);
     public IRepository<TaskComment> TaskComments { get; } = new Repository<TaskComment>(context);
@@ -90,23 +92,53 @@ public class UnitOfWork(AppDbContext context, RlsContext rlsContext) : IUnitOfWo
 
     public async Task ExecuteInTransactionAsync(Func<Task> action, CancellationToken ct = default)
     {
-        await using var transaction = await context.Database.BeginTransactionAsync(ct);
+        var strategy = context.Database.CreateExecutionStrategy();
 
-        try
+        await strategy.ExecuteAsync(async () =>
         {
-            await ApplyRlsAsync(ct);
+            await using var transaction = await context.Database.BeginTransactionAsync(ct);
 
-            await action();
+            try
+            {
+                await ApplyRlsAsync(ct);
 
-            await context.SaveChangesAsync(ct);
+                await action();
 
-            await transaction.CommitAsync(ct);
-        }
-        catch
+                await context.SaveChangesAsync(ct);
+
+                await transaction.CommitAsync(ct);
+            }
+            catch
+            {
+                await transaction.RollbackAsync(ct);
+                throw;
+            }
+        });
+    }
+
+    public async Task ExecuteElevatedAsync(Func<Task> action, CancellationToken ct = default)
+    {
+        var strategy = context.Database.CreateExecutionStrategy();
+
+        await strategy.ExecuteAsync(async () =>
         {
-            await transaction.RollbackAsync(ct);
-            throw;
-        }
+            await using var transaction = await context.Database.BeginTransactionAsync(ct);
+
+            try
+            {
+                // No ApplyRlsAsync here on purpose: stays as ks_owner (bypasses RLS).
+                await action();
+
+                await context.SaveChangesAsync(ct);
+
+                await transaction.CommitAsync(ct);
+            }
+            catch
+            {
+                await transaction.RollbackAsync(ct);
+                throw;
+            }
+        });
     }
 
     public async ValueTask DisposeAsync()

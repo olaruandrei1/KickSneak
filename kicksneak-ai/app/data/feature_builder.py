@@ -39,7 +39,7 @@ class FeatureBuilder:
         category_ids = [str(p["category_id"] or "unknown") for p in products]
         gender_ids = [str(p["gender_id"] or "unknown") for p in products]
 
-        self._user_encoder.fit(user_ids)
+        self._user_encoder.fit(user_ids if user_ids else ["__placeholder__"])
         self._product_encoder.fit(product_ids)
         self._brand_encoder.fit(brand_ids)
         self._category_encoder.fit(category_ids)

@@ -48,6 +48,9 @@ class RecommendService:
         if not self._is_loaded:
             return self._fallback_trending(limit)
 
+        # Frontend sends the Firebase UID → map to the DB Guid used during training.
+        user_id = db_client.resolve_user_id(user_id) or user_id
+
         user_idx = self._feature_builder.encode_user(user_id)
         if user_idx is None:
             return self._cold_start(user_id, limit)

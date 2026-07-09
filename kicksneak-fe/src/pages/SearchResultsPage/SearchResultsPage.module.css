@@ -67,6 +67,47 @@
     gap: 10px;
 }
 
+/* Filter change animation */
+.gridWrap {
+    position: relative;
+}
+
+.filterBar {
+    position: absolute;
+    top: -6px;
+    left: 0;
+    right: 0;
+    height: 3px;
+    border-radius: 3px;
+    overflow: hidden;
+    background: color-mix(in srgb, var(--color-secondary) 18%, transparent);
+    z-index: 2;
+}
+
+.filterBar::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 40%;
+    border-radius: 3px;
+    background: var(--color-secondary);
+    animation: filterBarSlide 1s ease-in-out infinite;
+}
+
+@keyframes filterBarSlide {
+    0% { transform: translateX(-100%); }
+    100% { transform: translateX(350%); }
+}
+
+.gridFading {
+    opacity: 0.35;
+    filter: saturate(0.85);
+    transition: opacity 0.25s ease, filter 0.25s ease;
+    pointer-events: none;
+}
+
 /* Infinite scroll */
 .sentinel {
     height: 40px;

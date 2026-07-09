@@ -35,9 +35,10 @@ export const useCartStore = create<CartState>((set, get) => ({
             });
             localStorageService.set('cart_items', res.data.items);
             set({ items: res.data.items });
-            useNotificationStore.getState().addNew({ id: Date.now().toString(), type: 'system', title: 'Error', message: 'Failed to update cart.', href: '/cart', read: false, createdAt: new Date().toISOString() });
         } catch {
             localStorageService.set('cart_items', get().items);
+            set({ items: get().items });
+            useNotificationStore.getState().addNew({ id: Date.now().toString(), type: 'system', title: 'Error', message: 'Failed to update cart.', href: '/cart', read: false, createdAt: new Date().toISOString() });
         }
     },
 
@@ -50,9 +51,10 @@ export const useCartStore = create<CartState>((set, get) => ({
             const res = await httpClient.delete<{ items: CartItem[] }>(ApiRoutes.cartRemove(id));
             localStorageService.set('cart_items', res.data.items);
             set({ items: res.data.items });
-            useNotificationStore.getState().addNew({ id: Date.now().toString(), type: 'system', title: 'Error', message: 'Failed to update cart.', href: '/cart', read: false, createdAt: new Date().toISOString() });
         } catch {
             localStorageService.set('cart_items', get().items);
+            set({ items: get().items });
+            useNotificationStore.getState().addNew({ id: Date.now().toString(), type: 'system', title: 'Error', message: 'Failed to remove from cart.', href: '/cart', read: false, createdAt: new Date().toISOString() });
         }
     },
 

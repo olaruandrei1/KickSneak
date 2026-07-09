@@ -14,6 +14,7 @@ import styles from './FiltersSidebar.module.css';
 interface FiltersSidebarProps {
     filters: FilterState;
     onChange: (filters: FilterState) => void;
+    facets?: any;
 }
 
 type SectionKey = 'category' | 'gender' | 'brands' | 'activity' | 'color' | 'price';
@@ -22,6 +23,10 @@ export const FiltersSidebar = ({ filters, onChange, facets }: FiltersSidebarProp
     const activeActivities = facets?.activities?.map((a: any) => a.name) || FILTER_OPTIONS.activities;
     const activeColors = facets?.colors?.map((c: any) => c.name) || FILTER_OPTIONS.colors.map((c: any) => c.label);
     const displayedColors = FILTER_OPTIONS.colors.filter((c: any) => activeColors.includes(c.label));
+    const activeCategories = facets?.categories?.map((c: any) => c.name) || FILTER_OPTIONS.categories;
+    const activeGenders = facets?.genders?.map((g: any) => g.name) || FILTER_OPTIONS.genders;
+    const activeBrands = facets?.brands?.map((b: any) => b.name) || FILTER_OPTIONS.brands;
+
     const [openSection, setOpenSection] = useState<SectionKey | null>('category');
 
     const toggle = (section: SectionKey) =>
@@ -48,6 +53,15 @@ export const FiltersSidebar = ({ filters, onChange, facets }: FiltersSidebarProp
         onChange({ ...filters, [key]: updated });
     };
 
+    // Category & Gender are single-select: pick one, or clear by re-clicking it.
+    const toggleSingle = (
+        key: 'categories' | 'genders',
+        value: string
+    ) => {
+        const updated = filters[key].includes(value) ? [] : [value];
+        onChange({ ...filters, [key]: updated });
+    };
+
     const sxSwitch = {
         '& .MuiSwitch-switchBase.Mui-checked': { color: 'var(--color-secondary)' },
         '& .MuiSwitch-switchBase.Mui-checked + .MuiSwitch-track': { backgroundColor: 'var(--color-secondary)' },
@@ -64,21 +78,11 @@ export const FiltersSidebar = ({ filters, onChange, facets }: FiltersSidebarProp
         '& .MuiSlider-thumb': {
             backgroundColor: 'var(--color-accent)',
             width: 14, height: 14,
-            '&:hover': { boxShadow: '0 0 0 6px rgba(64,138,113,0.16)' },
+            '&:hover': { boxShadow: '0 0 0 6px rgba(163,197,27,0.16)' },
         },
         '& .MuiSlider-track': { backgroundColor: 'var(--color-secondary)', border: 'none' },
         '& .MuiSlider-rail': { backgroundColor: 'var(--color-border)' },
     };
-
-    const SectionHeader = ({ label, section }: { label: string; section: SectionKey }) => (
-        <button className={styles.sectionHeader} onClick={() => toggle(section)}>
-            <span className={styles.sectionLabel}>{label}</span>
-            {openSection === section
-                ? <ExpandLess sx={{ fontSize: 18, color: 'var(--color-text-muted)' }} />
-                : <ExpandMore sx={{ fontSize: 18, color: 'var(--color-text-muted)' }} />
-            }
-        </button>
-    );
 
     return (
         <aside className={styles.sidebar}>
@@ -88,14 +92,17 @@ export const FiltersSidebar = ({ filters, onChange, facets }: FiltersSidebarProp
             <Divider sx={{ borderColor: 'var(--color-border)' }} />
 
             {/* Category */}
-            <SectionHeader label="CATEGORY" section="category" />
+            <button className={styles.sectionHeader} onClick={() => toggle('category')}>
+                <span className={styles.sectionLabel}>CATEGORY</span>
+                {openSection === 'category' ? <ExpandLess sx={{ fontSize: 18, color: 'var(--color-text-muted)' }} /> : <ExpandMore sx={{ fontSize: 18, color: 'var(--color-text-muted)' }} />}
+            </button>
             <Collapse in={openSection === 'category'}>
                 <div className={styles.optionList}>
-                    {FILTER_OPTIONS.categories.map((cat) => (
+                    {activeCategories.map((cat: string) => (
                         <button
                             key={cat}
                             className={`${styles.optionItem} ${filters.categories.includes(cat) ? styles.optionActive : ''}`}
-                            onClick={() => toggleMulti('categories', cat)}
+                            onClick={() => toggleSingle('categories', cat)}
                         >
                             {cat}
                         </button>
@@ -105,17 +112,20 @@ export const FiltersSidebar = ({ filters, onChange, facets }: FiltersSidebarProp
             <Divider sx={{ borderColor: 'var(--color-border)' }} />
 
             {/* Gender */}
-            <SectionHeader label="GENDER" section="gender" />
+            <button className={styles.sectionHeader} onClick={() => toggle('gender')}>
+                <span className={styles.sectionLabel}>GENDER</span>
+                {openSection === 'gender' ? <ExpandLess sx={{ fontSize: 18, color: 'var(--color-text-muted)' }} /> : <ExpandMore sx={{ fontSize: 18, color: 'var(--color-text-muted)' }} />}
+            </button>
             <Collapse in={openSection === 'gender'}>
                 <div className={styles.checkList}>
-                    {FILTER_OPTIONS.genders.map((g) => (
+                    {activeGenders.map((g: string) => (
                         <FormControlLabel
                             key={g}
                             control={
                                 <Checkbox
                                     size="small"
                                     checked={filters.genders.includes(g)}
-                                    onChange={() => toggleMulti('genders', g)}
+                                    onChange={() => toggleSingle('genders', g)}
                                     sx={sxCheckbox}
                                 />
                             }
@@ -127,10 +137,13 @@ export const FiltersSidebar = ({ filters, onChange, facets }: FiltersSidebarProp
             <Divider sx={{ borderColor: 'var(--color-border)' }} />
 
             {/* Brands */}
-            <SectionHeader label="BRANDS" section="brands" />
+            <button className={styles.sectionHeader} onClick={() => toggle('brands')}>
+                <span className={styles.sectionLabel}>BRANDS</span>
+                {openSection === 'brands' ? <ExpandLess sx={{ fontSize: 18, color: 'var(--color-text-muted)' }} /> : <ExpandMore sx={{ fontSize: 18, color: 'var(--color-text-muted)' }} />}
+            </button>
             <Collapse in={openSection === 'brands'}>
                 <div className={`${styles.checkList} ${styles.scrollable}`}>
-                    {FILTER_OPTIONS.brands.map((b) => (
+                    {activeBrands.map((b: string) => (
                         <FormControlLabel
                             key={b}
                             control={
@@ -149,7 +162,10 @@ export const FiltersSidebar = ({ filters, onChange, facets }: FiltersSidebarProp
             <Divider sx={{ borderColor: 'var(--color-border)' }} />
 
             {/* Activity */}
-            <SectionHeader label="ACTIVITY" section="activity" />
+            <button className={styles.sectionHeader} onClick={() => toggle('activity')}>
+                <span className={styles.sectionLabel}>ACTIVITY</span>
+                {openSection === 'activity' ? <ExpandLess sx={{ fontSize: 18, color: 'var(--color-text-muted)' }} /> : <ExpandMore sx={{ fontSize: 18, color: 'var(--color-text-muted)' }} />}
+            </button>
             <Collapse in={openSection === 'activity'}>
                 <div className={styles.checkList}>
                     {activeActivities.map((a: string) => (
@@ -171,7 +187,10 @@ export const FiltersSidebar = ({ filters, onChange, facets }: FiltersSidebarProp
             <Divider sx={{ borderColor: 'var(--color-border)' }} />
 
             {/* Color */}
-            <SectionHeader label="COLOR" section="color" />
+            <button className={styles.sectionHeader} onClick={() => toggle('color')}>
+                <span className={styles.sectionLabel}>COLOR</span>
+                {openSection === 'color' ? <ExpandLess sx={{ fontSize: 18, color: 'var(--color-text-muted)' }} /> : <ExpandMore sx={{ fontSize: 18, color: 'var(--color-text-muted)' }} />}
+            </button>
             <Collapse in={openSection === 'color'}>
                 <div className={styles.colorGrid}>
                     {displayedColors.map((c: any) => (
@@ -193,7 +212,10 @@ export const FiltersSidebar = ({ filters, onChange, facets }: FiltersSidebarProp
             <Divider sx={{ borderColor: 'var(--color-border)' }} />
 
             {/* Price */}
-            <SectionHeader label="PRICE" section="price" />
+            <button className={styles.sectionHeader} onClick={() => toggle('price')}>
+                <span className={styles.sectionLabel}>PRICE</span>
+                {openSection === 'price' ? <ExpandLess sx={{ fontSize: 18, color: 'var(--color-text-muted)' }} /> : <ExpandMore sx={{ fontSize: 18, color: 'var(--color-text-muted)' }} />}
+            </button>
             <Collapse in={openSection === 'price'}>
                 <div className={styles.priceWrap}>
                     <Slider

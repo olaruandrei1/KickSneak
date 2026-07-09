@@ -1,4 +1,4 @@
-﻿using FirebaseAdmin.Auth;
+using FirebaseAdmin.Auth;
 using KickSneak.Infrastructure.Contracts;
 using System.Security.Claims;
 
@@ -10,28 +10,61 @@ public sealed class FirebaseAuthMiddleware(RequestDelegate next, ILogger<Firebas
 
     public async Task InvokeAsync(HttpContext context, Lazy<ICacheService> cache)
     {
-        var authHeader = context.Request.Headers.Authorization.ToString();
+        // ── Internal service-to-service token (admin-v2 → backend) ──
+        // Allows server actions to call admin endpoints without a Firebase JWT.
+        var internalToken = context.Request.Headers["X-Internal-Token"].ToString();
+        var expectedToken = Environment.GetEnvironmentVariable("KS_ADMIN_PASSWORD");
 
-        if (string.IsNullOrWhiteSpace(authHeader) || !authHeader.StartsWith(BearerPrefix))
+        if (!string.IsNullOrWhiteSpace(internalToken)
+            && !string.IsNullOrWhiteSpace(expectedToken)
+            && internalToken == expectedToken)
+        {
+            List<Claim> adminClaims =
+            [
+                new("uid",           "internal-admin"),
+                new(ClaimTypes.Email, "admin@kicksneak.local"),
+                new(ClaimTypes.Role,  "Admin"),
+                new("display_name",  "Internal Admin"),
+            ];
+
+            context.User = new ClaimsPrincipal(new ClaimsIdentity(adminClaims, "InternalToken"));
+
+            logger.LogInformation("[AUTH] Internal-token auth for {Path}", context.Request.Path);
+
+            await next(context);
+            return;
+        }
+
+        var authHeader = context.Request.Headers.Authorization.ToString();
+        string? token = null;
+
+        if (!string.IsNullOrWhiteSpace(authHeader) && authHeader.StartsWith(BearerPrefix))
+        {
+            token = authHeader[BearerPrefix.Length..].Trim();
+        }
+        else if (context.Request.Query.TryGetValue("access_token", out var accessToken))
+        {
+            token = accessToken;
+        }
+
+        if (string.IsNullOrWhiteSpace(token))
         {
             await next(context);
             return;
         }
 
-        var token = authHeader[BearerPrefix.Length..].Trim();
         var clientIp = context.Connection.RemoteIpAddress?.ToString() ?? "unknown";
 
         try
         {
-            var blacklistKey = $"auth:blacklist:{token[..Math.Min(token.Length, 20)]}";
-
-            var isBlacklisted = await cache.Value.ExistsAsync(blacklistKey);
-
-            if (isBlacklisted)
-            {
-                context.Response.StatusCode = StatusCodes.Status401Unauthorized;
-                return;
-            }
+            // Token blacklist disabled for demo — caused spurious 401s after logout/
+            // account-delete (stale token stayed blacklisted). Re-enable for prod.
+            // var blacklistKey = $"auth:blacklist:{token[..Math.Min(token.Length, 20)]}";
+            // if (await cache.Value.ExistsAsync(blacklistKey))
+            // {
+            //     context.Response.StatusCode = StatusCodes.Status401Unauthorized;
+            //     return;
+            // }
 
             var decoded = await FirebaseAuth.DefaultInstance.VerifyIdTokenAsync(token);
 

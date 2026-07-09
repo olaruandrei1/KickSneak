@@ -3,8 +3,8 @@ using KickSneak.Application.Contracts.Persistence;
 using KickSneak.Domain.DTOs.Checkout;
 using KickSneak.Domain.Entities.Commerce;
 using KickSneak.Domain.Enums;
+using KickSneak.Domain.ConfigurableObjects;
 using KickSneak.Infrastructure.Contracts;
-using Microsoft.Extensions.Configuration;
 using Stripe;
 
 namespace KickSneak.Application.Implementations;
@@ -12,7 +12,7 @@ namespace KickSneak.Application.Implementations;
 public sealed class CheckoutService(
     IUnitOfWork uow,
     Lazy<IStripeService> stripe,
-    IConfiguration config
+    StripeSettings stripeSettings
 ) : ICheckoutService
 {
     private const double VatRate = 0.19;
@@ -66,7 +66,9 @@ public sealed class CheckoutService(
             ? cartItems[0].StockItem?.Product?.Title ?? "KickSneak Order"
             : $"{cartItems.Count} items";
 
-        var sessionUrl = await stripe.Value.CreateCheckoutSessionAsync(dto.SuccessUrl, dto.CancelUrl, amountCents, productName);
+        var sessionUrl = await stripe.Value.CreateCheckoutSessionAsync(
+            dto.SuccessUrl, dto.CancelUrl, amountCents, productName,
+            new Dictionary<string, string> { ["buyerId"] = user.Id.ToString() });
 
         await uow.ExecuteInTransactionAsync(async () =>
         {
@@ -85,11 +87,9 @@ public sealed class CheckoutService(
 
                 await uow.Orders.AddAsync(order, ct);
 
-                if (item.StockItem is not null)
-                {
-                    item.StockItem.StatusItem = ItemStatus.Pending;
-                    uow.StockItems.Update(item.StockItem);
-                }
+                // Stock state transitions (Pending -> Sold) are performed by the
+                // Stripe webhook, which runs as the system (ks_owner) after payment.
+                // A buyer (ks_user) has no rights on stock_items by design.
 
                 item.IsDeleted = true;
                 uow.Cart.Update(item);
@@ -104,36 +104,41 @@ public sealed class CheckoutService(
 
     public async Task HandleWebhookAsync(string payload, string stripeSignature, CancellationToken ct = default)
     {
-        var webhookSecret = config["StripeSettings:WebhookSecret"];
+        var webhookSecret = stripeSettings.WebhookSecret;
 
-        Event stripeEvent;
-        try
-        {
-            stripeEvent = EventUtility.ConstructEvent(payload, stripeSignature, webhookSecret);
-        }
-        catch (StripeException ex)
-        {
-            throw new Exception($"Webhook signature invalid: {ex.Message}");
-        }
+        // Signature verification: let StripeException bubble up so the endpoint returns 400.
+        var stripeEvent = EventUtility.ConstructEvent(payload, stripeSignature, webhookSecret);
 
         if (stripeEvent.Type == EventTypes.CheckoutSessionCompleted)
         {
             var session = stripeEvent.Data.Object as Stripe.Checkout.Session;
             if (session is null) return;
 
-            var orders = await uow.Orders.GetAsync(
-                o => o.Status == OrderStatus.Pending, ct,
-                o => o.StockItem);
+            // B06: confirm only THIS buyer's pending orders (scoped via session metadata),
+            // not every pending order in the system.
+            Guid? buyerId = null;
+            if (session.Metadata is not null
+                && session.Metadata.TryGetValue("buyerId", out var raw)
+                && Guid.TryParse(raw, out var parsed))
+                buyerId = parsed;
 
-            foreach (var order in orders)
+            IReadOnlyList<Order> orders = buyerId is null
+                ? []
+                : await uow.Orders.GetAsync(
+                    o => o.Status == OrderStatus.Pending && o.BuyerId == buyerId, ct,
+                    o => o.StockItem);
+
+            // Runs elevated (ks_owner): flips seller-owned stock_items to Sold.
+            await uow.ExecuteElevatedAsync(async () =>
             {
-                order.Status = OrderStatus.Confirmed;
-                if (order.StockItem is not null)
-                    order.StockItem.StatusItem = ItemStatus.Sold;
-                uow.Orders.Update(order);
-            }
-
-            await uow.SaveChangesAsync(ct);
+                foreach (var order in orders)
+                {
+                    order.Status = OrderStatus.Confirmed;
+                    if (order.StockItem is not null)
+                        order.StockItem.StatusItem = ItemStatus.Sold;
+                    uow.Orders.Update(order);
+                }
+            }, ct);
         }
     }
 

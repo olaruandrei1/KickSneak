@@ -2,6 +2,7 @@ import { create } from 'zustand';
 import type { AppNotification } from '../types/notification';
 import { localStorageService } from '../services/localStorageService';
 import { cachedFetch } from '../services/cachedFetchService';
+import { httpClient } from '../services/axiosService';
 import { ApiRoutes } from '../services/apiRoutes';
 
 interface NotificationState {
@@ -31,18 +32,25 @@ export const useNotificationStore = create<NotificationState>((set, get) => ({
     },
 
     markRead: (id) => {
+        // Optimistic local update, persisted on the server so it survives refetch.
         const items = get().items.map((n) =>
             n.id === id ? { ...n, read: true } : n
         );
         const unreadCount = items.filter((n) => !n.read).length;
         localStorageService.set('notifications', items);
         set({ items, unreadCount });
+        httpClient.patch(ApiRoutes.notificationRead(id)).catch(() => {
+            /* best-effort — next fetch reconciles */
+        });
     },
 
     markAllRead: () => {
         const items = get().items.map((n) => ({ ...n, read: true }));
         localStorageService.set('notifications', items);
         set({ items, unreadCount: 0 });
+        httpClient.patch(ApiRoutes.notificationsReadAll).catch(() => {
+            /* best-effort — next fetch reconciles */
+        });
     },
 
     addNew: (n) => {

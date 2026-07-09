@@ -15,7 +15,7 @@ public static class RegisterPersistenceDependencies
     public static IServiceCollection AddPersistenceDependencies(this IServiceCollection services, IConfiguration configuration)
     {
         services.AddHttpContextAccessor();
-        services.AddSingleton<RlsContext>();
+        services.AddScoped<RlsContext>();
 
         ConnectionStrings connStrings = new ();
 

@@ -160,8 +160,11 @@ func (r *ChatRepository) GetSessionMessages(ctx context.Context, sessionID uuid.
 func (r *ChatRepository) GetActiveSession(ctx context.Context, userID string, chatType int) (*domain.ChatSession, error) {
 	var s domain.ChatSession
 	err := r.pool.QueryRow(ctx,
-		`SELECT id, user_id, chat_type, title, status, created_at, closed_at 
-		 FROM chat_sessions WHERE user_id = $1 AND chat_type = $2 AND status = 'active' 
+		// Reuse ANY open session (active OR agent), not just 'active' — otherwise a
+		// reconnect after admin takeover spawns a new session and the client/admin
+		// end up on different session ids.
+		`SELECT id, user_id, chat_type, title, status, created_at, closed_at
+		 FROM chat_sessions WHERE user_id = $1 AND chat_type = $2 AND status <> 'closed'
 		 ORDER BY created_at DESC LIMIT 1`,
 		userID, chatType,
 	).Scan(&s.ID, &s.UserID, &s.ChatType, &s.Title, &s.Status, &s.CreatedAt, &s.ClosedAt)

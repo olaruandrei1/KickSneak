@@ -184,7 +184,7 @@
 
 .input:focus {
     border-color: var(--color-secondary);
-    box-shadow: 0 0 0 3px rgba(64, 138, 113, 0.15);
+    box-shadow: 0 0 0 3px rgba(163, 197, 27, 0.15);
 }
 
 .btn {

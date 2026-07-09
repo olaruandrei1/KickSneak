@@ -58,7 +58,7 @@ services:
 
   # ── Search & Analytics ──
   elasticsearch:
-    image: elasticsearch:8.13.0
+    image: elasticsearch:9.0.2
     container_name: kicksneak-elastic
     restart: unless-stopped
     environment:
@@ -76,7 +76,7 @@ services:
       retries: 20
 
   kibana:
-    image: kibana:8.13.0
+    image: kibana:9.0.2
     container_name: kicksneak-kibana
     restart: unless-stopped
     environment:
@@ -109,6 +109,18 @@ services:
       - "3100:3100"
     volumes:
       - loki_data:/loki
+
+  # Ships every container's stdout/stderr into Loki (no app code needed).
+  promtail:
+    image: grafana/promtail:latest
+    container_name: kicksneak-promtail
+    restart: unless-stopped
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./promtail-config.yml:/etc/promtail/config.yml
+    command: ["-config.file=/etc/promtail/config.yml"]
+    depends_on:
+      - loki
 
   grafana:
     image: grafana/grafana:latest
@@ -159,8 +171,16 @@ services:
       - OLLAMA_MODEL=qwen2.5:7b
       # Elasticsearch
       - ELASTICSEARCH_URL=http://elasticsearch:9200
+      # AI recommender service
+      - AI_SERVICE_URL=http://ai-service:5050
+      # Web Push (VAPID)
+      - VAPID_PUBLIC_KEY=${VAPID_PUBLIC_KEY}
+      - VAPID_PRIVATE_KEY=${VAPID_PRIVATE_KEY}
+      - VAPID_SUBJECT=${VAPID_SUBJECT}
       # Observability
       - LOKI_URL=http://loki:3100
+      # Internal service token (admin-v2 → backend)
+      - KS_ADMIN_PASSWORD=${KS_ADMIN_PASSWORD}
     depends_on:
       postgres:
         condition: service_healthy
@@ -194,6 +214,7 @@ services:
       dockerfile: Dockerfile
     container_name: kicksneak-chat
     restart: unless-stopped
+    entrypoint: ["sh", "-c", "sleep 40 && /chat-server"]
     ports:
       - "8080:8080"
     environment:
@@ -202,6 +223,8 @@ services:
       - OLLAMA_MODEL=llama3.1:8b
       - PORT=8080
     depends_on:
+      backend:
+        condition: service_started
       postgres:
         condition: service_healthy
       ollama-chat:
@@ -215,8 +238,8 @@ services:
       args:
         - VITE_API_BASE_URL=http://localhost:5005
         - VITE_USE_MOCKS=false
-        - VITE_CHAT_WS_URL=ws://localhost:8080
-        - VITE_CHAT_API_URL=http://localhost:8080
+        - VITE_CHAT_WS_URL=ws://127.0.0.1:8080
+        - VITE_CHAT_API_URL=http://127.0.0.1:8080
         - VITE_GUARDS_ENABLED=true
     container_name: kicksneak-frontend
     restart: unless-stopped
@@ -225,7 +248,63 @@ services:
     depends_on:
       - backend
 
-# ── AI Service (Flask/PyTorch) ──
+  # ── Admin App (Next.js) ──
+  admin-app:
+    build:
+      context: ../kicksneak-admin-v2
+      dockerfile: Dockerfile
+    container_name: kicksneak-admin-v2
+    restart: unless-stopped
+    ports:
+      - "3002:3002"
+    environment:
+      - DATABASE_URL=postgresql://ks_admin:KsAdmin2026!@postgres:5432/${POSTGRES_DB}?schema=public
+      - KS_ADMIN_PASSWORD=${KS_ADMIN_PASSWORD}
+      - BACKEND_URL=http://backend:5005
+    depends_on:
+      postgres:
+        condition: service_healthy
+      backend:
+        condition: service_started
+
+  # ── Admin Live Support WS Server ──
+  admin-ws:
+    build:
+      context: ../kicksneak-admin-v2
+      dockerfile: Dockerfile.ws
+    container_name: kicksneak-admin-ws
+    restart: unless-stopped
+    ports:
+      - "3005:3005"
+    environment:
+      - DATABASE_URL=postgresql://ks_admin:KsAdmin2026!@postgres:5432/${POSTGRES_DB}?schema=public
+      - WS_PORT=3005
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  # ── AI Training (runs once after seed) ──
+  ai-train:
+    build:
+      context: ../kicksneak-ai
+      dockerfile: Dockerfile
+    container_name: kicksneak-ai-train
+    restart: "no"
+    entrypoint: ["python", "scripts/train.py"]
+    environment:
+      - DB_HOST=postgres
+      - DB_PORT=5432
+      - DB_NAME=${POSTGRES_DB}
+      - DB_USER=ks_owner
+      - DB_PASSWORD=${KS_OWNER_PASSWORD}
+      - MODEL_DIR=/models
+    volumes:
+      - ai_models:/models
+    depends_on:
+      seed-etl:
+        condition: service_completed_successfully
+
+  # ── AI Service (Flask/PyTorch) ──
   ai-service:
     build:
       context: ../kicksneak-ai
@@ -240,11 +319,27 @@ services:
       - DB_NAME=${POSTGRES_DB}
       - DB_USER=ks_owner
       - DB_PASSWORD=${KS_OWNER_PASSWORD}
-      - MODEL_DIR=trained_models
+      - MODEL_DIR=/models
       - FLASK_PORT=5050
+    volumes:
+      - ai_models:/models
     depends_on:
-      postgres:
-        condition: service_healthy
+      ai-train:
+        condition: service_completed_successfully
+
+  # ── AI Scheduler (.NET Quartz) — hourly per-user retrain trigger ──
+  ai-scheduler:
+    build:
+      context: ../kicksneak-be/KickSneak.AiScheduler
+      dockerfile: Dockerfile
+    container_name: kicksneak-ai-scheduler
+    restart: unless-stopped
+    environment:
+      - AI_SERVICE_URL=http://ai-service:5050
+      - RETRAIN_CRON=0 0 * * * ?
+    depends_on:
+      ai-service:
+        condition: service_started
 
 volumes:
   postgres_data:

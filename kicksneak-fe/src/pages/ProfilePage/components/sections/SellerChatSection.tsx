@@ -11,6 +11,10 @@ interface Props {
     onProfileUpdate: (p: UserProfile) => void;
 }
 
+const CHAT_WS_URL = import.meta.env.VITE_CHAT_WS_URL ?? 'ws://localhost:8080';
+const CHAT_API_URL = import.meta.env.VITE_CHAT_API_URL ?? 'http://localhost:8080';
+const SUPPORT_WS_URL = import.meta.env.VITE_SUPPORT_WS_URL ?? 'ws://localhost:3005';
+
 interface Message {
     id: string;
     role: 'seller' | 'assistant' | 'support';
@@ -26,9 +30,6 @@ interface ChatSession {
 }
 
 type ChatMode = 'ai' | 'support';
-
-const CHAT_WS_URL = import.meta.env.VITE_CHAT_WS_URL ?? 'ws://localhost:8080';
-const CHAT_API_URL = import.meta.env.VITE_CHAT_API_URL ?? 'http://localhost:8080';
 
 export const SellerChatSection = ({ profile }: Props) => {
     const { user } = useAuthStore();
@@ -86,7 +87,7 @@ export const SellerChatSection = ({ profile }: Props) => {
                     if (data.messages?.length > 0) {
                         setMessages(data.messages.map((m: any) => ({
                             id: m.id,
-                            role: m.role === 'assistant' ? 'assistant' : 'seller',
+                            role: m.role === 'assistant' ? 'assistant' : (m.role === 'admin' ? 'support' : 'seller'),
                             content: m.content,
                             timestamp: new Date(m.createdAt),
                         })));
@@ -126,14 +127,49 @@ export const SellerChatSection = ({ profile }: Props) => {
         ws.onerror = () => { setIsConnected(false); };
     }, [user?.uid, mode, fetchSessions]);
 
+    const connectSupportWebSocket = useCallback((currentSessionId: string) => {
+        if (!user?.uid) return;
+        if (wsRef.current?.readyState === WebSocket.OPEN || wsRef.current?.readyState === WebSocket.CONNECTING) return;
+
+        const ws = new WebSocket(`${SUPPORT_WS_URL}/?role=client&sessionId=${currentSessionId}&userId=${user.uid}`);
+        wsRef.current = ws;
+
+        ws.onopen = () => { setIsConnected(true); reconnectingRef.current = false; };
+
+        ws.onmessage = (event) => {
+            const data = JSON.parse(event.data);
+            if (data.type === 'message') {
+                setMessages(prev => [...prev, {
+                    id: Date.now().toString(),
+                    role: 'support',
+                    content: data.content,
+                    timestamp: new Date(),
+                }]);
+            }
+        };
+
+        ws.onclose = () => { setIsConnected(false); wsRef.current = null; };
+        ws.onerror = () => { setIsConnected(false); };
+    }, [user?.uid]);
+
     useEffect(() => {
-        if (mode !== 'ai' || !user?.uid) return;
-        const timer = setTimeout(() => connectWebSocket(), 50);
+        if (!user?.uid) return;
+
+        const timer = setTimeout(() => {
+            if (mode === 'ai') connectWebSocket();
+            else if (mode === 'support' && sessionId) connectSupportWebSocket(sessionId);
+        }, 50);
+
         return () => {
             clearTimeout(timer);
-            if (!reconnectingRef.current) { wsRef.current?.close(); wsRef.current = null; }
+            if (!reconnectingRef.current) {
+                if (wsRef.current?.readyState === WebSocket.OPEN || wsRef.current?.readyState === WebSocket.CONNECTING) {
+                    wsRef.current.close();
+                }
+                wsRef.current = null;
+            }
         };
-    }, [mode, user?.uid, connectWebSocket]);
+    }, [mode, user?.uid, sessionId, connectWebSocket, connectSupportWebSocket]);
 
     const escalateToSupport = () => {
         wsRef.current?.close(); wsRef.current = null;
@@ -190,7 +226,7 @@ export const SellerChatSection = ({ profile }: Props) => {
             setShowHistory(false);
             setMessages((data.messages ?? []).map((m: any) => ({
                 id: m.id,
-                role: m.role === 'assistant' ? 'assistant' : 'seller',
+                role: m.role === 'assistant' ? 'assistant' : (m.role === 'admin' ? 'support' : 'seller'),
                 content: m.content,
                 timestamp: new Date(m.createdAt),
             })));
@@ -232,10 +268,10 @@ export const SellerChatSection = ({ profile }: Props) => {
                 <Chip icon={<Store sx={{ fontSize: 14 }} />}
                     label={mode === 'support' ? 'LIVE SUPPORT' : (profile.seller?.storeName ?? 'Seller')}
                     size="small" sx={{
-                        background: mode === 'support' ? 'rgba(34,197,94,0.15)' : 'rgba(64,138,113,0.12)',
+                        background: mode === 'support' ? 'rgba(34,197,94,0.15)' : 'rgba(163,197,27,0.12)',
                         color: mode === 'support' ? '#22c55e' : 'var(--color-accent)',
                         fontFamily: 'var(--font-display)', fontSize: '0.72rem', fontWeight: 700,
-                        border: `1px solid ${mode === 'support' ? 'rgba(34,197,94,0.3)' : 'rgba(64,138,113,0.2)'}`,
+                        border: `1px solid ${mode === 'support' ? 'rgba(34,197,94,0.3)' : 'rgba(163,197,27,0.2)'}`,
                     }} />
             </div>
 

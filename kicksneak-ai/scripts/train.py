@@ -69,6 +69,18 @@ def main():
 
     # ── Dataset ──
 
+    # ── Ensure output dir ──
+
+    model_dir = Path(Config.MODEL_DIR)
+    model_dir.mkdir(parents=True, exist_ok=True)
+
+    if not all_interactions:
+        logger.warning("No interaction data — saving untrained models for cold-start fallback")
+        _save_untrained_models(feature_builder, model_dir)
+        return
+
+    # ── Dataset ──
+
     dataset = InteractionDataset(
         orders=orders,
         views=views,
@@ -81,11 +93,6 @@ def main():
 
     logger.info("Dataset: %d samples (pos + neg)", len(dataset))
 
-    # ── Ensure output dir ──
-
-    model_dir = Path(Config.MODEL_DIR)
-    model_dir.mkdir(parents=True, exist_ok=True)
-
     # ── Train Recommender ──
 
     train_recommender(feature_builder, loader, model_dir)
@@ -95,6 +102,30 @@ def main():
     train_reranker(feature_builder, products, orders, views, favorites, model_dir)
 
     logger.info("Training complete — models saved to %s/", model_dir)
+
+
+def _save_untrained_models(feature_builder: FeatureBuilder, model_dir: Path):
+    recommender = Recommender(
+        num_users=max(feature_builder.num_users, 1),
+        num_products=feature_builder.num_products,
+        embedding_dim=Config.EMBEDDING_DIM,
+        hidden_dim=Config.HIDDEN_DIM,
+    )
+    torch.save(recommender.state_dict(), model_dir / "recommender.pt")
+    torch.save({"feature_builder": feature_builder}, model_dir / "recommender.meta.pt")
+
+    reranker = Reranker(
+        user_profile_dim=feature_builder.user_profile_dim,
+        num_brands=feature_builder.num_brands,
+        num_categories=feature_builder.num_categories,
+        num_genders=feature_builder.num_genders,
+        embedding_dim=Config.EMBEDDING_DIM // 2,
+        hidden_dim=Config.HIDDEN_DIM,
+    )
+    torch.save(reranker.state_dict(), model_dir / "reranker.pt")
+    torch.save({"feature_builder": feature_builder}, model_dir / "reranker.meta.pt")
+
+    logger.info("Untrained models saved to %s/", model_dir)
 
 
 def train_recommender(

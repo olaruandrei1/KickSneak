@@ -25,9 +25,9 @@ export const PriceChart = ({ data, currentPrice }: PriceChartProps) => {
     const { theme } = useThemeStore();
     const isDark = theme === 'dark';
 
-    const color = isDark ? '#408A71' : '#7286D3';
-    const gridColor = isDark ? 'rgba(176,228,204,0.08)' : 'rgba(114,134,211,0.12)';
-    const textColor = isDark ? '#408A71' : '#8EA7E9';
+    const color = isDark ? '#A3C51B' : '#566E0B';
+    const gridColor = isDark ? 'rgba(176,228,204,0.08)' : 'rgba(23,26,11,0.12)';
+    const textColor = isDark ? '#A3C51B' : '#6A6F5E';
 
     const min = data && data.length > 0 ? Math.min(...data.map((d) => d.price)) : 0;
     const max = data && data.length > 0 ? Math.max(...data.map((d) => d.price)) : 0;
@@ -68,12 +68,12 @@ export const PriceChart = ({ data, currentPrice }: PriceChartProps) => {
                         <CartesianGrid stroke={gridColor} strokeDasharray="3 3" vertical={false} />
                         <XAxis
                             dataKey="date"
-                            tick={{ fill: textColor, fontSize: 11, fontFamily: 'DM Sans' }}
+                            tick={{ fill: textColor, fontSize: 11, fontFamily: 'Space Grotesk' }}
                             axisLine={false}
                             tickLine={false}
                         />
                         <YAxis
-                            tick={{ fill: textColor, fontSize: 11, fontFamily: 'DM Sans' }}
+                            tick={{ fill: textColor, fontSize: 11, fontFamily: 'Space Grotesk' }}
                             axisLine={false}
                             tickLine={false}
                             tickFormatter={(v) => `$${v}`}

@@ -44,6 +44,7 @@ export default function ChatSupportClient({ initialSessions }: ChatSupportClient
   const [isWsConnected, setIsWsConnected] = useState(false);
   
   const messagesEndRef = useRef<HTMLDivElement | null>(null);
+  const messagesAreaRef = useRef<HTMLDivElement | null>(null);
   const wsRef = useRef<WebSocket | null>(null);
   const selectedSessionIdRef = useRef<string | null>(null);
 
@@ -58,7 +59,8 @@ export default function ChatSupportClient({ initialSessions }: ChatSupportClient
     let socket: WebSocket;
 
     const connect = () => {
-      socket = new WebSocket("ws://localhost:3005?role=admin");
+      const wsUrl = process.env.NEXT_PUBLIC_SUPPORT_WS_URL || "ws://localhost:3005";
+      socket = new WebSocket(`${wsUrl}?role=admin`);
       wsRef.current = socket;
 
       socket.onopen = () => {
@@ -131,7 +133,7 @@ export default function ChatSupportClient({ initialSessions }: ChatSupportClient
       };
 
       socket.onerror = (err) => {
-        console.error("[WS] WebSocket error:", err);
+        console.warn("[WS] WebSocket error:", err);
         socket.close();
       };
     };
@@ -181,7 +183,9 @@ export default function ChatSupportClient({ initialSessions }: ChatSupportClient
 
   // Scroll to bottom when messages load
   useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+    if (messagesAreaRef.current) {
+      messagesAreaRef.current.scrollTop = messagesAreaRef.current.scrollHeight;
+    }
   }, [messages]);
 
   // Handle select session
@@ -263,6 +267,12 @@ export default function ChatSupportClient({ initialSessions }: ChatSupportClient
   // Take over from AI
   const handleTakeOver = async () => {
     if (!selectedSessionId) return;
+
+    // Optimistically update the session status so the button disappears immediately
+    setSessions(prev => prev.map(s =>
+      s.id === selectedSessionId ? { ...s, status: 'agent' } : s
+    ));
+
     if (isWsConnected && wsRef.current?.readyState === WebSocket.OPEN) {
       wsRef.current.send(JSON.stringify({ type: "takeover", sessionId: selectedSessionId }));
     } else {
@@ -395,7 +405,7 @@ export default function ChatSupportClient({ initialSessions }: ChatSupportClient
             </div>
 
             {/* Message History area */}
-            <div className="messages-area">
+            <div className="messages-area" ref={messagesAreaRef}>
               {loadingMessages ? (
                 <div className="messages-loading">
                   <Loader className="spin" size={24} />
@@ -560,6 +570,7 @@ export default function ChatSupportClient({ initialSessions }: ChatSupportClient
           display: flex;
           flex-direction: column;
           height: 100%;
+          min-height: 0;
           background: rgba(0, 0, 0, 0.05);
         }
 
@@ -613,6 +624,7 @@ export default function ChatSupportClient({ initialSessions }: ChatSupportClient
 
         .messages-area {
           flex: 1;
+          min-height: 0;
           overflow-y: auto;
           padding: 1.5rem;
         }
