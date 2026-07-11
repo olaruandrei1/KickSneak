@@ -9,7 +9,8 @@ public record SellerListingDto(
     string Status,
     int Views,
     string Image,
-    string ListedAt
+    string ListedAt,
+    bool InAuction
 );
 
 public record SellerListingsResponseDto(List<SellerListingDto> Items);

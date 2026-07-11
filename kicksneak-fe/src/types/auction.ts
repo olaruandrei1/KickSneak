@@ -94,6 +94,7 @@ export interface AuctionDetail extends Auction {
   myCurrentBid?: Bid;
   myAutoBid?: AutoBid;
   isWatching: boolean;
+  isOwnAuction: boolean;
 }
 
 export interface MyBidEntry {

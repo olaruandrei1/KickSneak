@@ -102,12 +102,14 @@ public sealed class AuctionService(
 
         BidDto? myCurrentBid = null;
         AutoBidDto? myAutoBid = null;
+        bool isOwnAuction = false;
 
         if (firebaseUid is not null)
         {
             var user = await uow.Users.GetFirstOrDefaultAsync(u => u.FirebaseUid == firebaseUid, ct);
             if (user is not null)
             {
+                isOwnAuction = sellerUser is not null && sellerUser.Id == user.Id;
                 myCurrentBid = recentBids.FirstOrDefault(b => b.BidderId == user.FirebaseUid);
 
                 var autoBid = await uow.AutoBids.GetFirstOrDefaultAsync(
@@ -166,6 +168,7 @@ public sealed class AuctionService(
             RecentBids: recentBids,
             MyCurrentBid: myCurrentBid,
             MyAutoBid: myAutoBid,
+            IsOwnAuction: isOwnAuction,
             Watchers: await cache.GetWatchCountAsync(auctionId, ct),
             IsWatching: firebaseUid is not null && await cache.IsWatchingAsync(firebaseUid, auctionId, ct)
         );
@@ -237,9 +240,11 @@ public sealed class AuctionService(
         if (user is null)
             return new MyBidsResponseDto([], 0);
 
+        // Load the full chain so ProductName/ProductImage below resolve (otherwise
+        // StockItem/Product/Photos are null and the My Bids cards render blank).
         var bids = await uow.Bids.GetAsync(
             b => b.BidderId == user.Id, ct,
-            includes: b => b.Auction);
+            includes: b => b.Auction.StockItem.Product.Photos);
 
         var grouped = bids
             .GroupBy(b => b.AuctionId)
@@ -355,6 +360,11 @@ public sealed class AuctionService(
         var auction = await uow.Auctions.GetFirstOrDefaultAsync(a => a.Id == auctionId, ct);
         if (auction is null || auction.Status != AuctionStatus.Active)
             return Fail("auction_ended");
+
+        // A seller may not bid on their own auction.
+        var auctionSeller = await uow.Sellers.GetFirstOrDefaultAsync(s => s.Id == auction.SellerId, ct);
+        if (auctionSeller is not null && auctionSeller.UserId == user.Id)
+            return Fail("own_auction");
 
         var cached = await cache.GetAuctionAsync(auctionId, ct);
         var currentPrice = cached?.CurrentPrice ?? auction.CurrentPrice;

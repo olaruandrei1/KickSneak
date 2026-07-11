@@ -3,6 +3,7 @@ import type { ProductItem } from '../types/product';
 import { localStorageService } from '../services/localStorageService';
 import { httpClient } from '../services/axiosService';
 import { ApiRoutes } from '../services/apiRoutes';
+import { useAuthStore } from './authStore';
 
 interface FavoritesState {
     items: ProductItem[];
@@ -24,12 +25,20 @@ export const useFavoritesStore = create<FavoritesState>((set, get) => ({
         localStorageService.set('favorites_items', optimistic);
         set({ items: optimistic });
 
+        // Guest: keep favorites in localStorage only (no rollback). They get
+        // merged into the account on login (see guestSyncService).
+        if (!useAuthStore.getState().user) return;
+
         try {
             const res = await httpClient.post<{ items: ProductItem[] }>(
                 ApiRoutes.favoritesToggle(),
                 { productId: item.id }
             );
-            const synced = res.data.items;
+            // Union with the optimistic list so favorites the server doesn't
+            // hold (guest-era ones) aren't dropped by this round-trip.
+            const server = res.data.items ?? [];
+            const serverIds = new Set(server.map((i) => i.id));
+            const synced = [...server, ...optimistic.filter((i) => !serverIds.has(i.id))];
             localStorageService.set('favorites_items', synced);
             set({ items: synced });
         } catch {
@@ -46,10 +55,17 @@ export const useFavoritesStore = create<FavoritesState>((set, get) => ({
 
     fetchFavorites: async () => {
         if (get().initialized) return;
+        // Guest: localStorage favorites are the source of truth.
+        if (!useAuthStore.getState().user) { set({ initialized: true }); return; }
         try {
             const res = await httpClient.get<{ items: ProductItem[] }>(ApiRoutes.favorites);
-            localStorageService.set('favorites_items', res.data.items);
-            set({ items: res.data.items, initialized: true });
+            // Union with local favorites so guest-saved ones survive refreshes.
+            const server = res.data.items ?? [];
+            const local = localStorageService.get<ProductItem[]>('favorites_items') ?? [];
+            const serverIds = new Set(server.map((i) => i.id));
+            const merged = [...server, ...local.filter((i) => !serverIds.has(i.id))];
+            localStorageService.set('favorites_items', merged);
+            set({ items: merged, initialized: true });
         } catch {
             set({ initialized: true });
         }

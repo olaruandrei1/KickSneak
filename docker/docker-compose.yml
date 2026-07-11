@@ -30,6 +30,25 @@ services:
       timeout: 3s
       retries: 10
 
+  # Web UI for Redis. The RI_REDIS_* env pre-adds the connection on every boot
+  # (survives `down -v`), and terms are auto-accepted so it opens click-free.
+  redisinsight:
+    image: redis/redisinsight:latest
+    container_name: kicksneak-redisinsight
+    restart: unless-stopped
+    ports:
+      - "5540:5540"
+    environment:
+      - RI_ACCEPT_TERMS_AND_CONDITIONS=true
+      - RI_REDIS_HOST=redis
+      - RI_REDIS_PORT=6379
+      - RI_REDIS_ALIAS=KickSneak Cache
+    volumes:
+      - redisinsight_data:/data
+    depends_on:
+      redis:
+        condition: service_healthy
+
   azurite:
     image: mcr.microsoft.com/azure-storage/azurite
     container_name: kicksneak-azurite
@@ -50,6 +69,9 @@ services:
       - "11435:11434"
     volumes:
       - ollama_chat_data:/root/.ollama
+    # Serve + self-heal the chat model: on a fresh volume (e.g. after `down -v`)
+    # the pull downloads llama3.1:8b; if it's already present the pull is a no-op.
+    entrypoint: ["/bin/sh", "-c", "ollama serve & until ollama list >/dev/null 2>&1; do sleep 1; done; ollama pull llama3.1:8b || true; wait"]
     healthcheck:
       test: ["CMD", "ollama", "list"]
       interval: 10s
@@ -134,6 +156,10 @@ services:
       - GF_USERS_ALLOW_SIGN_UP=false
     volumes:
       - grafana_data:/var/lib/grafana
+      # Provisioning-as-code: datasources + dashboards live in the repo and are
+      # re-applied on every boot, so `docker compose down -v` never loses them.
+      - ./grafana/provisioning:/etc/grafana/provisioning
+      - ./grafana/dashboards:/var/lib/grafana/dashboards
     depends_on:
       - prometheus
       - loki
@@ -343,6 +369,7 @@ services:
 
 volumes:
   postgres_data:
+  redisinsight_data:
   azurite_data:
   ollama_chat_data:
   elastic_data:

@@ -303,7 +303,12 @@ public sealed class ProductService(IUnitOfWork uow, IAiRecommendationClient aiCl
                 Price: g.Average(o => o.TotalPrice)
             )).ToList();
 
-        var prices12m = orders.Select(o => o.TotalPrice).ToList();
+        // Historical stats are derived from real orders on this product. Each window is
+        // filtered to match its UI label ("Last 12 Months" / "Last 3 Months") so the
+        // displayed value always agrees with the heading above it.
+        var prices12m = orders
+            .Where(o => o.CreatedAt >= DateTime.UtcNow.AddMonths(-12))
+            .Select(o => o.TotalPrice).ToList();
         var prices3m = orders
             .Where(o => o.CreatedAt >= DateTime.UtcNow.AddMonths(-3))
             .Select(o => o.TotalPrice).ToList();
@@ -318,11 +323,11 @@ public sealed class ProductService(IUnitOfWork uow, IAiRecommendationClient aiCl
             Volatility: prices12m.Count > 1
                 ? $"{(prices12m.Max() - prices12m.Min()) / prices12m.Average() * 100:0}%"
                 : "N/A",
-            NumberOfSales: stockItems.Count(s => s.StatusItem == ItemStatus.Sold),
+            NumberOfSales: prices3m.Count,
             PricePremium: product.RetailPrice > 0
                 ? $"{(lowestAsk - (product.RetailPrice ?? 0)) / (product.RetailPrice ?? 1) * 100:0}%"
                 : "N/A",
-            AvgSalePrice: prices12m.Count > 0 ? prices12m.Average() : 0
+            AvgSalePrice: prices3m.Count > 0 ? prices3m.Average() : 0
         );
 
         var breadcrumbs = new List<BreadcrumbDto>

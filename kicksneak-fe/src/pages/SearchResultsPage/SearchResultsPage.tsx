@@ -152,6 +152,10 @@ export const SearchResultsPage = () => {
     const isFirstLoad = useRef(true);
     const loadingRef = useRef(false);
     const itemsCountRef = useRef(0);
+    // Query for which the backend-detected brand filter was already auto-applied.
+    // Applying it only once per query lets the user uncheck the brand afterwards
+    // without every refetch forcing it back on.
+    const detectionAppliedFor = useRef<string | null>(null);
 
     const recentlyViewed = useMemo<ProductItem[]>(
         () => localStorageService.get<ProductItem[]>('recently_viewed') ?? [],
@@ -217,7 +221,8 @@ export const SearchResultsPage = () => {
             } else {
                 setAllItems(newItems);
                 
-                if (data.detected?.brandName) {
+                if (data.detected?.brandName && detectionAppliedFor.current !== query) {
+                    detectionAppliedFor.current = query;
                     const detectedBrand = data.detected.brandName;
                     if (!currentFilters.brands.includes(detectedBrand)) {
                         setFilters(prev => ({ ...prev, brands: [...prev.brands, detectedBrand] }));

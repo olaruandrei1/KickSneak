@@ -59,6 +59,11 @@ public sealed class SellerService(IUnitOfWork uow, IProfileService profileServic
         var stockItems = await uow.StockItems.GetAsync(s => s.SellerId == seller.Id, ct, includes: [s => s.Size]);
         var usedItems = await uow.UsedItems.GetAsync(u => u.SellerId == seller.Id, ct, includes: [u => u.Size, u => u.Photos]);
 
+        // Items already on a live auction so the UI can hide the "Auction" action.
+        var activeAuctions = await uow.Auctions.GetAsync(
+            a => a.SellerId == seller.Id && a.Status == AuctionStatus.Active, ct);
+        var auctionedStockIds = activeAuctions.Select(a => a.StockItemId).ToHashSet();
+
         var productIds = stockItems.Select(s => s.ProductId).Union(usedItems.Select(u => u.ProductId)).Distinct().ToList();
         var products = await uow.Products.GetAsync(p => productIds.Contains(p.Id), ct, includes: [p => p.Brand, p => p.Photos]);
         var productDict = products.ToDictionary(p => p.Id);
@@ -75,7 +80,8 @@ public sealed class SellerService(IUnitOfWork uow, IProfileService profileServic
                 Price: s.Price, Status: s.StatusItem.ToString().ToLowerInvariant(),
                 Views: 0,
                 Image: product?.Photos.FirstOrDefault(p => p.IsPrimary)?.PhotoUrl ?? string.Empty,
-                ListedAt: s.CreatedAt.ToString("yyyy-MM-dd")
+                ListedAt: s.CreatedAt.ToString("yyyy-MM-dd"),
+                InAuction: auctionedStockIds.Contains(s.Id)
             ));
         }
 
@@ -92,7 +98,8 @@ public sealed class SellerService(IUnitOfWork uow, IProfileService profileServic
                 Size: u.Size?.SizeLabel ?? string.Empty,
                 Price: u.Price, Status: u.StatusItem.ToString().ToLowerInvariant(),
                 Views: 0, Image: primaryPhoto,
-                ListedAt: u.CreatedAt.ToString("yyyy-MM-dd")
+                ListedAt: u.CreatedAt.ToString("yyyy-MM-dd"),
+                InAuction: auctionedStockIds.Contains(u.Id)
             ));
         }
 
@@ -133,7 +140,8 @@ public sealed class SellerService(IUnitOfWork uow, IProfileService profileServic
             Status: ItemStatus.PendingReview.ToString().ToLowerInvariant(),
             Views: 0,
             Image: product?.Photos.FirstOrDefault(p => p.IsPrimary)?.PhotoUrl ?? string.Empty,
-            ListedAt: DateTime.UtcNow.ToString("yyyy-MM-dd")
+            ListedAt: DateTime.UtcNow.ToString("yyyy-MM-dd"),
+            InAuction: false
         );
     }
 
@@ -166,7 +174,8 @@ public sealed class SellerService(IUnitOfWork uow, IProfileService profileServic
             Status: stockItem.StatusItem.ToString().ToLowerInvariant(),
             Views: 0,
             Image: product?.Photos.FirstOrDefault(p => p.IsPrimary)?.PhotoUrl ?? string.Empty,
-            ListedAt: stockItem.CreatedAt.ToString("yyyy-MM-dd")
+            ListedAt: stockItem.CreatedAt.ToString("yyyy-MM-dd"),
+            InAuction: false
         );
     }
 
@@ -254,6 +263,11 @@ public sealed class SellerService(IUnitOfWork uow, IProfileService profileServic
         var stockItem = await uow.StockItems.GetFirstOrDefaultAsync(
             s => s.Id == dto.StockItemId && s.SellerId == seller.Id, ct);
         if (stockItem is null) return null;
+
+        // Don't let the same item be auctioned twice at once.
+        var existingAuction = await uow.Auctions.GetFirstOrDefaultAsync(
+            a => a.StockItemId == dto.StockItemId && a.Status == AuctionStatus.Active, ct);
+        if (existingAuction is not null) return null;
 
         var durationHours = dto.Duration switch
         {
@@ -354,7 +368,8 @@ public sealed class SellerService(IUnitOfWork uow, IProfileService profileServic
             Status: "pendingreview",
             Views: 0,
             Image: product.Photos.FirstOrDefault(p => p.IsPrimary)?.PhotoUrl ?? string.Empty,
-            ListedAt: DateTime.UtcNow.ToString("yyyy-MM-dd")
+            ListedAt: DateTime.UtcNow.ToString("yyyy-MM-dd"),
+            InAuction: false
         );
     }
 

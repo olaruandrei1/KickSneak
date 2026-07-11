@@ -4,6 +4,8 @@ import { localStorageService } from '../services/localStorageService';
 import { httpClient } from '../services/axiosService';
 import { ApiRoutes } from '../services/apiRoutes';
 import { useNotificationStore } from './notificationStore';
+import { useAuthStore } from './authStore';
+import { unionCartLines } from '../services/cartLineMatch';
 
 interface CartState {
     items: CartItem[];
@@ -26,6 +28,10 @@ export const useCartStore = create<CartState>((set, get) => ({
         localStorageService.set('cart_items', optimistic);
         set({ items: optimistic });
 
+        // Guest: keep the cart in localStorage only. It gets merged into the
+        // account on login (see guestSyncService). No API call, no error toast.
+        if (!useAuthStore.getState().user) return;
+
         try {
             const res = await httpClient.post<{ items: CartItem[] }>(ApiRoutes.cartAdd, {
                 productId: item.productId ?? null,
@@ -33,8 +39,11 @@ export const useCartStore = create<CartState>((set, get) => ({
                 stockItemId: item.stockItemId ?? null,
                 usedItemId: item.usedItemId ?? null,
             });
-            localStorageService.set('cart_items', res.data.items);
-            set({ items: res.data.items });
+            // Union with the optimistic list: lines the server doesn't hold
+            // (guest-era items it couldn't resolve) must not disappear.
+            const merged = unionCartLines(res.data.items ?? [], optimistic);
+            localStorageService.set('cart_items', merged);
+            set({ items: merged });
         } catch {
             localStorageService.set('cart_items', get().items);
             set({ items: get().items });
@@ -47,10 +56,16 @@ export const useCartStore = create<CartState>((set, get) => ({
         localStorageService.set('cart_items', optimistic);
         set({ items: optimistic });
 
+        // Guest: localStorage only.
+        if (!useAuthStore.getState().user) return;
+
         try {
             const res = await httpClient.delete<{ items: CartItem[] }>(ApiRoutes.cartRemove(id));
-            localStorageService.set('cart_items', res.data.items);
-            set({ items: res.data.items });
+            // Union with the optimistic list (which already excludes the removed
+            // line) so local-only guest items survive server round-trips.
+            const merged = unionCartLines(res.data.items ?? [], optimistic);
+            localStorageService.set('cart_items', merged);
+            set({ items: merged });
         } catch {
             localStorageService.set('cart_items', get().items);
             set({ items: get().items });
@@ -65,10 +80,16 @@ export const useCartStore = create<CartState>((set, get) => ({
 
     fetchCart: async () => {
         if (get().initialized) return;
+        // Guest: nothing to fetch — the localStorage cart is the source of truth.
+        if (!useAuthStore.getState().user) { set({ initialized: true }); return; }
         try {
             const res = await httpClient.get<{ items: CartItem[] }>(ApiRoutes.cart);
-            localStorageService.set('cart_items', res.data.items);
-            set({ items: res.data.items, initialized: true });
+            // Union with what's already saved locally — the server may not hold
+            // lines added as guest, and those must not vanish on refresh.
+            const local = localStorageService.get<CartItem[]>('cart_items') ?? [];
+            const merged = unionCartLines(res.data.items ?? [], local);
+            localStorageService.set('cart_items', merged);
+            set({ items: merged, initialized: true });
         } catch {
             set({ initialized: true });
         }

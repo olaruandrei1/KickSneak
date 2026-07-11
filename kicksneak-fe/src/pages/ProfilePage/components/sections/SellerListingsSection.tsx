@@ -11,6 +11,7 @@ interface Listing {
     id: string; name: string; brand: string;
     size: string; price: number; status: string;
     views: number; image: string; listedAt: string;
+    inAuction: boolean;
 }
 
 interface CatalogProduct {
@@ -288,7 +289,15 @@ export const SellerListingsSection = ({ profile }: Props) => {
                                 <span>{l.views}</span>
                             </div>
                             <div className={styles.actionsCell}>
-                                {l.status === 'active' && (
+                                {l.inAuction ? (
+                                    <Chip label="In Auction" size="small" icon={<Gavel sx={{ fontSize: 13 }} />} sx={{
+                                        height: 22, fontSize: '0.62rem', fontWeight: 700,
+                                        fontFamily: 'var(--font-display)',
+                                        background: 'rgba(163,197,27,0.12)', color: 'var(--color-accent)',
+                                        border: '1px solid rgba(163,197,27,0.3)',
+                                        '& .MuiChip-icon': { color: 'var(--color-accent)' },
+                                    }} />
+                                ) : l.status === 'active' && (
                                     <>
                                         <button className={styles.editBtn} onClick={() => {
                                             setEditing(l); setNewPrice(String(l.price)); setEditOpen(true);

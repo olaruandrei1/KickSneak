@@ -1,0 +1,248 @@
+{
+  "uid": "kicksneak-master",
+  "title": "KickSneak Master Observability",
+  "tags": ["kicksneak", "backend", "aspnetcore"],
+  "timezone": "browser",
+  "schemaVersion": 39,
+  "version": 2,
+  "refresh": "5s",
+  "time": { "from": "now-30m", "to": "now" },
+  "templating": { "list": [] },
+  "annotations": { "list": [] },
+  "panels": [
+    { "type": "row", "id": 100, "title": "🔭 Overview", "collapsed": false, "gridPos": { "h": 1, "w": 24, "x": 0, "y": 0 }, "panels": [] },
+    {
+      "id": 1, "type": "stat", "title": "Total Requests (5m)", "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "gridPos": { "h": 4, "w": 3, "x": 0, "y": 1 },
+      "targets": [{ "refId": "A", "expr": "sum(increase(http_requests_received_total[5m]))", "legendFormat": "Requests" }],
+      "options": { "colorMode": "value", "graphMode": "area", "reduceOptions": { "calcs": ["lastNotNull"] } },
+      "fieldConfig": { "defaults": { "color": { "mode": "fixed", "fixedColor": "green" }, "decimals": 0 }, "overrides": [] }
+    },
+    {
+      "id": 2, "type": "stat", "title": "Requests / sec", "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "gridPos": { "h": 4, "w": 3, "x": 3, "y": 1 },
+      "targets": [{ "refId": "A", "expr": "sum(rate(http_requests_received_total[1m]))", "legendFormat": "req/s" }],
+      "options": { "colorMode": "value", "graphMode": "area", "reduceOptions": { "calcs": ["lastNotNull"] } },
+      "fieldConfig": { "defaults": { "unit": "reqps", "decimals": 2, "color": { "mode": "fixed", "fixedColor": "blue" } }, "overrides": [] }
+    },
+    {
+      "id": 3, "type": "stat", "title": "Error Rate % (5m)", "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "gridPos": { "h": 4, "w": 3, "x": 6, "y": 1 },
+      "targets": [{ "refId": "A", "expr": "(sum(rate(http_requests_received_total{code=~\"5..\"}[5m])) or vector(0)) / clamp_min(sum(rate(http_requests_received_total[5m])), 0.001) * 100", "legendFormat": "Errors %" }],
+      "options": { "colorMode": "background", "graphMode": "none", "reduceOptions": { "calcs": ["lastNotNull"] } },
+      "fieldConfig": { "defaults": { "unit": "percent", "decimals": 2, "color": { "mode": "thresholds" }, "thresholds": { "mode": "absolute", "steps": [{ "color": "green", "value": null }, { "color": "orange", "value": 1 }, { "color": "red", "value": 5 }] } }, "overrides": [] }
+    },
+    {
+      "id": 4, "type": "stat", "title": "p95 Latency", "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "gridPos": { "h": 4, "w": 3, "x": 9, "y": 1 },
+      "targets": [{ "refId": "A", "expr": "histogram_quantile(0.95, sum(rate(microsoft_aspnetcore_hosting_http_server_request_duration_bucket[5m])) by (le))", "legendFormat": "p95" }],
+      "options": { "colorMode": "value", "graphMode": "area", "reduceOptions": { "calcs": ["lastNotNull"] } },
+      "fieldConfig": { "defaults": { "unit": "s", "decimals": 3, "color": { "mode": "thresholds" }, "thresholds": { "mode": "absolute", "steps": [{ "color": "green", "value": null }, { "color": "orange", "value": 0.3 }, { "color": "red", "value": 1 }] } }, "overrides": [] }
+    },
+    {
+      "id": 5, "type": "stat", "title": "In-Progress Requests", "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "gridPos": { "h": 4, "w": 3, "x": 12, "y": 1 },
+      "targets": [{ "refId": "A", "expr": "sum(http_requests_in_progress)", "legendFormat": "In progress" }],
+      "options": { "colorMode": "value", "graphMode": "area", "reduceOptions": { "calcs": ["lastNotNull"] } },
+      "fieldConfig": { "defaults": { "color": { "mode": "fixed", "fixedColor": "yellow" } }, "overrides": [] }
+    },
+    {
+      "id": 6, "type": "stat", "title": "Kestrel Active Conns", "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "gridPos": { "h": 4, "w": 3, "x": 15, "y": 1 },
+      "targets": [{ "refId": "A", "expr": "sum(microsoft_aspnetcore_server_kestrel_kestrel_active_connections)", "legendFormat": "Conns" }],
+      "options": { "colorMode": "value", "graphMode": "area", "reduceOptions": { "calcs": ["lastNotNull"] } },
+      "fieldConfig": { "defaults": { "color": { "mode": "fixed", "fixedColor": "super-light-blue" } }, "overrides": [] }
+    },
+    {
+      "id": 7, "type": "stat", "title": "SignalR Active", "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "gridPos": { "h": 4, "w": 3, "x": 18, "y": 1 },
+      "targets": [{ "refId": "A", "expr": "sum(microsoft_aspnetcore_http_connections_signalr_server_active_connections)", "legendFormat": "SignalR" }],
+      "options": { "colorMode": "value", "graphMode": "area", "reduceOptions": { "calcs": ["lastNotNull"] } },
+      "fieldConfig": { "defaults": { "color": { "mode": "fixed", "fixedColor": "purple" } }, "overrides": [] }
+    },
+    {
+      "id": 8, "type": "stat", "title": "DB Connections In Use", "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "gridPos": { "h": 4, "w": 3, "x": 21, "y": 1 },
+      "targets": [{ "refId": "A", "expr": "sum(npgsql_db_client_connection_count{db_client_connection_state=\"used\"})", "legendFormat": "Used" }],
+      "options": { "colorMode": "value", "graphMode": "area", "reduceOptions": { "calcs": ["lastNotNull"] } },
+      "fieldConfig": { "defaults": { "color": { "mode": "thresholds" }, "thresholds": { "mode": "absolute", "steps": [{ "color": "green", "value": null }, { "color": "orange", "value": 15 }, { "color": "red", "value": 18 }] } }, "overrides": [] }
+    },
+
+    { "type": "row", "id": 101, "title": "🌐 HTTP Traffic", "collapsed": false, "gridPos": { "h": 1, "w": 24, "x": 0, "y": 5 }, "panels": [] },
+    {
+      "id": 9, "type": "timeseries", "title": "HTTP Request Rate by Endpoint", "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "gridPos": { "h": 8, "w": 12, "x": 0, "y": 6 },
+      "targets": [{ "refId": "A", "expr": "sum(rate(http_requests_received_total[1m])) by (endpoint)", "legendFormat": "{{endpoint}}" }],
+      "options": { "legend": { "displayMode": "table", "placement": "right", "calcs": ["mean", "max"] }, "tooltip": { "mode": "multi", "sort": "desc" } },
+      "fieldConfig": { "defaults": { "unit": "reqps", "custom": { "fillOpacity": 10, "lineWidth": 2, "showPoints": "never", "gradientMode": "opacity", "stacking": { "mode": "normal" } } }, "overrides": [] }
+    },
+    {
+      "id": 10, "type": "timeseries", "title": "Requests by Status Code", "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "gridPos": { "h": 8, "w": 6, "x": 12, "y": 6 },
+      "targets": [{ "refId": "A", "expr": "sum(rate(http_requests_received_total[1m])) by (code)", "legendFormat": "{{code}}" }],
+      "options": { "legend": { "displayMode": "list", "placement": "bottom" }, "tooltip": { "mode": "multi", "sort": "desc" } },
+      "fieldConfig": { "defaults": { "unit": "reqps", "custom": { "fillOpacity": 30, "lineWidth": 1, "showPoints": "never", "stacking": { "mode": "normal" } } }, "overrides": [] }
+    },
+    {
+      "id": 11, "type": "piechart", "title": "Requests by Method (5m)", "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "gridPos": { "h": 8, "w": 6, "x": 18, "y": 6 },
+      "targets": [{ "refId": "A", "expr": "sum(rate(http_requests_received_total[5m])) by (method)", "legendFormat": "{{method}}" }],
+      "options": { "pieType": "donut", "displayLabels": ["percent"], "legend": { "displayMode": "table", "placement": "right", "values": ["value"] }, "reduceOptions": { "calcs": ["lastNotNull"] } },
+      "fieldConfig": { "defaults": {}, "overrides": [] }
+    },
+    {
+      "id": 12, "type": "table", "title": "Top Endpoints by Traffic", "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "gridPos": { "h": 7, "w": 12, "x": 0, "y": 14 },
+      "targets": [{ "refId": "A", "expr": "topk(10, sum(rate(http_requests_received_total[5m])) by (endpoint))", "legendFormat": "{{endpoint}}", "instant": true, "format": "table" }],
+      "options": { "showHeader": true, "sortBy": [{ "displayName": "Value", "desc": true }] },
+      "fieldConfig": { "defaults": { "unit": "reqps", "custom": { "align": "auto", "filterable": true } }, "overrides": [] }
+    },
+    {
+      "id": 13, "type": "timeseries", "title": "Routing Match Attempts", "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "gridPos": { "h": 7, "w": 6, "x": 12, "y": 14 },
+      "targets": [{ "refId": "A", "expr": "sum(rate(microsoft_aspnetcore_routing_aspnetcore_routing_match_attempts[5m])) by (aspnetcore_routing_match_status)", "legendFormat": "{{aspnetcore_routing_match_status}}" }],
+      "options": { "legend": { "displayMode": "list", "placement": "bottom" }, "tooltip": { "mode": "multi" } },
+      "fieldConfig": { "defaults": { "unit": "ops", "custom": { "fillOpacity": 15, "lineWidth": 2, "showPoints": "never" } }, "overrides": [] }
+    },
+    {
+      "id": 14, "type": "stat", "title": "Requests Since Start", "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "gridPos": { "h": 7, "w": 6, "x": 18, "y": 14 },
+      "targets": [{ "refId": "A", "expr": "sum(microsoft_aspnetcore_hosting_total_requests)", "legendFormat": "Total" }],
+      "options": { "colorMode": "value", "graphMode": "area", "reduceOptions": { "calcs": ["lastNotNull"] } },
+      "fieldConfig": { "defaults": { "decimals": 0, "color": { "mode": "fixed", "fixedColor": "green" } }, "overrides": [] }
+    },
+
+    { "type": "row", "id": 102, "title": "⏱️ Latency", "collapsed": false, "gridPos": { "h": 1, "w": 24, "x": 0, "y": 21 }, "panels": [] },
+    {
+      "id": 15, "type": "timeseries", "title": "Latency Quantiles (overall)", "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "gridPos": { "h": 8, "w": 12, "x": 0, "y": 22 },
+      "targets": [
+        { "refId": "A", "expr": "histogram_quantile(0.50, sum(rate(microsoft_aspnetcore_hosting_http_server_request_duration_bucket[5m])) by (le))", "legendFormat": "p50" },
+        { "refId": "B", "expr": "histogram_quantile(0.90, sum(rate(microsoft_aspnetcore_hosting_http_server_request_duration_bucket[5m])) by (le))", "legendFormat": "p90" },
+        { "refId": "C", "expr": "histogram_quantile(0.95, sum(rate(microsoft_aspnetcore_hosting_http_server_request_duration_bucket[5m])) by (le))", "legendFormat": "p95" },
+        { "refId": "D", "expr": "histogram_quantile(0.99, sum(rate(microsoft_aspnetcore_hosting_http_server_request_duration_bucket[5m])) by (le))", "legendFormat": "p99" }
+      ],
+      "options": { "legend": { "displayMode": "list", "placement": "bottom" }, "tooltip": { "mode": "multi", "sort": "desc" } },
+      "fieldConfig": { "defaults": { "unit": "s", "custom": { "fillOpacity": 5, "lineWidth": 2, "showPoints": "never" } }, "overrides": [] }
+    },
+    {
+      "id": 16, "type": "timeseries", "title": "p95 Latency by Route", "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "gridPos": { "h": 8, "w": 12, "x": 12, "y": 22 },
+      "targets": [{ "refId": "A", "expr": "histogram_quantile(0.95, sum(rate(microsoft_aspnetcore_hosting_http_server_request_duration_bucket[5m])) by (le, http_route))", "legendFormat": "{{http_route}}" }],
+      "options": { "legend": { "displayMode": "table", "placement": "right", "calcs": ["mean", "max"] }, "tooltip": { "mode": "multi", "sort": "desc" } },
+      "fieldConfig": { "defaults": { "unit": "s", "custom": { "fillOpacity": 0, "lineWidth": 2, "showPoints": "never" } }, "overrides": [] }
+    },
+
+    { "type": "row", "id": 103, "title": "🗄️ Database — Npgsql & EF Core", "collapsed": false, "gridPos": { "h": 1, "w": 24, "x": 0, "y": 30 }, "panels": [] },
+    {
+      "id": 17, "type": "timeseries", "title": "DB Connections by State", "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "gridPos": { "h": 8, "w": 8, "x": 0, "y": 31 },
+      "targets": [{ "refId": "A", "expr": "sum(npgsql_db_client_connection_count) by (db_client_connection_state)", "legendFormat": "{{db_client_connection_state}}" }],
+      "options": { "legend": { "displayMode": "list", "placement": "bottom" }, "tooltip": { "mode": "multi" } },
+      "fieldConfig": { "defaults": { "custom": { "fillOpacity": 20, "lineWidth": 2, "showPoints": "never", "stacking": { "mode": "normal" } } }, "overrides": [] }
+    },
+    {
+      "id": 18, "type": "timeseries", "title": "Npgsql Query Latency (p95 / p99)", "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "gridPos": { "h": 8, "w": 8, "x": 8, "y": 31 },
+      "targets": [
+        { "refId": "A", "expr": "histogram_quantile(0.95, sum(rate(npgsql_db_client_operation_duration_bucket[5m])) by (le))", "legendFormat": "p95" },
+        { "refId": "B", "expr": "histogram_quantile(0.99, sum(rate(npgsql_db_client_operation_duration_bucket[5m])) by (le))", "legendFormat": "p99" }
+      ],
+      "options": { "legend": { "displayMode": "list", "placement": "bottom" }, "tooltip": { "mode": "multi" } },
+      "fieldConfig": { "defaults": { "unit": "s", "custom": { "fillOpacity": 5, "lineWidth": 2, "showPoints": "never" } }, "overrides": [] }
+    },
+    {
+      "id": 19, "type": "timeseries", "title": "EF Core — Queries & SaveChanges / s", "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "gridPos": { "h": 8, "w": 8, "x": 16, "y": 31 },
+      "targets": [
+        { "refId": "A", "expr": "rate(microsoft_entityframeworkcore_microsoft_entityframeworkcore_queries[1m])", "legendFormat": "queries/s" },
+        { "refId": "B", "expr": "rate(microsoft_entityframeworkcore_microsoft_entityframeworkcore_savechanges[1m])", "legendFormat": "savechanges/s" }
+      ],
+      "options": { "legend": { "displayMode": "list", "placement": "bottom" }, "tooltip": { "mode": "multi" } },
+      "fieldConfig": { "defaults": { "unit": "ops", "custom": { "fillOpacity": 10, "lineWidth": 2, "showPoints": "never" } }, "overrides": [] }
+    },
+    {
+      "id": 20, "type": "stat", "title": "EF Compiled Query Cache Hit %", "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "gridPos": { "h": 7, "w": 6, "x": 0, "y": 39 },
+      "targets": [{ "refId": "A", "expr": "microsoft_entityframeworkcore_microsoft_entityframeworkcore_compiled_query_cache_hits / clamp_min(microsoft_entityframeworkcore_microsoft_entityframeworkcore_compiled_query_cache_hits + microsoft_entityframeworkcore_microsoft_entityframeworkcore_compiled_query_cache_misses, 1) * 100", "legendFormat": "Hit %" }],
+      "options": { "colorMode": "background", "graphMode": "area", "reduceOptions": { "calcs": ["lastNotNull"] } },
+      "fieldConfig": { "defaults": { "unit": "percent", "decimals": 1, "color": { "mode": "thresholds" }, "thresholds": { "mode": "absolute", "steps": [{ "color": "red", "value": null }, { "color": "orange", "value": 70 }, { "color": "green", "value": 90 }] } }, "overrides": [] }
+    },
+    {
+      "id": 21, "type": "timeseries", "title": "Npgsql Operations / s", "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "gridPos": { "h": 7, "w": 9, "x": 6, "y": 39 },
+      "targets": [{ "refId": "A", "expr": "sum(rate(npgsql_db_client_operation_duration_count[1m]))", "legendFormat": "ops/s" }],
+      "options": { "legend": { "displayMode": "list", "placement": "bottom" }, "tooltip": { "mode": "single" } },
+      "fieldConfig": { "defaults": { "unit": "ops", "custom": { "fillOpacity": 15, "lineWidth": 2, "showPoints": "never", "gradientMode": "opacity" } }, "overrides": [] }
+    },
+    {
+      "id": 22, "type": "gauge", "title": "Connection Pool Saturation", "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "gridPos": { "h": 7, "w": 9, "x": 15, "y": 39 },
+      "targets": [{ "refId": "A", "expr": "sum(npgsql_db_client_connection_count{db_client_connection_state=\"used\"}) / clamp_min(sum(npgsql_db_client_connection_max), 1) * 100", "legendFormat": "Saturation" }],
+      "options": { "reduceOptions": { "calcs": ["lastNotNull"] }, "showThresholdMarkers": true },
+      "fieldConfig": { "defaults": { "unit": "percent", "min": 0, "max": 100, "color": { "mode": "thresholds" }, "thresholds": { "mode": "absolute", "steps": [{ "color": "green", "value": null }, { "color": "orange", "value": 60 }, { "color": "red", "value": 85 }] } }, "overrides": [] }
+    },
+
+    { "type": "row", "id": 104, "title": "⚙️ Runtime & Connections", "collapsed": false, "gridPos": { "h": 1, "w": 24, "x": 0, "y": 46 }, "panels": [] },
+    {
+      "id": 23, "type": "timeseries", "title": "Managed Heap Memory", "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "gridPos": { "h": 8, "w": 8, "x": 0, "y": 47 },
+      "targets": [{ "refId": "A", "expr": "dotnet_total_memory_bytes", "legendFormat": "Heap" }],
+      "options": { "legend": { "displayMode": "list", "placement": "bottom" }, "tooltip": { "mode": "single" } },
+      "fieldConfig": { "defaults": { "unit": "bytes", "custom": { "fillOpacity": 20, "lineWidth": 2, "showPoints": "never", "gradientMode": "opacity" } }, "overrides": [] }
+    },
+    {
+      "id": 24, "type": "timeseries", "title": "GC Collections / s by Generation", "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "gridPos": { "h": 8, "w": 8, "x": 8, "y": 47 },
+      "targets": [{ "refId": "A", "expr": "rate(dotnet_collection_count_total[5m])", "legendFormat": "gen {{generation}}" }],
+      "options": { "legend": { "displayMode": "list", "placement": "bottom" }, "tooltip": { "mode": "multi" } },
+      "fieldConfig": { "defaults": { "unit": "ops", "custom": { "fillOpacity": 10, "lineWidth": 2, "showPoints": "never" } }, "overrides": [] }
+    },
+    {
+      "id": 25, "type": "timeseries", "title": "Kestrel Memory Pool (rented / pooled)", "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "gridPos": { "h": 8, "w": 8, "x": 16, "y": 47 },
+      "targets": [
+        { "refId": "A", "expr": "sum(microsoft_aspnetcore_memorypool_aspnetcore_memory_pool_rented)", "legendFormat": "rented" },
+        { "refId": "B", "expr": "sum(microsoft_aspnetcore_memorypool_aspnetcore_memory_pool_pooled)", "legendFormat": "pooled" }
+      ],
+      "options": { "legend": { "displayMode": "list", "placement": "bottom" }, "tooltip": { "mode": "multi" } },
+      "fieldConfig": { "defaults": { "unit": "bytes", "custom": { "fillOpacity": 10, "lineWidth": 2, "showPoints": "never" } }, "overrides": [] }
+    },
+    {
+      "id": 26, "type": "timeseries", "title": "Kestrel Connections — Active vs Queue", "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "gridPos": { "h": 7, "w": 12, "x": 0, "y": 55 },
+      "targets": [
+        { "refId": "A", "expr": "sum(microsoft_aspnetcore_server_kestrel_kestrel_active_connections)", "legendFormat": "active" },
+        { "refId": "B", "expr": "sum(microsoft_aspnetcore_server_kestrel_request_queue_length)", "legendFormat": "request queue" },
+        { "refId": "C", "expr": "sum(microsoft_aspnetcore_server_kestrel_kestrel_queued_connections)", "legendFormat": "queued conns" }
+      ],
+      "options": { "legend": { "displayMode": "list", "placement": "bottom" }, "tooltip": { "mode": "multi" } },
+      "fieldConfig": { "defaults": { "custom": { "fillOpacity": 10, "lineWidth": 2, "showPoints": "never" } }, "overrides": [] }
+    },
+    {
+      "id": 27, "type": "timeseries", "title": "HTTP & SignalR Connections", "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "gridPos": { "h": 7, "w": 12, "x": 12, "y": 55 },
+      "targets": [
+        { "refId": "A", "expr": "sum(microsoft_aspnetcore_http_connections_current_connections)", "legendFormat": "http connections" },
+        { "refId": "B", "expr": "sum(microsoft_aspnetcore_http_connections_signalr_server_active_connections)", "legendFormat": "signalr active" }
+      ],
+      "options": { "legend": { "displayMode": "list", "placement": "bottom" }, "tooltip": { "mode": "multi" } },
+      "fieldConfig": { "defaults": { "custom": { "fillOpacity": 15, "lineWidth": 2, "showPoints": "never" } }, "overrides": [] }
+    },
+
+    { "type": "row", "id": 105, "title": "📜 Logs (Loki)", "collapsed": false, "gridPos": { "h": 1, "w": 24, "x": 0, "y": 62 }, "panels": [] },
+    {
+      "id": 28, "type": "timeseries", "title": "Log Volume by Service", "datasource": { "type": "loki", "uid": "loki" },
+      "gridPos": { "h": 8, "w": 24, "x": 0, "y": 63 },
+      "targets": [{ "refId": "A", "expr": "sum(count_over_time({container=~\"kicksneak-.+\"}[1m])) by (container)", "legendFormat": "{{container}}", "queryType": "range" }],
+      "options": { "legend": { "displayMode": "table", "placement": "right", "calcs": ["sum"] }, "tooltip": { "mode": "multi", "sort": "desc" } },
+      "fieldConfig": { "defaults": { "unit": "logs", "custom": { "fillOpacity": 25, "lineWidth": 1, "showPoints": "never", "stacking": { "mode": "normal" } } }, "overrides": [] }
+    },
+    {
+      "id": 29, "type": "logs", "title": "Backend Logs (live)", "datasource": { "type": "loki", "uid": "loki" },
+      "gridPos": { "h": 11, "w": 24, "x": 0, "y": 71 },
+      "targets": [{ "refId": "A", "expr": "{container=\"kicksneak-backend\"}", "queryType": "range" }],
+      "options": { "showTime": true, "showLabels": false, "wrapLogMessage": true, "prettifyLogMessage": false, "enableLogDetails": true, "dedupStrategy": "none", "sortOrder": "Descending" }
+    }
+  ]
+}

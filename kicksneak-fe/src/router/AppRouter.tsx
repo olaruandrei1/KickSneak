@@ -18,7 +18,7 @@ import AuctionsPage from '../pages/AuctionsPage/AuctionsPage';
 import AuctionDetailPage from '../pages/AuctionDetailPage/AuctionDetailPage';
 import CheckoutPage from '../pages/CheckoutPage/CheckoutPage';
 import { BrandsPage } from '../pages/BrandsPage/BrandsPage';
-import { useFavoritesStore } from '../store/favoritesStore';
+import { mergeGuestDataOnLogin } from '../services/guestSyncService';
 import CheckoutSuccessPage from '../pages/CheckoutPage/CheckoutSuccessPage';
 
 const PublicLayout = () => (
@@ -45,13 +45,19 @@ const AuthWatcher = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
-        const unsub = firebaseService.onAuthChanged((user) => {
+        const unsub = firebaseService.onAuthChanged(async (user) => {
             setUser(user);
             setInitialized(true);
             if (user) {
-                useFavoritesStore.getState().fetchFavorites();
+                // Merge whatever the guest saved (cart + favorites) into the account,
+                // then land them back where they came from.
+                await mergeGuestDataOnLogin();
                 if (window.location.pathname === '/login') {
-                    navigate('/', { replace: true });
+                    // Return the user to wherever they were sent from (e.g. an auction
+                    // they tried to bid on as a guest), otherwise fall back to home.
+                    const redirect = sessionStorage.getItem('post_login_redirect');
+                    sessionStorage.removeItem('post_login_redirect');
+                    navigate(redirect || '/', { replace: true });
                 }
             }
         });

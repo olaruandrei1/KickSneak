@@ -132,6 +132,45 @@ export default function Sidebar() {
           color: var(--primary-color);
           font-weight: 600;
         }
+
+        /* On narrow screens the sidebar collapses into a sticky horizontal bar
+           with a scrollable icon+label nav, freeing the full width for content. */
+        @media (max-width: 900px) {
+          .sidebar {
+            height: auto;
+            position: sticky;
+            top: 0;
+            z-index: 50;
+            flex-direction: row;
+            align-items: center;
+            border-right: none;
+            border-bottom: 1px solid var(--border-color);
+            overflow-x: auto;
+          }
+
+          .sidebar-brand {
+            border-bottom: none;
+            border-right: 1px solid var(--border-color);
+            padding: 0.85rem 1rem;
+            flex-shrink: 0;
+          }
+
+          .brand-name {
+            display: none;
+          }
+
+          .sidebar-nav {
+            flex-direction: row;
+            overflow-x: auto;
+            padding: 0.5rem;
+            gap: 0.25rem;
+          }
+
+          :global(.nav-link) {
+            white-space: nowrap;
+            padding: 0.55rem 0.8rem;
+          }
+        }
       `}</style>
     </aside>
   );

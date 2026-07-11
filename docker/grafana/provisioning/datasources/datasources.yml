@@ -1,0 +1,19 @@
+apiVersion: 1
+
+# Provisioned datasources — recreated automatically on every Grafana boot,
+# so a `docker compose down -v` no longer loses them.
+datasources:
+  - name: Prometheus
+    uid: prometheus
+    type: prometheus
+    access: proxy
+    url: http://prometheus:9090
+    isDefault: true
+    editable: true
+
+  - name: Loki
+    uid: loki
+    type: loki
+    access: proxy
+    url: http://loki:3100
+    editable: true

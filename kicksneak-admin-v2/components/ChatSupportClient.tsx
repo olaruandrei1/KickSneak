@@ -157,21 +157,29 @@ export default function ChatSupportClient({ initialSessions }: ChatSupportClient
           const prevMap = new Map(prev.map(s => [s.id, s]));
           return updatedSessions.map(dbSession => {
             const localSession = prevMap.get(dbSession.id);
-            if (localSession && isWsConnected) {
-              return {
-                ...dbSession,
-                status: localSession.status,
-                lastMessage: localSession.lastMessage || dbSession.lastMessage
-              };
-            }
-            return dbSession;
+            // DB is the source of truth for status (takeover/close can happen
+            // on either server); keep whichever lastMessage is newest.
+            const localLast = localSession?.lastMessage;
+            const dbLast = dbSession.lastMessage;
+            const lastMessage = localLast && dbLast
+              ? (new Date(localLast.created_at) > new Date(dbLast.created_at) ? localLast : dbLast)
+              : (localLast || dbLast);
+            return { ...dbSession, lastMessage };
           });
         });
 
-        // Only poll messages if WS is not active (fallback)
-        if (selectedSessionId && !isWsConnected) {
+        // Always poll messages: user messages arrive via the Go chat server
+        // (AI mode), not this WS server, so the socket alone never sees them.
+        if (selectedSessionId) {
           const updatedMessages = await getSessionMessages(selectedSessionId);
-          setMessages(updatedMessages);
+          setMessages(prev => {
+            const known = new Set(prev.map(m => m.id));
+            const fresh = updatedMessages.filter(m => !known.has(m.id));
+            if (fresh.length === 0) return prev;
+            return [...prev, ...fresh].sort(
+              (a, b) => new Date(a.created_at).getTime() - new Date(b.created_at).getTime()
+            );
+          });
         }
       } catch (err) {
         console.error("Polling chat failed:", err);
@@ -462,6 +470,30 @@ export default function ChatSupportClient({ initialSessions }: ChatSupportClient
           height: 600px;
           padding: 0 !important;
           overflow: hidden;
+        }
+
+        /* Narrow: stack the sessions list above the conversation instead of
+           squeezing two columns, and let the header actions wrap. */
+        @media (max-width: 760px) {
+          .chat-layout {
+            grid-template-columns: 1fr;
+            height: auto;
+          }
+          .sessions-sidebar {
+            border-right: none;
+            border-bottom: 1px solid var(--border-color);
+            max-height: 240px;
+          }
+          .chat-window {
+            height: 70vh;
+          }
+          .chat-header {
+            flex-wrap: wrap;
+            gap: 0.5rem;
+          }
+          .header-actions {
+            flex-wrap: wrap;
+          }
         }
 
         .sessions-sidebar {

@@ -245,16 +245,19 @@ export const SearchBox = ({
                     autoComplete="off"
                     spellCheck={false}
                 />
-                <button
-                    type="button"
-                    className={`${styles.aiToggle} ${aiMode ? styles.aiToggleActive : ''}`}
-                    onClick={() => setAiMode((v) => !v)}
-                    aria-pressed={aiMode}
-                    title={aiMode ? 'AI search on — press Enter to search' : 'Search with AI'}
-                >
-                    <AutoAwesome />
-                    AI
-                </button>
+                {/* AI search is a signed-in feature — hide the toggle for guests. */}
+                {user && (
+                    <button
+                        type="button"
+                        className={`${styles.aiToggle} ${aiMode ? styles.aiToggleActive : ''}`}
+                        onClick={() => setAiMode((v) => !v)}
+                        aria-pressed={aiMode}
+                        title={aiMode ? 'AI search on — press Enter to search' : 'Search with AI'}
+                    >
+                        <AutoAwesome />
+                        AI
+                    </button>
+                )}
 
                 {query && (
                     <button

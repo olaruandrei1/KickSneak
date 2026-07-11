@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import { Chip, Dialog, DialogTitle, DialogContent, DialogActions, Button, TextField } from '@mui/material';
 import { Visibility, Gavel, AutoMode, Star, StarBorder, VerifiedUser } from '@mui/icons-material';
 import { cachedFetch } from '../../services/cachedFetchService';
@@ -23,7 +23,14 @@ const CONDITION_LABEL: Record<string, string> = {
 const AuctionDetailPage = () => {
     const { id } = useParams<{ id: string }>();
     const navigate = useNavigate();
+    const location = useLocation();
     const { user } = useAuthStore();
+
+    // Send a guest to login, remembering this auction so they land back here after signing in.
+    const requireLogin = () => {
+        sessionStorage.setItem('post_login_redirect', location.pathname + location.search);
+        navigate('/login');
+    };
 
     const currentAuction = useAuctionStore((s) => s.currentAuction);
     const setCurrentAuction = useAuctionStore((s) => s.setCurrentAuction);
@@ -73,8 +80,6 @@ const AuctionDetailPage = () => {
         if (auction.recentBids.length === 0) return false;
         return auction.recentBids[0]?.bidderId === user.uid;
     })();
-
-    const [guestOpen, setGuestOpen] = useState(false);
 
     useAuctionLiveSync({ auctionId: id, currentUserId: user?.uid });
 
@@ -302,14 +307,25 @@ const AuctionDetailPage = () => {
                         </div>
                     )}
 
+                    {/* Owner can't bid on their own auction */}
+                    {!ended && auction.isOwnAuction && (
+                        <div style={{
+                            padding: '14px 16px', borderRadius: 12, textAlign: 'center',
+                            background: 'var(--color-surface)', border: '1px solid var(--color-border)',
+                            color: 'var(--color-text-muted)', fontFamily: 'var(--font-body)', fontSize: '0.85rem',
+                        }}>
+                            This is your auction — you can't place bids on it.
+                        </div>
+                    )}
+
                     {/* CTA buttons */}
-                    {!ended && (
+                    {!ended && !auction.isOwnAuction && (
                         <div className={styles.ctaRow}>
                             <button
                                 className={`${styles.bidBtn} ${isWinning ? styles.bidBtnWinning : ''}`}
                                 disabled={isWinning}
                                 onClick={() => {
-                                    if (!user) { setGuestOpen(true); return; }
+                                    if (!user) { requireLogin(); return; }
                                     setBidError(''); setBidAmount(String(auction.currentPrice + 1)); setBidOpen(true);
                                 }}
                             >
@@ -318,7 +334,7 @@ const AuctionDetailPage = () => {
                             </button>
                             {!myAutoBid && !isWinning && (
                                 <button className={styles.autoBidBtn} onClick={() => {
-                                    if (!user) { setGuestOpen(true); return; }
+                                    if (!user) { requireLogin(); return; }
                                     setAutoBidOpen(true);
                                 }}>
                                     <AutoMode sx={{ fontSize: 18 }} />

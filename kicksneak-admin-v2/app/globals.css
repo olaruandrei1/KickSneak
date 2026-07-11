@@ -499,3 +499,51 @@ h1, h2, h3, h4, h5, h6 {
 .view-all-link:hover {
   color: var(--primary-hover);
 }
+
+/* ---------------------------------------------- */
+/* Responsive                                      */
+/* ---------------------------------------------- */
+
+/* Tablet / narrow: sidebar stops being a fixed 260px column and stacks on top
+   as a horizontal bar (see Sidebar.tsx media query). */
+@media (max-width: 900px) {
+  .admin-layout {
+    grid-template-columns: 1fr;
+  }
+  .main-content {
+    height: auto;          /* avoid a nested 100vh scroll under the stacked bar */
+  }
+  .page-container {
+    padding: 1.25rem;
+  }
+  .kpi-grid,
+  .activity-grid,
+  .kanban-board {
+    gap: 1rem;
+  }
+}
+
+/* Phone */
+@media (max-width: 560px) {
+  .page-container {
+    padding: 1rem 0.85rem;
+  }
+  .page-title {
+    font-size: 1.5rem;
+  }
+  .page-subtitle {
+    font-size: 0.88rem;
+    margin-bottom: 1.25rem;
+  }
+  .admin-table th,
+  .admin-table td {
+    padding: 0.65rem 0.7rem;
+    font-size: 0.85rem;
+  }
+  .modal-overlay {
+    padding: 0.75rem;
+  }
+  .modal-footer {
+    flex-wrap: wrap;
+  }
+}

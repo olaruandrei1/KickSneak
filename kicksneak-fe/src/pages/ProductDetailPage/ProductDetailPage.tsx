@@ -145,9 +145,14 @@ export const ProductDetailPage = () => {
 
     const handleBuyNow = () => {
         const added = handleAddToCart();
-        if (added) {
-            navigate('/checkout');
+        if (!added) return;
+        // Guest: the item is already in the local cart — sign in, then return to it.
+        if (!user) {
+            sessionStorage.setItem('post_login_redirect', '/cart');
+            navigate('/login');
+            return;
         }
+        navigate('/checkout');
     };
 
     if (loading) return <Spinner fullPage size="lg" />;

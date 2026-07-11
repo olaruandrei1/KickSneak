@@ -38,6 +38,17 @@ export const CartPage = () => {
         return unsub;
     }, [user]);
 
+    // Guests must sign in before paying; send them back to the cart afterwards
+    // (their items are merged into the account on login).
+    const goToCheckout = () => {
+        if (!user) {
+            sessionStorage.setItem('post_login_redirect', '/cart');
+            navigate('/login');
+            return;
+        }
+        navigate('/checkout');
+    };
+
     const subtotal = items.reduce((s, i) => s + i.price * i.quantity, 0);
     const shipping = subtotal >= FREE_SHIP_ABOVE ? 0 : SHIPPING_FEE;
     const vat = Math.round(subtotal * VAT_RATE * 100) / 100;
@@ -175,7 +186,7 @@ export const CartPage = () => {
                                     variant="contained"
                                     size="large"
                                     startIcon={<LockOutlinedIcon />}
-                                    onClick={() => navigate('/checkout')}
+                                    onClick={goToCheckout}
                                     sx={{
                                         mt: 2.5,
                                         borderRadius: '100px',

@@ -301,6 +301,39 @@ await Execute(conn, """
     WHERE "Id" IN (SELECT "StockItemId" FROM ins);
 """);
 
+Log("Generating rich historical sales data for top products...");
+await Execute(conn, """
+    WITH top_products AS (
+        SELECT p."Id" as "ProductId", count(si."Id") as "ActiveStock"
+        FROM products p
+        JOIN stock_items si ON si."ProductId" = p."Id" AND si."StatusItem" = 1 AND si."IsDeleted" = false
+        WHERE p."IsDeleted" = false
+        GROUP BY p."Id"
+        ORDER BY "ActiveStock" DESC
+        LIMIT 15
+    ), picked_stock AS (
+        SELECT si."Id", si."Price",
+               row_number() OVER (PARTITION BY si."ProductId" ORDER BY random()) as rn
+        FROM stock_items si
+        JOIN top_products tp ON si."ProductId" = tp."ProductId"
+        WHERE si."StatusItem" = 1 AND si."IsDeleted" = false
+    ), stock_to_sell AS (
+        SELECT "Id", "Price" FROM picked_stock WHERE rn <= 18
+    ), ins AS (
+        INSERT INTO orders ("Id", "BuyerId", "StockItemId", "Status", "TotalPrice", "IsDeleted", "CreatedAt", "CreatedBy")
+        SELECT gen_random_uuid(), usr."Id", sts."Id", 3, 
+               round((sts."Price" * (0.85 + random() * 0.3))::numeric, 2),
+               false,
+               now() - ((random() * 350 + 5) || ' days')::interval, 
+               'seed'
+        FROM stock_to_sell sts
+        CROSS JOIN LATERAL (SELECT "Id" FROM users WHERE "CreatedBy" = 'seed' ORDER BY random() LIMIT 1) usr
+        RETURNING "StockItemId"
+    )
+    UPDATE stock_items SET "StatusItem" = 2
+    WHERE "Id" IN (SELECT "StockItemId" FROM ins);
+""");
+
 Log("Generating auctions and bids...");
 await Execute(conn, """
     WITH picked_auctions AS (

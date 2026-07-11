@@ -54,10 +54,9 @@ export const ChatSection = ({ profile }: Props) => {
     const messagesRef = useRef<HTMLDivElement>(null);
     const isFirstMount = useRef(true);
     const streamingContentRef = useRef('');
-    const modeRef = useRef(mode);
-    const sessionIdRef = useRef(sessionId);
-    useEffect(() => { modeRef.current = mode; }, [mode]);
-    useEffect(() => { sessionIdRef.current = sessionId; }, [sessionId]);
+    // Messages typed while the support socket is down; flushed on (re)connect
+    // instead of being silently dropped.
+    const pendingSupportRef = useRef<string[]>([]);
 
     useEffect(() => {
         if (isFirstMount.current) {
@@ -185,6 +184,12 @@ export const ChatSection = ({ profile }: Props) => {
         ws.onopen = () => {
             setIsConnected(true);
             ws.send(JSON.stringify({ type: 'register_session', sessionId: currentSessionId }));
+            // Flush anything the user typed while the socket was down.
+            const pending = pendingSupportRef.current;
+            pendingSupportRef.current = [];
+            pending.forEach((content) => ws.send(JSON.stringify({
+                type: 'message', content, sessionId: currentSessionId, role: 'user',
+            })));
         };
 
         ws.onmessage = (event) => {
@@ -267,22 +272,10 @@ export const ChatSection = ({ profile }: Props) => {
         }
     }, [sessions, mode, sessionId]);
 
-    // Mark the support conversation as DONE when the user leaves the page (refresh / navigate away).
-    useEffect(() => {
-        const closeSupport = () => {
-            try {
-                if (modeRef.current === 'support' && sessionIdRef.current
-                    && wsRef.current?.readyState === WebSocket.OPEN) {
-                    wsRef.current.send(JSON.stringify({ type: 'close', sessionId: sessionIdRef.current }));
-                }
-            } catch { /* unloading */ }
-        };
-        window.addEventListener('beforeunload', closeSupport);
-        return () => {
-            window.removeEventListener('beforeunload', closeSupport);
-            closeSupport(); // route change / component unmount
-        };
-    }, []);
+    // NOTE: support sessions are closed only explicitly (admin's "Închide" or the
+    // user starting a new chat). Auto-closing on unmount/refresh killed live
+    // sessions whenever the user switched profile tabs, spawning fresh 'active'
+    // sessions and resetting the admin takeover state mid-conversation.
 
     const escalateToSupport = () => {
         if (mode === 'support') return;
@@ -292,6 +285,9 @@ export const ChatSection = ({ profile }: Props) => {
 
         setStreamingContent('');
         setIsTyping(false);
+        // The AI socket is about to close — message_complete may never arrive,
+        // and a stuck isWaitingResponse would swallow every support message.
+        setIsWaitingResponse(false);
 
         setMessages(prev => [...prev, {
             id: Date.now().toString(),
@@ -304,7 +300,8 @@ export const ChatSection = ({ profile }: Props) => {
     };
 
     const handleSend = () => {
-        if (!input.trim() || isWaitingResponse) return;
+        // Only throttle while waiting for the AI; live-support replies are free-form.
+        if (!input.trim() || (mode === 'ai' && isWaitingResponse)) return;
 
         const userMsg: Message = {
             id: Date.now().toString(),
@@ -322,40 +319,58 @@ export const ChatSection = ({ profile }: Props) => {
                 content: input,
                 sessionId: sessionId,
             }));
-        } else if (mode === 'support' && wsRef.current?.readyState === WebSocket.OPEN) {
-            wsRef.current.send(JSON.stringify({
-                type: 'message',
-                content: input,
-                sessionId: sessionId,
-                role: 'user',
-            }));
+        } else if (mode === 'support') {
+            if (wsRef.current?.readyState === WebSocket.OPEN) {
+                wsRef.current.send(JSON.stringify({
+                    type: 'message',
+                    content: input,
+                    sessionId: sessionId,
+                    role: 'user',
+                }));
+            } else {
+                // Socket down — queue the message and reconnect; the onopen
+                // handler flushes the queue so nothing is lost silently.
+                pendingSupportRef.current.push(input);
+                if (sessionId) connectSupportWebSocket(sessionId);
+            }
+        }
+    };
+
+    // Close the session both real-time (support WS, so the admin list updates
+    // instantly) and via the Go REST API (guaranteed DB close even if the
+    // socket is down). Leaving it open makes Go resurrect the same 'agent'
+    // session on the next AI connect, which rejects every message.
+    const closeCurrentSession = (sid: string) => {
+        try {
+            if (wsRef.current?.readyState === WebSocket.OPEN) {
+                const type = mode === 'support' ? 'close' : 'close_session';
+                wsRef.current.send(JSON.stringify({ type, sessionId: sid }));
+            }
+        } catch { /* best effort */ }
+        if (user?.uid) {
+            fetch(`${CHAT_API_URL}/api/chat/sessions/${sid}`, {
+                method: 'DELETE',
+                headers: { 'Authorization': `Bearer ${user.uid}` },
+            }).catch(() => { });
         }
     };
 
     const handleNewChat = () => {
-        if (sessionId && wsRef.current?.readyState === WebSocket.OPEN) {
-            wsRef.current.send(JSON.stringify({
-                type: 'close_session',
-                sessionId: sessionId,
-            }));
-        }
+        if (sessionId) closeCurrentSession(sessionId);
 
         streamingContentRef.current = '';
+        pendingSupportRef.current = [];
         setMessages([]);
         setStreamingContent('');
         setIsTyping(false);
+        setIsWaitingResponse(false);
         setSessionId(null);
         setShowHistory(false);
         setMode('ai'); // triggers useEffect → closes support WS, opens AI WS
     };
 
     const handleBackToAI = () => {
-        if (sessionId && wsRef.current?.readyState === WebSocket.OPEN) {
-            wsRef.current.send(JSON.stringify({
-                type: 'close_session',
-                sessionId: sessionId,
-            }));
-        }
+        if (sessionId) closeCurrentSession(sessionId);
 
         setMessages(m => [...m, {
             id: Date.now().toString(),
@@ -364,6 +379,11 @@ export const ChatSection = ({ profile }: Props) => {
             timestamp: new Date()
         }]);
 
+        pendingSupportRef.current = [];
+        setIsWaitingResponse(false);
+        // Drop the session id: the old ('agent'/'closed') session must not be
+        // reused — the Go server only answers on a fresh 'active' one.
+        setSessionId(null);
         setMode('ai');
     };
 

@@ -6,6 +6,7 @@ import { useAuthStore } from '../../store/authStore';
 import type { ProductItem } from '../../types/product';
 import { ProductCard } from '../../components/atoms/ProductCard/ProductCard';
 import { CarouselSection } from './components/CarouselSection';
+import { recentlyViewedService } from '../../services/recentlyViewedService';
 import { Spinner } from '../../components/atoms/Spinner/Spinner';
 import { useNavigate } from 'react-router-dom';
 import styles from './HomePage.module.css';
@@ -28,10 +29,23 @@ export const HomePage = () => {
     const navigate = useNavigate();
     const { user } = useAuthStore();
 
+    // Guest-only fallback for the "Recently Viewed" rail (logged-in users get it
+    // from the server via CAROUSEL_ROUTES.home_recent).
+    const guestRecentlyViewed = user?.uid
+        ? []
+        : recentlyViewedService.getCards()
+            .filter((p, i, arr) => arr.findIndex((x) => x.id === p.id) === i)
+            .slice(0, 10);
+
     // ── Standard carousels (Elastic/DB) ──
     useEffect(() => {
         let loaded = 0;
-        CAROUSEL_ROUTES.forEach(({ key, url, cacheKey }) => {
+        // home_recent is an auth-only endpoint (401 for guests) — guests get
+        // their locally tracked rail instead, so skip the server fetch entirely.
+        const routes = user?.uid
+            ? CAROUSEL_ROUTES
+            : CAROUSEL_ROUTES.filter((r) => r.key !== 'home_recent');
+        routes.forEach(({ key, url, cacheKey }) => {
             cachedFetch<CarouselData>({
                 key: cacheKey,
                 url,
@@ -44,7 +58,7 @@ export const HomePage = () => {
                 },
             });
         });
-    }, []);
+    }, [user?.uid]);
 
     // ── AI Recommendations ──
     // Backend /products/recommended does the whole pipeline server-side:
@@ -107,15 +121,33 @@ export const HomePage = () => {
                 </section>
 
                 <section className={styles.carousels}>
+                    {/* AI recommendations sit at the top for signed-in users. The list is
+                        only ever populated when a user is logged in (fetch is gated on
+                        user?.uid), so guests never see this section. */}
+                    {user?.uid && aiRecommendations.length > 0 && (
+                        <CarouselSection
+                            title="Recommended For You ✦ AI"
+                            sectionIndex={0}
+                        >
+                            {aiRecommendations.map((item) => (
+                                <ProductCard key={item.id} item={item} />
+                            ))}
+                        </CarouselSection>
+                    )}
+
                     {CAROUSEL_ROUTES.map(({ key, title }, i) => {
+                        // Guests use the local recently-viewed rail below instead.
+                        if (key === 'home_recent' && !user?.uid) return null;
                         const data = carousels[key];
                         if (!data) return null;
                         const items = Array.isArray(data) ? data : data.items ?? [];
+                        // An empty carousel renders as a lonely heading — skip it.
+                        if (items.length === 0) return null;
                         return (
                             <CarouselSection
                                 key={key}
                                 title={data.title || title}
-                                sectionIndex={i}
+                                sectionIndex={i + 1}
                             >
                                 {items.map((item) => (
                                     <ProductCard key={item.id} item={item} />
@@ -124,12 +156,14 @@ export const HomePage = () => {
                         );
                     })}
 
-                    {aiRecommendations.length > 0 && (
+                    {/* Guests have no server-side history, so surface their locally
+                        tracked recently-viewed items here too. */}
+                    {!user?.uid && guestRecentlyViewed.length > 0 && (
                         <CarouselSection
-                            title="Recommended For You ✦ AI"
-                            sectionIndex={CAROUSEL_ROUTES.length}
+                            title="Recently Viewed"
+                            sectionIndex={CAROUSEL_ROUTES.length + 1}
                         >
-                            {aiRecommendations.map((item) => (
+                            {guestRecentlyViewed.map((item) => (
                                 <ProductCard key={item.id} item={item} />
                             ))}
                         </CarouselSection>

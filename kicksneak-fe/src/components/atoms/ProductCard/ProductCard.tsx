@@ -50,8 +50,10 @@ export const ProductCard = ({
 
     const handleDelete = (e: React.MouseEvent) => {
         e.stopPropagation();
-        toggleFavorite(item);
-        onDelete?.(item.id);
+        // The page callback (e.g. FavoritesPage) already toggles the favorite —
+        // calling both would toggle twice and instantly re-add the item.
+        if (onDelete) onDelete(item.id);
+        else toggleFavorite(item);
     };
 
     if (mode === 'list') {

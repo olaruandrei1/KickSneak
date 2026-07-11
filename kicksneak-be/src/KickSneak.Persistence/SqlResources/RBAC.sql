@@ -145,6 +145,16 @@ ALTER DEFAULT PRIVILEGES FOR ROLE ks_owner IN SCHEMA public
 ALTER DEFAULT PRIVILEGES FOR ROLE ks_owner IN SCHEMA public
     GRANT ALL PRIVILEGES ON SEQUENCES TO ks_admin;
 
+-- chat_sessions/chat_messages are created & owned by ks_chat_service (the Go
+-- service), so they fall outside ks_owner's default privileges above. Without
+-- this, the admin app (which connects as ks_admin) hits "permission denied for
+-- table chat_sessions". Cover both future tables (default privileges) and any
+-- that already exist (explicit grant in the DO block in section 8).
+ALTER DEFAULT PRIVILEGES FOR ROLE ks_chat_service IN SCHEMA public
+    GRANT ALL PRIVILEGES ON TABLES TO ks_admin;
+ALTER DEFAULT PRIVILEGES FOR ROLE ks_chat_service IN SCHEMA public
+    GRANT ALL PRIVILEGES ON SEQUENCES TO ks_admin;
+
 -- ----------------------------------------------
 -- 8. GRANT ks_chat_service (Go readonly + chat)
 -- ----------------------------------------------
@@ -160,6 +170,8 @@ GRANT CREATE ON SCHEMA public TO ks_chat_service;
 DO $$ BEGIN
     IF EXISTS (SELECT FROM pg_tables WHERE schemaname = 'public' AND tablename = 'chat_sessions') THEN
         EXECUTE 'GRANT SELECT, INSERT, UPDATE ON chat_sessions, chat_messages TO ks_chat_service';
+        -- Admin app reads/manages chat via ks_admin.
+        EXECUTE 'GRANT ALL PRIVILEGES ON chat_sessions, chat_messages TO ks_admin';
     END IF;
 END $$;
 

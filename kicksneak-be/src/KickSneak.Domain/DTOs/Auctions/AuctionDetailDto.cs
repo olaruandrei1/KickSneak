@@ -69,5 +69,6 @@ public record AuctionDetailDto(
     bool IsWatching,
     List<BidDto> RecentBids,
     BidDto? MyCurrentBid,
-    AutoBidDto? MyAutoBid
+    AutoBidDto? MyAutoBid,
+    bool IsOwnAuction
 );
